@@ -1,11 +1,13 @@
 import React from "react";
+import AppBar from 'material-ui/AppBar';
+import BlogPostCard from "./BlogPostCard";
 import "./App.css";
 
-import AppBar from 'material-ui/AppBar';
 
 const App = () =>
     <div>
-        <AppBar />
+        <AppBar title="Home"/>
+        <BlogPostCard/>
     </div>;
 
 export default App;
