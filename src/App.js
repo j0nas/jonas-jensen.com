@@ -2,16 +2,15 @@ import React from "react";
 import AppBar from 'material-ui/AppBar';
 import BlogPostCard from "./BlogPostCard";
 import "./App.css";
-import muiImg from "./images/mui.jpg";
+
+import posts from "./posts";
 
 const App = () =>
     <div>
         <AppBar title="Home"/>
-        <BlogPostCard
-            title={<a href='http://www.material-ui.com/'>Material UI is neat!</a>}
-            subtitle="Exploring bleeding-edge UI design"
-            img={muiImg}
-        />
+        {posts.map((post, index) =>
+            <BlogPostCard title={post.title} subtitle={post.subtitle} img={post.img} key={index}/>
+        )}
     </div>;
 
 export default App;
