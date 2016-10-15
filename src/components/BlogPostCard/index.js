@@ -9,7 +9,7 @@ const BlogPostCard = ({title, subtitle, img, date}) =>
     <div className="CardContain">
         <Card>
             <DefaultCardHeader date={date} />
-            <CardMedia overlay={<CardTitle title={<Link href={`/blog/${date}`}>{title}</Link>} subtitle={subtitle}/>}>
+            <CardMedia overlay={<CardTitle title={<Link to={`/blog/${date}`}>{title}</Link>} subtitle={subtitle}/>}>
                 <img src={muiImg} alt="React"/>
             </CardMedia>
         </Card>
