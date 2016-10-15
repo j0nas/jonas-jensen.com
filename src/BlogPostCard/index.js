@@ -1,7 +1,7 @@
 import React from "react";
 import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 import DefaultCardHeader from "./DefaultCardHeader";
-import alarm from "./images/alarm_material_ui.gif";
+import muiImg from "./images/mui.jpg";
 import "./style.css";
 
 const BlogPostCard = () =>
@@ -13,7 +13,7 @@ const BlogPostCard = () =>
                     title={<a href='http://www.material-ui.com/'>Material UI is neat!</a>}
                     subtitle="Exploring bleeding-edge UI design"/>
             }>
-                <img src={alarm} alt="React"/>
+                <img src={muiImg} alt="React"/>
             </CardMedia>
         </Card>
     </div>;
