@@ -1,6 +1,5 @@
 import React from "react";
 import Paper from "material-ui/Paper";
-import posts from "../../posts";
 
 const postStyle = {
     padding: 10,
@@ -13,7 +12,7 @@ class Post extends React.Component {
     }
 
     componentDidMount = () =>
-        this.setState({post: posts.find(post => post.date === this.props.params.postId)});
+        this.setState({post: this.props.route.props.posts.find(post => post.date === this.props.params.postId)});
 
     render = () =>
         <div className="CardContain">
