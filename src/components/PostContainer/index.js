@@ -3,8 +3,8 @@ import BlogPostCard from "../BlogPostCard";
 
 const PostContainer = ({posts}) =>
     <span>
-        {posts.map((post, index) =>
-            <BlogPostCard title={post.title} subtitle={post.subtitle} img={post.img} key={index}/>
+        {posts.map(({title, subtitle, img, date}, index) =>
+            <BlogPostCard title={title} subtitle={subtitle} img={img} key={index} date={date}/>
         )}
     </span>;
 
@@ -13,6 +13,7 @@ const postType = React.PropTypes.shape({
     subtitle: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired,
     img: React.PropTypes.string.isRequired,
+    date: React.PropTypes.string.isRequired,
 });
 
 PostContainer.propTypes = {
