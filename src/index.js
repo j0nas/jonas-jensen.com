@@ -1,19 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import injectTapEventPlugin from "react-tap-event-plugin";
+import {Router, Route, browserHistory} from "react-router";
 import App from "./components/App/App";
-import posts from "./posts";
+import PostContainer from "./components/PostContainer";
 import "./index.css";
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-
-
 injectTapEventPlugin();
+
 ReactDOM.render(
-    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-        <App posts={posts}/>
-    </MuiThemeProvider>,
+    <Router history={browserHistory}>
+        <Route path="/" component={App}>
+            <Route path="blog" component={PostContainer} />
+            <Route path="*" />
+        </Route>
+    </Router>,
     document.getElementById('root')
 );

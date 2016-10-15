@@ -1,16 +1,20 @@
 import React from "react";
-import AppBar from 'material-ui/AppBar'
+import AppBar from "material-ui/AppBar";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
 import "./style.css";
-import PostContainer from "../PostContainer";
 
-const App = ({posts}) =>
-    <div>
-        <AppBar title="Home"/>
-        <PostContainer posts={posts}/>
-    </div>;
+const App = ({posts, children}) =>
+    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+        <div>
+            <AppBar title="Home"/>
+            {children}
+        </div>
+    </MuiThemeProvider>;
 
 App.propTypes = {
-    posts: React.PropTypes.array.isRequired
+    // posts: React.PropTypes.array.isRequired
 };
 
 export default App;

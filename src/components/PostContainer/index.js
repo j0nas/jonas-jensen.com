@@ -1,7 +1,8 @@
 import React from "react";
 import BlogPostCard from "../BlogPostCard";
+import posts from "../../posts";
 
-const PostContainer = ({posts}) =>
+const PostContainer = () =>
     <span>
         {posts.map(({title, subtitle, img, date}, index) =>
             <BlogPostCard title={title} subtitle={subtitle} img={img} key={index} date={date}/>
@@ -17,7 +18,7 @@ const postType = React.PropTypes.shape({
 });
 
 PostContainer.propTypes = {
-    posts: React.PropTypes.arrayOf(postType).isRequired
+    // posts: React.PropTypes.arrayOf(postType).isRequired
 };
 
 export default PostContainer;
