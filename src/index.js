@@ -13,7 +13,7 @@ injectTapEventPlugin();
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <Route path="blog" component={PostContainer}/>
+            <Route path="blog" component={PostContainer} posts={posts}/>
             <Route path="blog/:postId" component={Post} posts={posts}/>
             <Route path="*"/>
         </Route>
