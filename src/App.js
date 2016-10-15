@@ -1,16 +1,12 @@
 import React from "react";
-import AppBar from 'material-ui/AppBar';
-import BlogPostCard from "./BlogPostCard";
+import AppBar from 'material-ui/AppBar'
 import "./App.css";
-
-import posts from "./posts";
+import PostContainer from "./components/PostContainer";
 
 const App = () =>
     <div>
         <AppBar title="Home"/>
-        {posts.map((post, index) =>
-            <BlogPostCard title={post.title} subtitle={post.subtitle} img={post.img} key={index}/>
-        )}
+        <PostContainer/>
     </div>;
 
 export default App;
