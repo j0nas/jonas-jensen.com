@@ -6,11 +6,29 @@ const postStyle = {
     padding: 10,
 };
 
-const Post = ({params: {postId}}) =>
-    <div className="CardContain">
-        <Paper style={postStyle}>
-            {posts.find(post => post.date === postId).text}
-        </Paper>
-    </div>;
+class Post extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {post: {}}
+    }
+
+    componentDidMount = () =>
+        this.setState({post: posts.find(post => post.date === this.props.params.postId)});
+
+    render = () =>
+        <div className="CardContain">
+            <Paper style={postStyle}>
+                <article>
+                    <header>
+                        <h1>{this.state.post.title}</h1>
+                        <em>{this.state.post.subtitle}</em>
+                    </header>
+                    <main>
+                        <p>{this.state.post.text}</p>
+                    </main>
+                </article>
+            </Paper>
+        </div>;
+}
 
 export default Post;
