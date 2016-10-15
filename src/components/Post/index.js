@@ -2,7 +2,7 @@ import React from "react";
 import Paper from "material-ui/Paper";
 
 const postStyle = {
-    padding: 10,
+    padding: 20,
 };
 
 class Post extends React.Component {
@@ -12,22 +12,26 @@ class Post extends React.Component {
     }
 
     componentDidMount = () =>
-        this.setState({post: this.props.route.props.posts.find(post => post.date === this.props.params.postId)});
+        this.setState({post: this.props.route.posts.find(post => post.date === this.props.params.postId)});
 
     render = () =>
-        <div className="CardContain">
-            <Paper style={postStyle}>
-                <article>
-                    <header>
-                        <h1>{this.state.post.title}</h1>
-                        <em>{this.state.post.subtitle}</em>
-                    </header>
-                    <main>
-                        <p>{this.state.post.text}</p>
-                    </main>
-                </article>
-            </Paper>
-        </div>;
+        <Paper style={postStyle}>
+            <article>
+                <header>
+                    <h1>{this.state.post.title}</h1>
+                    <em>{this.state.post.subtitle}</em>
+                </header>
+                <main>
+                    <p>&nbsp;</p>
+                    <p>{this.state.post.text}</p>
+                </main>
+                <footer>
+                    <p>
+                        <em>Jonas Jensen @ {this.state.post.date}</em>
+                    </p>
+                </footer>
+            </article>
+        </Paper>;
 }
 
 export default Post;
