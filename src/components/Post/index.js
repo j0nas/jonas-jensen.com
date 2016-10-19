@@ -20,13 +20,13 @@ class Post extends React.Component {
             <article className="PostArticle">
                 <header>
                     <h1>{this.state.post.title}</h1>
-                    <em>{this.state.post.subtitle}</em>
+                    <em className="PostSubtitle">{this.state.post.subtitle}</em>
                 </header>
                 <main>
                     <p>&nbsp;</p>
                     <p className="PostText" dangerouslySetInnerHTML={{__html: this.state.post.text}}/>
                 </main>
-                <footer>
+                <footer className="PostFooter">
                     <p>
                         <br/>
                         <em>

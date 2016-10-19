@@ -3,6 +3,10 @@
     margin: 0 auto;
 }
 
+.PostText, .PostFooter, .PostSubtitle {
+    color: #ddd;
+}
+
 .PostText > a {
     color: cornflowerblue;
     text-decoration: none;
