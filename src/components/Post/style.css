@@ -8,6 +8,6 @@
 }
 
 .PostText > a {
-    color: cornflowerblue;
-    text-decoration: none;
+    color: rgb(0, 151, 167);
+    text-decoration: underline;
 }
