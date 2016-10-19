@@ -10,6 +10,7 @@ export default {
     <br/>
     I went ahead and applied the changes to the page, and am pleased to say that it made a noticeable difference. 
     If you, like me, aren't well versed in the world of web design, maybe the guide guide will help you too:<br/>
+    <br/>
     <a href='http://jgthms.com/web-design-in-4-minutes/#color-contrast' target='_blank'>
     Web Design in 4 minutes by Jeremy Thomas
     </a>`,
