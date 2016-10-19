@@ -1,4 +1,4 @@
-import muiImg from "./images/mui.jpg";
+import img from "./images/006.jpg";
 
 export default {
     title: "Web design in 4 minutes",
@@ -15,5 +15,5 @@ export default {
     Web Design in 4 minutes by Jeremy Thomas
     </a>`,
     date: "19.10.2016",
-    img: muiImg
+    img: img
 };
