@@ -23,11 +23,16 @@ class Post extends React.Component {
                 </header>
                 <main>
                     <p>&nbsp;</p>
-                    <p>{this.state.post.text}</p>
+                    <p dangerouslySetInnerHTML={{__html: this.state.post.text}}/>
                 </main>
                 <footer>
                     <p>
-                        <em>Jonas Jensen @ {this.state.post.date}</em>
+                        <br/>
+                        <em>
+                            Jonas Jensen
+                            <br/>
+                            {this.state.post.date}
+                        </em>
                     </p>
                 </footer>
             </article>
