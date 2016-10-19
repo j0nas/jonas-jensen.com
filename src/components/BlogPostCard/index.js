@@ -1,8 +1,7 @@
 import React from "react";
-import {Card, CardMedia, CardTitle} from 'material-ui/Card';
+import {Card, CardMedia, CardTitle} from "material-ui/Card";
 import DefaultCardHeader from "./DefaultCardHeader";
 import {Link} from "react-router";
-import muiImg from "../../posts/151016/images/mui.jpg";
 import "./style.css";
 
 const BlogPostCard = ({title, subtitle, img, date}) =>
@@ -10,7 +9,7 @@ const BlogPostCard = ({title, subtitle, img, date}) =>
         <Card>
             <DefaultCardHeader date={date} />
             <CardMedia overlay={<CardTitle title={<Link to={`/blog/${date}`}>{title}</Link>} subtitle={subtitle}/>}>
-                <img src={muiImg} alt="React"/>
+                <img src={img} alt={title}/>
             </CardMedia>
         </Card>
     </div>;
