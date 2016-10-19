@@ -1,0 +1,9 @@
+.PostArticle {
+    max-width: 50em;
+    margin: 0 auto;
+}
+
+.PostText > a {
+    color: cornflowerblue;
+    text-decoration: none;
+}

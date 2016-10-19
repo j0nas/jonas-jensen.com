@@ -1,5 +1,6 @@
 import React from "react";
 import Paper from "material-ui/Paper";
+import "./style.css";
 
 const postStyle = {
     padding: 20,
@@ -16,14 +17,14 @@ class Post extends React.Component {
 
     render = () =>
         <Paper style={postStyle}>
-            <article>
+            <article className="PostArticle">
                 <header>
                     <h1>{this.state.post.title}</h1>
                     <em>{this.state.post.subtitle}</em>
                 </header>
                 <main>
                     <p>&nbsp;</p>
-                    <p dangerouslySetInnerHTML={{__html: this.state.post.text}}/>
+                    <p className="PostText" dangerouslySetInnerHTML={{__html: this.state.post.text}}/>
                 </main>
                 <footer>
                     <p>
