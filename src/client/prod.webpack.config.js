@@ -6,7 +6,7 @@ const OfflinePlugin = require('offline-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const srcDir = __dirname;
-const buildPath = path.join(srcDir, 'docs');
+const buildPath = path.join(srcDir, 'build');
 
 const htmlPluginConfig = {
     inject: true,

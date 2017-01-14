@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config src/client/prod.webpack.config.js",
     "buildstats": "webpack --profile --config src/client/prod.webpack.config.js --json > stats.json",
-    "hostbuild": "rm -rf src/client/docs && npm run build && pushstate-server src/client/docs"
+    "hostbuild": "rm -rf src/client/build && npm run build && pushstate-server src/client/build"
   },
   "repository": {
     "type": "git",
