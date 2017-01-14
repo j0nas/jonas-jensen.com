@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import { middleware as reduxPackMiddleware } from 'redux-pack';
 import rootReducer from '../reducers';
 import Main from '../views/Main';
+import './style.scss';
 
 const reduxMiddleware = applyMiddleware(thunk, reduxPackMiddleware);
 
