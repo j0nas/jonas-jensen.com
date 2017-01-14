@@ -1,0 +1,19 @@
+.custom-button {
+  height: 30px;
+  margin: 5px;
+  background: white;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.disabled-button {
+  cursor: not-allowed;
+}
+
+.custom-button:hover {
+  background: #EEE;
+}
+
+.custom-button:active {
+  background: #CCC;
+}
