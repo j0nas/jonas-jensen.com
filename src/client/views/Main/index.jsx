@@ -3,7 +3,6 @@ import './style.scss';
 
 const MainView = () =>
   <div className="mainContain">
-
     <div className="inner">
       <p>Hi.</p>
       <p>
@@ -25,9 +24,8 @@ const MainView = () =>
         <a href="http://jgthms.com/web-design-in-4-minutes">Web design in 4 minutes</a> by Jeremy Thomas and&nbsp;
         <a href="https://hackernoon.com/@david.gilbertson">David Gilbertson&#39;s writing</a>.
       </p>
-      <br />
       <p>
-        If you want to get in touch, you can do so through the following channels:
+        I can be reached through the following channels:
         <br />
         <a href="mailto:jonas.jensen@msn.com">jonas.jensen@msn.com</a> |&nbsp;
         <a href="https://github.com/j0nas">Github</a> |&nbsp;
