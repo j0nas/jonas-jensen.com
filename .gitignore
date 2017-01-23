@@ -30,3 +30,4 @@ crashlytics-build.properties
 fabric.properties
 /stats.json
 .DS_Store
+/public/
