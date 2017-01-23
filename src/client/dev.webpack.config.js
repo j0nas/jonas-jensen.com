@@ -3,8 +3,8 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const paths = require('./config/paths');
 const srcDir = __dirname;
-const buildPath = path.join(srcDir, 'build');
 
 const htmlPluginConfig = {
     inject: true,
@@ -20,7 +20,7 @@ module.exports = {
         path.join(srcDir, "Application", "index.jsx")
     ],
     output: {
-        path: buildPath,
+        path: paths.buildPath,
         publicPath: '/',
         filename: 'bundle.js'
     },
@@ -59,7 +59,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new CopyWebpackPlugin([{from: path.join(srcDir, 'public'), to: buildPath}]),
+        new CopyWebpackPlugin([{from: path.join(srcDir, 'public'), to: paths.buildPath}]),
         new HtmlWebpackPlugin(htmlPluginConfig),
         new webpack.DefinePlugin({'process.env.NODE_ENV': '"development"'}),
         new webpack.HotModuleReplacementPlugin(),
