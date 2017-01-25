@@ -15,7 +15,7 @@ const MainView = () =>
         I will update it with some interesting content. For now, I am busy delving into the rabbit hole that is
         performance optimization and perceived load time optimization. I&#39;m also working on my&nbsp;
         <a href="https://github.com/j0nas/react-fullstack-boilerplate">fullstack react&#47;redux boilerplate</a>,
-        which I&#39;ve used to experiment with bleeding-edge development tools and practices and to gain a deeper
+        which I&#39;ve used to experiment with bleeding-edge development tools and practices to gain a deeper
         understanding in what the basics of my go-to stack consists of. At some point in the (hopefully) not-too-distant
         future, I hope to gain a much deeper understanding of the concept of abstraction layers in software development.
       </p>
