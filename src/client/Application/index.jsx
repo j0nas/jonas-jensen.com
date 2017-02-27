@@ -17,6 +17,4 @@ if (process.env.NODE_ENV === 'development') {
   if (module.hot) {
     module.hot.accept('../views/Main', renderApp);
   }
-} else {
-  require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }

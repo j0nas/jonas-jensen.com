@@ -2,7 +2,6 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const paths = require('./config/paths');
@@ -87,7 +86,6 @@ module.exports = {
         new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}),
         new webpack.LoaderOptionsPlugin({minimize: true, debug: false}),
         new webpack.optimize.UglifyJsPlugin(uglifyJsPluginConfig),
-        new OfflinePlugin(),
     ],
     node: {
         fs: 'empty',
