@@ -22,7 +22,11 @@ const MainView = () =>
       <p>
         The last reads that have made an impression on me were&nbsp;
         <a href="http://jgthms.com/web-design-in-4-minutes">Web design in 4 minutes</a> by Jeremy Thomas and&nbsp;
-        <a href="https://hackernoon.com/@david.gilbertson">David Gilbertson&#39;s writing</a>.
+        <a href="https://hackernoon.com/@david.gilbertson">David Gilbertson&#39;s writing</a>. The last thing I have
+        written is about&nbsp;
+        <a href="https://medium.com/@jonasjensen/dealing-with-forms-in-react-redux-a-simple-pattern-7b94b393eb26">
+          dealing with form state in React/Redux
+        </a>.
       </p>
       <p>
         I can be reached through the following channels:
