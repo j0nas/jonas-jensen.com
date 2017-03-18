@@ -72,9 +72,16 @@ module.exports = {
                 test: /\.?scss$/,
                 include: srcDir,
                 loader: ExtractTextPlugin.extract({
-                    loader: ['css-loader', 'sass-loader', 'postcss-loader'],
+                    loader: ['css-loader', 'resolve-url-loader', 'sass-loader', 'postcss-loader'],
                     fallbackLoader: 'style-loader',
-                })
+                }),
+            },
+            {
+              test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?.*)?$/,
+              include: srcDir,
+              loaders: [
+                'url-loader?limit=10000'
+              ]
             },
         ],
     },

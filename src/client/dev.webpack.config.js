@@ -51,9 +51,17 @@ module.exports = {
                 include: srcDir,
                 loaders: [
                     'style-loader',
-                    'css-loader?sourceMap',
+                    'css-loader',
+                    'resolve-url-loader',
                     'sass-loader?sourceMap',
                     'postcss-loader',
+                ]
+            },
+            {
+              test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?.*)?$/,
+              include: srcDir,
+                loaders: [
+                  'url-loader?limit=10000'
                 ]
             },
         ],
