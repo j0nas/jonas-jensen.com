@@ -1,3 +1,62 @@
 .mainContain {
-  padding: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  flex: auto;
+}
+
+.namecontain {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.name {
+  display: flex;
+  margin: 10px 0;
+}
+
+.name div {
+  flex: auto;
+  font-size: 44px;
+  height: 30px;
+  text-align: center;
+  color: black;
+  text-transform: uppercase;
+  font-weight: 100;
+}
+
+.firstletter {
+  flex: 0 1 20% !important;
+}
+
+.subtitle {
+  color: black;
+  text-align: center;
+  text-transform: lowercase;
+  letter-spacing: 4px;
+  font-size: 20px;
+  font-weight: 200;
+}
+
+.network-items {
+  display: flex;
+  align-content: space-around;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.network-item {
+  width: 64 * 1.5px;
+  height: 64 * 1.5px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+body {
+  background: url("bg.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
