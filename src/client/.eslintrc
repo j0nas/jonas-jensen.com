@@ -5,6 +5,7 @@
     "browser": true
   },
   "rules": {
-    "max-len": [1, 120]
+    "max-len": [1, 120],
+    "import/prefer-default-export": 0
   }
 }

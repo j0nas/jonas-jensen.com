@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './style.scss';
 import gh from './gh.png';
 import In from './in.png';
 import mail from './mail.png';
+
 
 const MainView = () =>
   <div className="mainContain">
@@ -10,6 +12,7 @@ const MainView = () =>
       <div className="namecontain">
         <div className="name">
           <div className="firstletter">J</div>
+          <Link to="/calc">calc</Link>
           <div>o</div>
           <div>n</div>
           <div>a</div>

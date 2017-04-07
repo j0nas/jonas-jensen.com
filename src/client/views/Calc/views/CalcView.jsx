@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
 const Main = () =>
-    <div>Hello.</div>;
+  <div>Hello. Hello. Hello. Hello. Hello. Hello. Hello. Hello. </div>;
 
 export default Main;
