@@ -1,5 +1,6 @@
 import React from 'react';
 import CurrencyInput from 'react-currency-input';
+import Links from '../../../components/Links';
 import './style.scss';
 
 /* eslint-disable */
@@ -52,6 +53,7 @@ const Main = ({
 
     return (
         <div className="input-container">
+            <Links />
             <N onChange={update} name="income" value={income}/>
             <N onChange={update} name="taxPercent" value={taxPercent} suffix="%"/>
             <N name="incomeAfterTax" value={incomeAfterTax} disabled/>
