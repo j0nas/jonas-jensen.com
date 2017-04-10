@@ -7,7 +7,10 @@ import Root from './Root';
 import rootReducer from './rootReducer';
 import './style.scss';
 
-const store = createStore(rootReducer);
+const isDevEnv = process.env.NODE_ENV === 'development';
+const store = isDevEnv ?
+    createStore(rootReducer, ...(window.devToolsExtension ? [window.devToolsExtension()] : [])) :
+    createStore(rootReducer);
 
 const renderApp = Component =>
     render(
@@ -20,9 +23,7 @@ const renderApp = Component =>
 
 renderApp(Root);
 
-if (process.env.NODE_ENV === 'development') {
-  if (module.hot) {
-    module.hot.accept('./', () => store.replaceReducer(require('./rootReducer').default)); // eslint-disable-line
-    module.hot.accept('./Root', () => renderApp(Root));
-  }
+if (isDevEnv && module.hot) {
+    module.hot.accept('./rootReducer', () => store.replaceReducer(require('./rootReducer').default)); // eslint-disable-line
+  module.hot.accept('./Root', () => renderApp(Root));
 }
