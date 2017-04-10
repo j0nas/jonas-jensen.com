@@ -19,7 +19,7 @@ const N = ({onChange, name, value, precision = 0, suffix, disabled, className}) 
     </div>;
 
 const normalize = (value = '') =>
-    (Number(value.replace(/[,%]/, "")));
+    (Number(value.replace(/[,%]/g, "")));
 
 const addAnnualSavingAndCompountInterest = (initialAmount, amountToAdd, interestRate) =>
     ((initialAmount + amountToAdd) * interestRate);
