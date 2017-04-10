@@ -89,7 +89,7 @@ const Main = ({
             <div className="separator"/>
 
             <N name="targetSum" value={targetSum} disabled/>
-            <N name="yearsToRetirement" value={amountOfYearsSavingNeededForRetirement} disabled/>
+            <N name="yearsToFinancialIndependence" value={amountOfYearsSavingNeededForRetirement} disabled/>
         </div>
     );
 };

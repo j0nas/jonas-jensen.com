@@ -4,8 +4,13 @@ import './style.scss';
 
 const Links = () =>
   <nav className="links">
-    <div><NavLink exact to="/" className="link" activeClassName="activeLink">Home</NavLink></div>
-    <div><NavLink exact to="/calc" className="link" activeClassName="activeLink">Retirement calculator</NavLink>
+    <div>
+      <NavLink exact to="/" className="link" activeClassName="activeLink">Home</NavLink>
+    </div>
+    <div>
+      <NavLink exact to="/calc" className="link" activeClassName="activeLink">
+            Financial independence calculator
+        </NavLink>
     </div>
   </nav>;
 
