@@ -84,11 +84,10 @@ const Main = ({
                     className="input"
                 />
             </div>
-
+            <div className="separator"/>
 
             <N name="targetSum" value={targetSum} disabled/>
             <N name="yearsToRetirement" value={amountOfYearsSavingNeededForRetirement} disabled/>
-            <tr className="separator"/>
         </div>
     );
 };

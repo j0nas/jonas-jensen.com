@@ -8,8 +8,6 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const api = require('./api');
 const webpackConfig = require('../client/dev.webpack.config.js');
-const buildPath = path.resolve(__dirname, "..", "client", "build");
-const generatedIndexHtmlPath = path.resolve(buildPath, 'index.html');
 const devMiddlewareConfig = {
     stats: {
         colors: true,
@@ -33,8 +31,15 @@ app.use('/api', api);
 app.use(devMiddleware);
 app.use(webpackHotMiddleware(compiler));
 
-app.get('*', (req, res) =>
-    res.send(devMiddleware.fileSystem.readFileSync(generatedIndexHtmlPath)));
+app.get('*', (req, res) => {
+    const split = req.url.split('/');
+    const file = split[split.length - 1];
+    if (['bundle.js', 'index.html'].indexOf(file) !== -1) {
+        res.end(devMiddleware.fileSystem.readFileSync(path.join(webpackConfig.output.path, file)))
+    } else if (file.indexOf('.') === -1) {
+        res.end(devMiddleware.fileSystem.readFileSync(path.join(webpackConfig.output.path, 'index.html')))
+    }
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log("Listening on port :" + port));
