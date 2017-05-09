@@ -1,0 +1,13 @@
+.links {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.links .link {
+  color: #212121;
+}
+
+.links .activeLink {
+  display: none;
+}

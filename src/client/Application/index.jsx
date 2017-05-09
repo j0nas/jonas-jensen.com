@@ -1,20 +1,29 @@
 import { AppContainer } from 'react-hot-loader';
 import React from 'react';
 import { render } from 'react-dom';
-import Main from '../views/Main';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import Root from './Root';
+import rootReducer from './rootReducer';
 import './style.scss';
 
-const renderApp = () =>
+const isDevEnv = process.env.NODE_ENV === 'development';
+const store = isDevEnv ?
+    createStore(rootReducer, ...(window.devToolsExtension ? [window.devToolsExtension()] : [])) :
+    createStore(rootReducer);
+
+const renderApp = Component =>
     render(
       <AppContainer>
-        <Main />
+        <Provider store={store}>
+          <Component />
+        </Provider>
       </AppContainer>,
         document.getElementById('root'));
 
-renderApp();
+renderApp(Root);
 
-if (process.env.NODE_ENV === 'development') {
-  if (module.hot) {
-    module.hot.accept('../views/Main', renderApp);
-  }
+if (isDevEnv && module.hot) {
+    module.hot.accept('./rootReducer', () => store.replaceReducer(require('./rootReducer').default)); // eslint-disable-line
+  module.hot.accept('./Root', () => renderApp(Root));
 }
