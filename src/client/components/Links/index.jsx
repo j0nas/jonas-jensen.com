@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './style.scss';
 
 const Links = () =>
-  <nav className="links">
+  (<nav className="links">
     <div>
       <NavLink exact to="/" className="link" activeClassName="activeLink">Home</NavLink>
     </div>
@@ -12,6 +12,6 @@ const Links = () =>
             Financial independence calculator
         </NavLink>
     </div>
-  </nav>;
+  </nav>);
 
 export default Links;
