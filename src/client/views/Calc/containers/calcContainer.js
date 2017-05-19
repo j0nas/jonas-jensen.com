@@ -3,7 +3,7 @@ import CalcView from '../views/CalcView';
 import { updateField } from '../actions/calcActions';
 
 const calcContainer = connect(
-    state => ({ ...state.calc }),
+    state => ({ expenditureIsAnnual: state.fi.expenditureIsAnnual }),
     dispatch => ({
       update: (name, value) => dispatch(updateField(name, value)),
     }),
