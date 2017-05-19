@@ -6,7 +6,7 @@ import In from './in.png';
 import mail from './mail.png';
 
 const MainView = () =>
-  <div className="mainContain">
+  (<div className="mainContain">
     <Links />
     <div className="inner">
       <div className="namecontain">
@@ -39,6 +39,6 @@ const MainView = () =>
         </a>
       </div>
     </div>
-  </div>;
+  </div>);
 
 export default MainView;

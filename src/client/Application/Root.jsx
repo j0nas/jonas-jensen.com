@@ -4,11 +4,11 @@ import Main from '../views/Main';
 import Calc from '../views/Calc';
 
 const Root = () =>
-  <BrowserRouter>
+  (<BrowserRouter>
     <div className="full">
       <Route exact path="/" component={Main} />
       <Route path="/calc" component={Calc} />
     </div>
-  </BrowserRouter>;
+  </BrowserRouter>);
 
 export default Root;
