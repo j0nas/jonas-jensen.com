@@ -1,5 +1,4 @@
-export const normalize = (value = '') =>
-  (Number(value.replace(/[,%]/g, '')));
+export const normalize = (value = '') => (Number(String(value).replace(/[,%]/g, '')));
 
 export const addAnnualSavingAndCompoundInterest = (initialAmount, amountToAdd, interestRate) =>
   ((initialAmount + amountToAdd) * interestRate);

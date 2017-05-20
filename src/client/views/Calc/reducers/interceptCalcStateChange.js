@@ -1,4 +1,4 @@
-import { UPDATE_FIELD } from '../types/calcTypes';
+import formatNumber from 'format-number';
 import {
   calculateExpectedReturnRate,
   calculateTargetSum,
@@ -8,8 +8,14 @@ import {
   savingYearsNeededForRetirement,
 } from '../util/calculations';
 
-export default (state = {}, action) => {
-  const stateCopy = { ...state, [action.name]: action.value };
+const format = formatNumber();
+const formatPercentage = formatNumber({ suffix: '%' });
+const fmt = number => (format(normalize(number)));
+const fmtP = percentage => (formatPercentage(normalize(percentage)));
+
+export default (state) => {
+  const stateCopy = { ...state };
+
   const {
     amountSavedSoFar,
     income,
@@ -27,18 +33,22 @@ export default (state = {}, action) => {
   const amountOfYearsSavingNeededForRetirement =
     savingYearsNeededForRetirement(normalize(amountSavedSoFar), targetSum, amountOfIncomeSaved, expectedReturnRate);
 
-  switch (action.type) {
-    case UPDATE_FIELD:
-      return {
-        ...stateCopy,
-        incomeAfterTax,
-        targetSum,
-        amountOfIncomeSaved,
-        expectedReturnRate,
-        amountOfYearsSavingNeededForRetirement,
-      };
+  return {
+    ...stateCopy,
 
-    default:
-      return state;
-  }
+    income: fmt(income),
+    taxPercent: fmtP(taxPercent),
+    incomeAfterTax: fmt(incomeAfterTax),
+    percentOfIncomeSaved: fmtP(percentOfIncomeSaved),
+    amountOfIncomeSaved: fmt(amountOfIncomeSaved),
+
+    amountSavedSoFar: fmt(amountSavedSoFar),
+    interestRate: fmtP(interestRate),
+
+    expenditures: fmt(expenditures),
+
+    targetSum: fmt(targetSum),
+    expectedReturnRate,
+    amountOfYearsSavingNeededForRetirement,
+  };
 };
