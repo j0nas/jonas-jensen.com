@@ -25,29 +25,6 @@ const htmlPluginConfig = {
     }
 };
 
-const uglifyJsPluginConfig = {
-    compress: {
-        warnings: false,
-        screw_ie8: true,
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-    },
-    mangle: {
-        screw_ie8: true
-    },
-    output: {
-        comments: false,
-        screw_ie8: true,
-    },
-    sourceMap: false,
-};
-
 module.exports = {
     devtool: false,
     bail: true,
@@ -91,8 +68,7 @@ module.exports = {
         new ExtractTextPlugin({filename: '[name].[contenthash:8].css', allChunks: true}),
         new HtmlWebpackPlugin(htmlPluginConfig),
         new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}),
-        new webpack.LoaderOptionsPlugin({minimize: true, debug: false}),
-        new webpack.optimize.UglifyJsPlugin(uglifyJsPluginConfig),
+        new webpack.optimize.UglifyJsPlugin(),
     ],
     node: {
         fs: 'empty',
