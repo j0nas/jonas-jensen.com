@@ -1,5 +1,6 @@
 {
   "name": "jonas-jensen.com",
+  "private": true,
   "version": "0.1.0",
   "description": "Source code for jonas.jensen.com",
   "main": "index.js",
