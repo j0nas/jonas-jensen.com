@@ -3,6 +3,7 @@ import Links from '../../components/Links';
 import './style.scss';
 import gh from './gh.png';
 import In from './in.png';
+import Tw from './tw.png';
 import mail from './mail.png';
 
 const MainView = () =>
@@ -30,6 +31,9 @@ const MainView = () =>
       <div className="network-items">
         <a href="https://github.com/j0nas">
           <img className="network-item" src={gh} alt="GitHub" />
+        </a>
+        <a href="https://twitter.com/jonas__jensen">
+          <img className="network-item" src={Tw} alt="Twitter" />
         </a>
         <a href="https://www.linkedin.com/in/j0nas">
           <img className="network-item" src={In} alt="LinkedIn" />

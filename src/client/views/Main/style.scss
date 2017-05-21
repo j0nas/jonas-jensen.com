@@ -68,6 +68,13 @@
   box-sizing: border-box;
 }
 
+@media all and (max-device-width: 480px){
+  .network-item {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 body {
   background: url("bg.jpg") no-repeat center center fixed;
   background-size: cover;
