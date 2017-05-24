@@ -1,9 +1,5 @@
 function normalize(value) {
-  if (!value) {
-    return 0;
-  }
-
-  return Number(String(value).replace(/[,%]/g, ''));
+  return !value ? 0 : Number(String(value).replace(/[,%]/g, ''));
 }
 
 function addAnnualSavingAndCompoundInterest(initialAmount, amountToAdd, interestRate) {
@@ -42,7 +38,7 @@ function calculateExpectedReturnRate(interestRate) {
 window.fi = {};
 var inputs = document.querySelectorAll('input');
 var format = formatter();
-var formatPercentage = formatter({ suffix: '%' });
+var formatPercentage = formatter({suffix: '%'});
 var percentageFields = ['taxPercent', 'percentOfIncomeSaved', 'interestRate'];
 
 function changeFieldValue(key) {
