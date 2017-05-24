@@ -49,6 +49,15 @@ function fmtP(percentage) {
   return formatPercentage(normalize(percentage));
 }
 
+var percentageFields = ['taxPercent', 'percentOfIncomeSaved', 'interestRate'];
+function changeFieldValue(key) {
+  var input = document.getElementById(key);
+  if (input) {
+    var formatFunction = percentageFields.indexOf(key) === -1 ? fmt : fmtP;
+    input.value = formatFunction(window.fi[key]);
+  }
+}
+
 window.fi = {};
 var inputs = document.querySelectorAll('input');
 
@@ -68,57 +77,7 @@ var inputListener = function (event) {
       window.fi.expectedReturnRate
     );
 
-//  window.fi[event.target.id] = event.target.value;
-  Object.keys(window.fi).forEach(function (key) {
-    var input = document.getElementById(key);
-    if (input) {
-      input.value = fmt(window.fi[key]);
-    }
-  });
-
-
-  /*
-   var amountSavedSoFar = window.amountSavedSoFar;
-   var income = window.income;
-   var taxPercent = window.taxPercent;
-   var percentOfIncomeSaved = window.percentOfIncomeSaved;
-   var expenditures = window.expenditures;
-   var expenditureIsAnnual = window.expenditureIsAnnual;
-   var interestRate = window.interestRate;
-
-   var incomeAfterTax = deductTaxPercentageFromIncome(income, taxPercent);
-   var targetSum = calculateTargetSum(expenditures, expenditureIsAnnual);
-   var amountOfIncomeSaved = deductPercentage(incomeAfterTax, percentOfIncomeSaved);
-   var expectedReturnRate = calculateExpectedReturnRate(interestRate);
-   var amountOfYearsSavingNeededForRetirement = savingYearsNeededForRetirement(normalize(amountSavedSoFar), targetSum, amountOfIncomeSaved, expectedReturnRate);
-
-   window.fi = {
-   income: fmt(income),
-   taxPercent: fmtP(taxPercent),
-   incomeAfterTax: fmt(incomeAfterTax),
-   percentOfIncomeSaved: fmtP(percentOfIncomeSaved),
-   amountOfIncomeSaved: fmt(amountOfIncomeSaved),
-   amountSavedSoFar: fmt(amountSavedSoFar),
-   interestRate: fmtP(interestRate),
-   expenditures: fmt(expenditures),
-   targetSum: fmt(targetSum),
-   expectedReturnRate: expectedReturnRate,
-   amountOfYearsSavingNeededForRetirement: amountOfYearsSavingNeededForRetirement,
-   };
-
-   window.fi[e.target.id] = e.target.value;
-
-   var keys = Object.keys(window.fi);
-
-   const fiProps = Object.getOwnPropertyNames(window.fi);
-   fiProps.forEach(function (fiProp) {
-   const elementById = document.getElementById(fiProp);
-   if (elementById)
-   elementById.value = window.fi[fiProp];
-   else {
-   console.log("element", fiProp, " not found");
-   }
-   });*/
+  Object.keys(window.fi).forEach(changeFieldValue);
 };
 
 function addInputListeners(input) {
