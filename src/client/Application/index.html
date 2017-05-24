@@ -8,8 +8,161 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
     <meta name="theme-color" content="#CCCCCC">
     <title>Jonas Jensen</title>
+    <style>
+        body {
+            color: #212121;
+            font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: 0.05em;
+            line-height: 1.5;
+            margin: 0 auto;
+            max-width: 50em;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .mainContain {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            animation: fadein 2s;
+        }
+
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .inner {
+            flex: auto;
+        }
+
+        .namecontain {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .name {
+            display: flex;
+            margin: 10px 0;
+        }
+
+        .name div {
+            flex: auto;
+            font-size: 44px;
+            height: 30px;
+            text-align: center;
+            color: black;
+            text-transform: uppercase;
+            font-weight: 100;
+        }
+
+        .firstletter {
+            flex: 0 1 20% !important;
+        }
+
+        .subtitle {
+            color: black;
+            text-align: center;
+            text-transform: lowercase;
+            letter-spacing: 4px;
+            font-size: 20px;
+            font-weight: 200;
+        }
+
+        .network-items {
+            display: flex;
+            align-content: space-around;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .network-item {
+            width: 96px;
+            height: 96px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @media all and (max-device-width: 480px) {
+            .network-item {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        body {
+            background: url("./img/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .links {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .links .link {
+            color: #212121;
+            display: block;
+        }
+
+        .links .activeLink {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-<div id="root"></div>
+<div class="mainContain">
+    <nav class="links">
+        <a href="/" class="link">Home</a>
+        <a href="calc" class="link">Financial independence calculator</a>
+    </nav>
+    <div class="inner">
+        <div class="namecontain">
+            <div class="name">
+                <div class="firstletter">J</div>
+                <div>o</div>
+                <div>n</div>
+                <div>a</div>
+                <div class="firstletter">s</div>
+            </div>
+            <div class="name">
+                <div class="firstletter">J</div>
+                <div>e</div>
+                <div>n</div>
+                <div>s</div>
+                <div>e</div>
+                <div class="firstletter">n</div>
+            </div>
+        </div>
+        <p class="subtitle">Fullstack developer, analyst</p>
+        <div class="network-items">
+            <a href="https://github.com/j0nas">
+                <img class="network-item" src="./img/gh.png" alt="GitHub"/>
+            </a>
+            <a href="https://twitter.com/jonas__jensen">
+                <img class="network-item" src="./img/tw.png" alt="Twitter"/>
+            </a>
+            <a href="https://www.linkedin.com/in/j0nas">
+                <img class="network-item" src="./img/in.png" alt="LinkedIn"/>
+            </a>
+            <a href="mailto:jonas.jensen@msn.com">
+                <img class="network-item" src="./img/mail.png" alt="Mail"/>
+            </a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

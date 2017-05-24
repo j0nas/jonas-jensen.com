@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>calc</title>
+    <style>
+        body {
+            background: url("./img/bg.jpg");
+        }
+
+        .separator {
+            height: 10px;
+        }
+
+        .input-container {
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            width: 50%;
+        }
+
+        .input {
+            width: 50%;
+            border: none;
+            padding: 5px;
+            border-radius: 2px;
+        }
+
+        .input-row {
+            width: 100%;
+            display: flex;
+            align-content: center;
+            align-items: center;
+            align-self: center;
+            margin: 2px 0;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .input-label {
+            width: 50%;
+            display: block;
+            color: white;
+        }
+
+        @media screen and (max-width: 480px) {
+            .input-container {
+                width: 100%;
+            }
+        }
+    </style>
+    <script src="formatNumber.js"></script>
+</head>
+<body>
+<div class="input-container">
+    <div class="input-row">
+        <label for="income" class="input-label">Income</label>
+        <input id="income" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="taxPercent" class="input-label">Tax</label>
+        <input id="taxPercent" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="incomeAfterTax" class="input-label">Post-tax income</label>
+        <input id="incomeAfterTax" disabled="disabled" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="percentOfIncomeSaved" class="input-label">% of income saved</label>
+        <input id="percentOfIncomeSaved" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="amountOfIncomeSaved" class="input-label">Income saved</label>
+        <input id="amountOfIncomeSaved" disabled="disabled" class="input"/>
+    </div>
+    <div class="separator"></div>
+
+    <div class="input-row">
+        <label for="amountSavedSoFar" class="input-label">Saved up so far</label>
+        <input id="amountSavedSoFar" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="interestRate" class="input-label">Interest rate %</label>
+        <input id="interestRate" class="input"/>
+    </div>
+    <div class="separator"></div>
+
+    <div class="input-row">
+        <label for="expenditures" class="input-label">Expenditures / (year/month)</label>
+        <input id="expenditures" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="expenditureIsAnnual" class="input-label">Annual expenses?</label>
+        <input id="expenditureIsAnnual" type="checkbox" class="input"/>
+    </div>
+    <div class="separator"></div>
+
+    <div class="input-row">
+        <label for="targetSum" class="input-label">Saving target sum</label>
+        <input id="targetSum" disabled="disabled" class="input"/>
+    </div>
+
+    <div class="input-row">
+        <label for="amountOfYearsSavingNeededForRetirement" class="input-label">Years to FI</label>
+        <input id="amountOfYearsSavingNeededForRetirement" disabled="disabled" class="input"/>
+    </div>
+</div>
+
+<script>
+  function normalize(value = '') {
+    return Number(String(value).replace(/[,%]/g, ''));
+  }
+
+  function addAnnualSavingAndCompoundInterest(initialAmount, amountToAdd, interestRate) {
+    return (initialAmount + amountToAdd) * interestRate;
+  }
+
+  function savingYearsNeededForRetirement(savedSoFar, targetSum, incomeAmountSaved, returnRate) {
+    var accumulatedSavings = savedSoFar;
+    var amountOfYearsSavingNeededForRetirement = 0;
+    var maxYearsToCheck = 100;
+
+    while ((accumulatedSavings < targetSum) && (amountOfYearsSavingNeededForRetirement < maxYearsToCheck)) {
+      accumulatedSavings = addAnnualSavingAndCompoundInterest(accumulatedSavings, incomeAmountSaved, returnRate);
+      amountOfYearsSavingNeededForRetirement += 1;
+    }
+
+    return amountOfYearsSavingNeededForRetirement;
+  }
+
+  function deductTaxPercentageFromIncome(income, taxPercent) {
+    return (Math.round(normalize(income) * (1 - (normalize(taxPercent) / 100))));
+  }
+
+  function calculateTargetSum(expenditures, expenditureIsAnnual) {
+    return (normalize(expenditures) * 25 * (expenditureIsAnnual ? 1 : 12));
+  }
+
+  function deductPercentage(value, percentageToDeduct) {
+    return (value * (normalize(percentageToDeduct) / 100));
+  }
+
+  function calculateExpectedReturnRate(interestRate) {
+    return (1 + (normalize(interestRate) / 100));
+  }
+
+  var format = formatter();
+  var formatPercentage = formatter({ suffix: '%' });
+  function fmt(number) {
+    return format(normalize(number));
+  }
+
+  function fmtP(percentage) {
+    return formatPercentage(normalize(percentage));
+  }
+
+  var inputs = document.querySelectorAll('input');
+
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input', function (e) {
+        var amountSavedSoFar = window.amountSavedSoFar;
+        var income = window.income;
+        var taxPercent = window.taxPercent;
+        var percentOfIncomeSaved = window.percentOfIncomeSaved;
+        var expenditures = window.expenditures;
+        var expenditureIsAnnual = window.expenditureIsAnnual;
+        var interestRate = window.interestRate;
+
+        var incomeAfterTax = deductTaxPercentageFromIncome(income, taxPercent);
+        var targetSum = calculateTargetSum(expenditures, expenditureIsAnnual);
+        var amountOfIncomeSaved = deductPercentage(incomeAfterTax, percentOfIncomeSaved);
+        var expectedReturnRate = calculateExpectedReturnRate(interestRate);
+        var amountOfYearsSavingNeededForRetirement = savingYearsNeededForRetirement(normalize(amountSavedSoFar), targetSum, amountOfIncomeSaved, expectedReturnRate);
+
+        if (typeof window.fi !== 'object') {
+          window.fi = {};
+        }
+
+        window.fi.income = fmt(income);
+        window.fi.taxPercent = fmtP(taxPercent);
+        window.fi.incomeAfterTax = fmt(incomeAfterTax);
+        window.fi.percentOfIncomeSaved = fmtP(percentOfIncomeSaved);
+        window.fi.amountOfIncomeSaved = fmt(amountOfIncomeSaved);
+        window.fi.amountSavedSoFar = fmt(amountSavedSoFar);
+        window.fi.interestRate = fmtP(interestRate);
+        window.fi.expenditures = fmt(expenditures);
+        window.fi.targetSum = fmt(targetSum);
+        window.fi.expectedReturnRate = expectedReturnRate;
+        window.fi.amountOfYearsSavingNeededForRetirement = amountOfYearsSavingNeededForRetirement;
+
+        var keys = Object.keys(window.fi);
+
+
+
+          console.log("NAMES;", Object.getOwnPropertyNames(window.fi));
+        for (var j = 0; j < keys.length; j++) {
+          //document.querySelector(keys[i])
+
+        }
+
+        console.log(e.target.id);
+    });
+  }
+</script>
+</body>
+</html>
