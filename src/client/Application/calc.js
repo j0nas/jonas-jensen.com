@@ -54,9 +54,15 @@ function changeFieldValue(key) {
 }
 
 function inputListener(event) {
-  window.fi[event.target.id] = event.target.type === 'checkbox'
-      ? event.target.checked
-      : normalize(event.target.value);
+  if (event.target.type === 'checkbox') {
+    window.fi[event.target.id] = event.target.checked;
+    var expenditureTimeSpan = document.getElementById('expenditureTimeSpan');
+    if (expenditureTimeSpan) {
+      expenditureTimeSpan.textContent = event.target.checked ? 'year' : 'month';
+    }
+  } else {
+    window.fi[event.target.id] = normalize(event.target.value);
+  }
 
   window.fi.incomeAfterTax = deductTaxPercentageFromIncome(window.fi.income, window.fi.taxPercent);
   window.fi.targetSum = calculateTargetSum(window.fi.expenditures, window.fi.expenditureIsAnnual);
@@ -78,3 +84,4 @@ function addInputListeners(input) {
 }
 
 inputs.forEach(addInputListeners);
+document.getElementById('expenditureIsAnnual').addEventListener('click', inputListener);
