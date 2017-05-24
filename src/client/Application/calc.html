@@ -51,7 +51,8 @@
             }
         }
     </style>
-    <script src="formatNumber.js"></script>
+    <script async src="formatNumber.js"></script>
+    <script async src="calc.js"></script>
 </head>
 <body>
 <div class="input-container">
@@ -113,102 +114,5 @@
         <input id="amountOfYearsSavingNeededForRetirement" disabled="disabled" class="input"/>
     </div>
 </div>
-
-<script>
-  function normalize(value = '') {
-    return Number(String(value).replace(/[,%]/g, ''));
-  }
-
-  function addAnnualSavingAndCompoundInterest(initialAmount, amountToAdd, interestRate) {
-    return (initialAmount + amountToAdd) * interestRate;
-  }
-
-  function savingYearsNeededForRetirement(savedSoFar, targetSum, incomeAmountSaved, returnRate) {
-    var accumulatedSavings = savedSoFar;
-    var amountOfYearsSavingNeededForRetirement = 0;
-    var maxYearsToCheck = 100;
-
-    while ((accumulatedSavings < targetSum) && (amountOfYearsSavingNeededForRetirement < maxYearsToCheck)) {
-      accumulatedSavings = addAnnualSavingAndCompoundInterest(accumulatedSavings, incomeAmountSaved, returnRate);
-      amountOfYearsSavingNeededForRetirement += 1;
-    }
-
-    return amountOfYearsSavingNeededForRetirement;
-  }
-
-  function deductTaxPercentageFromIncome(income, taxPercent) {
-    return (Math.round(normalize(income) * (1 - (normalize(taxPercent) / 100))));
-  }
-
-  function calculateTargetSum(expenditures, expenditureIsAnnual) {
-    return (normalize(expenditures) * 25 * (expenditureIsAnnual ? 1 : 12));
-  }
-
-  function deductPercentage(value, percentageToDeduct) {
-    return (value * (normalize(percentageToDeduct) / 100));
-  }
-
-  function calculateExpectedReturnRate(interestRate) {
-    return (1 + (normalize(interestRate) / 100));
-  }
-
-  var format = formatter();
-  var formatPercentage = formatter({ suffix: '%' });
-  function fmt(number) {
-    return format(normalize(number));
-  }
-
-  function fmtP(percentage) {
-    return formatPercentage(normalize(percentage));
-  }
-
-  var inputs = document.querySelectorAll('input');
-
-  for (var i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener('input', function (e) {
-        var amountSavedSoFar = window.amountSavedSoFar;
-        var income = window.income;
-        var taxPercent = window.taxPercent;
-        var percentOfIncomeSaved = window.percentOfIncomeSaved;
-        var expenditures = window.expenditures;
-        var expenditureIsAnnual = window.expenditureIsAnnual;
-        var interestRate = window.interestRate;
-
-        var incomeAfterTax = deductTaxPercentageFromIncome(income, taxPercent);
-        var targetSum = calculateTargetSum(expenditures, expenditureIsAnnual);
-        var amountOfIncomeSaved = deductPercentage(incomeAfterTax, percentOfIncomeSaved);
-        var expectedReturnRate = calculateExpectedReturnRate(interestRate);
-        var amountOfYearsSavingNeededForRetirement = savingYearsNeededForRetirement(normalize(amountSavedSoFar), targetSum, amountOfIncomeSaved, expectedReturnRate);
-
-        if (typeof window.fi !== 'object') {
-          window.fi = {};
-        }
-
-        window.fi.income = fmt(income);
-        window.fi.taxPercent = fmtP(taxPercent);
-        window.fi.incomeAfterTax = fmt(incomeAfterTax);
-        window.fi.percentOfIncomeSaved = fmtP(percentOfIncomeSaved);
-        window.fi.amountOfIncomeSaved = fmt(amountOfIncomeSaved);
-        window.fi.amountSavedSoFar = fmt(amountSavedSoFar);
-        window.fi.interestRate = fmtP(interestRate);
-        window.fi.expenditures = fmt(expenditures);
-        window.fi.targetSum = fmt(targetSum);
-        window.fi.expectedReturnRate = expectedReturnRate;
-        window.fi.amountOfYearsSavingNeededForRetirement = amountOfYearsSavingNeededForRetirement;
-
-        var keys = Object.keys(window.fi);
-
-
-
-          console.log("NAMES;", Object.getOwnPropertyNames(window.fi));
-        for (var j = 0; j < keys.length; j++) {
-          //document.querySelector(keys[i])
-
-        }
-
-        console.log(e.target.id);
-    });
-  }
-</script>
 </body>
 </html>
