@@ -39,31 +39,24 @@ function calculateExpectedReturnRate(interestRate) {
   return (1 + (normalize(interestRate) / 100));
 }
 
+window.fi = {};
+var inputs = document.querySelectorAll('input');
 var format = formatter();
 var formatPercentage = formatter({ suffix: '%' });
-function fmt(number) {
-  return format(normalize(number));
-}
-
-function fmtP(percentage) {
-  return formatPercentage(normalize(percentage));
-}
-
 var percentageFields = ['taxPercent', 'percentOfIncomeSaved', 'interestRate'];
+
 function changeFieldValue(key) {
   var input = document.getElementById(key);
   if (input) {
-    var formatFunction = percentageFields.indexOf(key) === -1 ? fmt : fmtP;
+    var formatFunction = percentageFields.indexOf(key) === -1 ? format : formatPercentage;
     input.value = formatFunction(window.fi[key]);
   }
 }
 
-window.fi = {};
-var inputs = document.querySelectorAll('input');
-
-var inputListener = function (event) {
-  event.target.value = fmt(event.target.value);
-  window.fi[event.target.id] = normalize(event.target.value);
+function inputListener(event) {
+  window.fi[event.target.id] = event.target.type === 'checkbox'
+      ? event.target.checked
+      : normalize(event.target.value);
 
   window.fi.incomeAfterTax = deductTaxPercentageFromIncome(window.fi.income, window.fi.taxPercent);
   window.fi.targetSum = calculateTargetSum(window.fi.expenditures, window.fi.expenditureIsAnnual);
@@ -78,7 +71,7 @@ var inputListener = function (event) {
     );
 
   Object.keys(window.fi).forEach(changeFieldValue);
-};
+}
 
 function addInputListeners(input) {
   input.addEventListener('input', inputListener);
