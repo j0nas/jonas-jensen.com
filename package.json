@@ -5,9 +5,10 @@
   "description": "Source code for jonas.jensen.com",
   "main": "index.js",
   "scripts": {
-    "build": "uglifyjs ",
-    "publish": "npm run build && firebase deploy",
-    "buildstats": "webpack --profile --config src/client/prod.webpack.config.js --json > stats.json"
+    "build:js": "uglifyjs ./js/** --compress --mangle --output build/bundle.js",
+    "build:html": "html-minifier index.html --collapse-whitespace --minify-css > build/index.html",
+    "build": "rimraf build && npm run build:js && npm run build:html",
+    "publish": "npm run build && firebase deploy"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,8 @@
   },
   "homepage": "http://jonas-jensen.com",
   "devDependencies": {
+    "html-minifier": "^3.5.1",
+    "rimraf": "^2.6.1",
     "uglify-js": "^3.0.11"
   }
 }
