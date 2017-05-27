@@ -79,11 +79,7 @@ function addInputListeners(input) {
   input.addEventListener('input', inputListener);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  if (inputs) {
-    for (var inputIndex = 0; inputIndex < inputs.length - 1; inputIndex++)
-      addInputListeners(inputs[inputIndex]);
-  }
+for (var inputIndex = 0; inputIndex < inputs.length - 1; inputIndex++)
+  addInputListeners(inputs[inputIndex]);
 
-  document.getElementById('expenditureIsAnnual').addEventListener('click', inputListener);
-});
+document.getElementById('expenditureIsAnnual').addEventListener('click', inputListener);
