@@ -1,6 +1,8 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: './js/index.js',
@@ -22,21 +24,33 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader?minimize",
+        }),
       },
-    ]
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+            minimize: true,
+          },
+        },
+      },
+    ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
     new HtmlWebpackPlugin({
-      template: '!!html-loader!./index.html',
-      minify: {
-        collapseBooleanAttributes: true,
-        collapseWhitespace: true,
-        minifyCSS: true,
-      },
+      template: './index.html',
     }),
     new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'async'
-    })
+      defaultAttribute: 'async',
+    }),
+    new ExtractTextPlugin("styles.css"),
+    new webpack.optimize.UglifyJsPlugin(),
   ],
 };
