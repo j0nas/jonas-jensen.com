@@ -1,3 +1,5 @@
+import formatter from "format-number";
+
 function normalize(value) {
   return !value ? 0 : Number(String(value).replace(/[,%]/g, ''));
 }
