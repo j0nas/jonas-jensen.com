@@ -3,11 +3,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './js/index.js',
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'public'),
     publicPath: '/',
     filename: 'bundle.js',
   },
@@ -51,6 +52,9 @@ module.exports = {
       defaultAttribute: 'async',
     }),
     new ExtractTextPlugin("styles.css"),
+    new CopyWebpackPlugin([{
+      from: './assets',
+    }]),
     new webpack.optimize.UglifyJsPlugin(),
   ],
 };

@@ -5,7 +5,7 @@
   "description": "Source code for jonas.jensen.com",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf build && webpack",
+    "build": "rimraf public && webpack",
     "publish": "npm run build && firebase deploy"
   },
   "repository": {
@@ -19,6 +19,7 @@
   },
   "homepage": "http://jonas-jensen.com",
   "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
