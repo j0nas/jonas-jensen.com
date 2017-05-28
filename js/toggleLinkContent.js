@@ -1,4 +1,4 @@
-function goToMainPage() {
+window.goToMainPage = function() {
   var mainPage = document.getElementById('mainPage');
   var calcPage = document.getElementById('calcPage');
   var mainLink = document.getElementById('mainLink');
@@ -13,7 +13,7 @@ function goToMainPage() {
   }
 }
 
-function goToCalc() {
+window.goToCalc = function() {
   var mainPage = document.getElementById('mainPage');
   var calcPage = document.getElementById('calcPage');
   var mainLink = document.getElementById('mainLink');
