@@ -29,7 +29,23 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
-          use: "css-loader?minimize",
+          use: [
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 1,
+                minimize: true,
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [
+                  require('autoprefixer')(),
+                ],
+              },
+            },
+          ],
         }),
       },
       {
@@ -51,7 +67,7 @@ module.exports = {
     new ExtractTextPlugin("styles.css"),
     new HtmlWebpackPlugin({
       template: './index.html',
-      inlineSource: '.css$'
+      inlineSource: '.css$',
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new ScriptExtHtmlWebpackPlugin({
