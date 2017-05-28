@@ -3,7 +3,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './js/index.js',
@@ -42,16 +44,19 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(['public']),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
+    new ExtractTextPlugin("styles.css"),
     new HtmlWebpackPlugin({
       template: './index.html',
+      inlineSource: '.css$'
     }),
+    new HtmlWebpackInlineSourcePlugin(),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'async',
     }),
-    new ExtractTextPlugin("styles.css"),
     new CopyWebpackPlugin([{
       from: './assets',
     }]),
