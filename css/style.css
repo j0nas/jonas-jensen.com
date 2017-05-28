@@ -1,5 +1,8 @@
 body {
-    background: url("../img/bg.jpg") no-repeat center center fixed;
+    background:
+            url("../img/bg.jpg") no-repeat center center fixed,
+            linear-gradient(to right, #5d5a5c 0%, #646265 50%, #585658 75%, #4b4a4d 100%);
+            /* http://www.louisbourque.ca/Color-Extractor/ */
     background-size: cover;
     color: #212121;
     font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;
