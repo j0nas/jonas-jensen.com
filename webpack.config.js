@@ -6,11 +6,14 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
+
+const distDirectory = path.join(__dirname, 'public');
 
 module.exports = {
   entry: './js/index.js',
   output: {
-    path: path.join(__dirname, 'public'),
+    path: distDirectory,
     publicPath: '/',
     filename: 'bundle.js',
   },
@@ -61,21 +64,15 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['public']),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}),
     new ExtractTextPlugin("styles.css"),
-    new HtmlWebpackPlugin({
-      template: './index.html',
-      inlineSource: '.css$',
-    }),
+    new HtmlWebpackPlugin({template: './index.html', inlineSource: '.css$'}),
     new HtmlWebpackInlineSourcePlugin(),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'async',
-    }),
-    new CopyWebpackPlugin([{
-      from: './assets',
-    }]),
+    new ScriptExtHtmlWebpackPlugin({defaultAttribute: 'async'}),
+    new CopyWebpackPlugin([{from: './assets'}]),
     new webpack.optimize.UglifyJsPlugin(),
+    new OfflinePlugin({
+      AppCache: false,
+    }),
   ],
 };
