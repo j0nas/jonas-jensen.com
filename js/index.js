@@ -1,5 +1,6 @@
-import calc from "./calc";
-import toggleLinkContent from "./toggleLinkContent";
+import "./calc";
+import "./toggleLinkContent";
+import "./ico";
 import OfflinePluginRuntime from 'offline-plugin/runtime';
 
 OfflinePluginRuntime.install();

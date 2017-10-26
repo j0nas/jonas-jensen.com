@@ -162,8 +162,14 @@
             color: white;
         }
 
-        #calcPage, #mainLink {
+        #calcPage,
+        #icoPage,
+        #mainLink {
             display: none;
+        }
+
+        #icoPage {
+            padding: 20px;
         }
     </style>
     <title>Jonas Jensen</title>
@@ -173,6 +179,7 @@
     <nav class="links">
         <a role="button" id="mainLink" class="link" onclick="goToMainPage();">Home</a>
         <a role="button" id="calcLink" class="link" onclick="goToCalc();">Financial independence calculator</a>
+        <a role="button" id="icoLink" class="link" onclick="goToIco();">Favicon tester</a>
     </nav>
     <div class="inner">
         <div id="mainPage">
@@ -269,6 +276,10 @@
                 <label for="amountOfYearsSavingNeededForRetirement" class="input-label">Years to FI</label>
                 <input id="amountOfYearsSavingNeededForRetirement" disabled="disabled" class="input"/>
             </div>
+        </div>
+        <div id="icoPage">
+            <input id="ico-input-url" type="text" placeholder="http://www.stackoverflow.com/favicon.ico">
+            <button onclick="changeIcon(document.getElementById('ico-input-url').value)">Change</button>
         </div>
     </div>
 </div>
