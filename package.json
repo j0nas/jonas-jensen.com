@@ -5,7 +5,8 @@
   "description": "Source code for jonas.jensen.com",
   "main": "index.js",
   "scripts": {
-    "publish": "npm run build && firebase deploy"
+    "publish": "npm run build && firebase deploy",
+    "minify": "html-minifier public//index.html"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/j0nas/jonas-jensen.com.git/issues"
   },
-  "homepage": "http://jonas-jensen.com"
+  "homepage": "http://jonas-jensen.com",
+  "devDependencies": {
+    "html-minifier": "^3.5.20"
+  }
 }
