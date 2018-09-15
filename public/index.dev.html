@@ -118,10 +118,11 @@
         .submenu {
             border-left: 2px ridge white;
         }
-        .submenu .submenu-item {
+        .submenu-item {
             padding: 4px 20px 4px 24px;
             min-width: 100px;
             text-align: start;
+            font-size: 12px;
         }
         .submenu-item:hover {
             background: #000275;
@@ -169,9 +170,20 @@
             flex-direction: column;
             justify-content: center;
         }
+        .startmenu-button:focus + .startmenu-wrapper {
+            display: block;
+        }
+
         .startmenu-wrapper {
             border-top: 1px solid rgb(192, 192, 192);
             height: 31px;
+            display: none;
+        }
+        .startmenu-button {
+            z-index: 1;
+        }
+        .startmenu-button.startmenu-wrapper {
+            border: 1px solid red;
         }
         .startmenu > .button-wrapper, .button-wrapper > .button {
             height: 90%;
@@ -203,21 +215,43 @@
             bottom: 25px;
             left: 3px;
             width: 164px;
-            height: 200px;
-            z-index: 1;
+        }
+        .startmenu-item {
+            padding-left: 5px;
+            padding-right: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .startmenu-item img {
+            width: 30px;
+            height: 30px;
+            padding-right: 5px;
+        }
+        .startmenu-triangle {
+            display: flex;
+            flex: auto;
+            justify-content: flex-end;
+            width: auto;
         }
 
+        .startmenu-items-container {
+            position: relative;
+            height: 100%;
+            padding-left: 25px;
+        }
         .startmenu-menu-windowsLabel {
             background: #757575;
             padding: 3px;
-            height: 100%;
             width: 25px;
+            height: 269px;
+            position: absolute;
             box-sizing: border-box;
+
         }
         #startmenu-menu-windowsLabelContainer {
-            transform: rotate(-90deg) !important;
+            transform: rotate(-90deg);
             position: relative;
-            top: 170px;
+            top: 90%;
             font-size: 20px;
         }
         #menu-WindowsNameLabel {
@@ -236,7 +270,7 @@
     <div class="window" id="window-main">
         <div class="title">
             <div class="title-left">
-                <img class="icon" src="img/win/WordPad.ico" role="presentation">
+                <img class="icon" src="img/win/wordpad.ico" role="presentation">
                 Document - WordPad
             </div>
             <div class="title-buttons">
@@ -296,14 +330,6 @@ Twitter: https://twitter.com/jonas__jensen
 LinkedIn: https://www.linkedin.com/in/j0nas
 Mail: jonas.jensen@msn.com</textarea>
 </div>
-<div class="startmenu-wrapper">
-<div class="startmenu-menu window">
-    <div class="startmenu-menu-windowsLabel">
-        <div id="startmenu-menu-windowsLabelContainer">
-            <span id="menu-WindowsNameLabel">Windows</span><span id="menu-WindowsNumberLabel">95</span>
-        </div>
-    </div>
-</div>
 <div class="startmenu">
     <span class="button-wrapper">
         <button class="button startmenu-button">
@@ -311,7 +337,51 @@ Mail: jonas.jensen@msn.com</textarea>
                 <img class="startmenu-icon" src="favicon.ico">
                 <span>Start</span>
             </span>
-        </button>
+</button>
+        <div class="startmenu-wrapper">
+            <div class="startmenu-menu window">
+                <div class="startmenu-menu-windowsLabel">
+                    <div id="startmenu-menu-windowsLabelContainer">
+                        <span id="menu-WindowsNameLabel">Windows</span><span id="menu-WindowsNumberLabel">95</span>
+                    </div>
+                </div>
+                <div class="startmenu-items-container">
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/programs.ico">
+                        <span class="underline">P</span>rograms
+                        <span class="startmenu-triangle">&blacktriangleright;</span>
+                    </div>
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/documents.ico">
+                        <span class="underline">D</span>ocuments
+                        <span class="startmenu-triangle">&blacktriangleright;</span>
+                    </div>
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/shutdown.ico">
+                        <span class="underline">S</span>ettings
+                        <span class="startmenu-triangle">&blacktriangleright;</span>
+                    </div>
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/find.ico">
+                        <span class="underline">F</span>ind
+                        <span class="startmenu-triangle">&blacktriangleright;</span>
+                    </div>
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/help.ico">
+                        <span class="underline">H</span>elp
+                    </div>
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/run.ico">
+                        <span class="underline">R</span>un...
+                    </div>
+                    <hr class="separator">
+                    <div class="submenu-item startmenu-item">
+                        <img src="img/win/shutdown.ico">
+                        Sh<span class="underline">u</span>t Down...
+                    </div>
+                </div>
+            </div>
+        </div>
     </span>
 </div>
 </div>
