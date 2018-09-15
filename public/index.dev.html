@@ -136,6 +136,7 @@
             color: gray;
             border: 1px inset;
         }
+
         .disabled {
             color: #757575;
         }
@@ -185,7 +186,7 @@
             width: 17px;
             height: 17px;
         }
-        .button-content {
+        .startmenu > .button-wrapper > .startmenu-button .button-content {
             display: flex;
             align-items: center;
             font-weight: bold;
@@ -197,6 +198,38 @@
         }
 
 
+        .startmenu-menu {
+            position: absolute;
+            bottom: 25px;
+            left: 3px;
+            width: 164px;
+            height: 200px;
+            z-index: 1;
+        }
+
+        .startmenu-menu-windowsLabel {
+            background: #757575;
+            padding: 3px;
+            height: 100%;
+            width: 25px;
+            box-sizing: border-box;
+        }
+        #startmenu-menu-windowsLabelContainer {
+            transform: rotate(-90deg) !important;
+            position: relative;
+            top: 170px;
+            font-size: 20px;
+        }
+        #menu-WindowsNameLabel {
+            font-family: Arial, serif;
+            font-weight: bolder;
+            color: #b8b8b8;
+        }
+        #menu-WindowsNumberLabel {
+            font-family: Helvetica Neue, serif;
+            font-weight: lighter;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -264,6 +297,13 @@ LinkedIn: https://www.linkedin.com/in/j0nas
 Mail: jonas.jensen@msn.com</textarea>
 </div>
 <div class="startmenu-wrapper">
+<div class="startmenu-menu window">
+    <div class="startmenu-menu-windowsLabel">
+        <div id="startmenu-menu-windowsLabelContainer">
+            <span id="menu-WindowsNameLabel">Windows</span><span id="menu-WindowsNumberLabel">95</span>
+        </div>
+    </div>
+</div>
 <div class="startmenu">
     <span class="button-wrapper">
         <button class="button startmenu-button">
