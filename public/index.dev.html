@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Microsoft Windows 95</title>
     <style>
         html {
@@ -18,25 +19,48 @@
             width: 500px;
             height: 300px;
         }
-        .window {
+        .window, .button {
             padding: 2px;
             background: rgb(192, 192, 192);
             border: 2px solid lightgray;
             border-right-color: #333;
             border-bottom-color: #333;
+            outline: none;
         }
+        .button:active {
+            border: inset;
+
+        }
+        .title > .title-buttons > .button {
+            height: 15px;
+            width: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 3px;
+            font-size: 12px;
+            border-width: 1px;
+        }
+        .title-buttons {
+            justify-self: end;
+            display: flex;
+            flex-direction: row;
+            padding-right: 2px;
+        }
+
         .window .title {
             height: 19px;
             padding-left: 3px;
 
-            background: rgb(0, 9, 123);
+            background: rgb(0, 2, 117);
 
             display: flex;
             align-items: center;
+            justify-content: space-between;
 
             font-size: 12px;
-            -webkit-font-smoothing: none;
-            font-smoothing: none;
             color: white;
         }
         .title .icon {
@@ -51,6 +75,7 @@
             font-size: 12px;
             text-decoration: none;
             user-select: none;
+            padding-left: 4px;
         }
         .menu .menu-item {
             padding: 3px;
@@ -64,7 +89,7 @@
         }
         .menu .menu-item:focus {
             color: white;
-            background: rgb(0, 20, 183);
+            background: rgb(0, 2, 117);
         }
         .menu .menu-item:focus + .submenu {
             display: block;
@@ -96,14 +121,25 @@
             box-sizing: border-box;
             resize: none;
             padding: 3px;
+            border: 1px solid black;
+            border-right-color: rgb(184, 184, 184);
+            border-bottom-color: rgb(184, 184, 184);
         }
     </style>
 </head>
 <body>
     <div class="window" id="window-main">
         <div class="title">
-            <img class="icon" src="img/notepad-icon.png" role="presentation">
-            Document - WordPad
+            <div class="title-left">
+                <img class="icon" src="img/win/WordPad.ico" role="presentation">
+                Document - WordPad
+            </div>
+            <div class="title-buttons">
+                <button class="button">_</button>
+                <button class="button">□</button>
+                &nbsp;
+                <button class="button">×</button>
+            </div>
         </div>
         <div class="menu">
             <button class="menu-item">File</button>
