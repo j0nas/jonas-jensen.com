@@ -22,14 +22,15 @@
         .window, .button {
             padding: 2px;
             background: rgb(192, 192, 192);
-            border: 2px solid lightgray;
-            border-right-color: #333;
-            border-bottom-color: #333;
+            border: 1px solid white;
+            border-right: 2px ridge #666;
+            border-bottom: 2px ridge #666;
             outline: none;
         }
         .button:active {
-            border: inset;
-
+            border: 2px solid black;
+            border-right: 1px white;
+            border-bottom: 1px white;
         }
         .title > .title-buttons > .button {
             height: 15px;
@@ -39,9 +40,19 @@
             justify-content: center;
             flex-direction: column;
             text-align: center;
-            padding: 3px;
             font-size: 12px;
-            border-width: 1px;
+        }
+        #button-close {
+            font-size: 16px;
+            padding-bottom: 5px;
+            margin-left: 2px;
+        }
+        #button-maximize {
+            font-weight: bold;
+        }
+        #button-minimize {
+            font-weight: bold;
+            padding-bottom: 5px;
         }
         .title-buttons {
             justify-self: end;
@@ -88,12 +99,12 @@
             border: none;
             outline: none;
         }
-        .menu .menu-item:first-letter, .submenu .submenu-item:first-letter {
+        .menu .menu-item:first-letter {
             text-decoration: underline;
         }
         .menu .menu-item:focus {
             color: white;
-            background: rgb(0, 2, 117);
+            background: #000275;
         }
         .menu .menu-item:focus + .submenu {
             display: block;
@@ -104,18 +115,32 @@
             padding: 0;
             top: 50px;
         }
+        .submenu {
+            border-left: 2px ridge white;
+        }
         .submenu .submenu-item {
-            padding: 4px 0 4px 24px;
+            padding: 4px 20px 4px 24px;
             min-width: 100px;
             text-align: start;
         }
+        .submenu-item:hover {
+            background: #000275;
+            color: white;
+        }
+        .submenu-item.disabled {
+            color: #757575;
+        }
+
         .separator {
             margin: 0;
             color: gray;
             border: 1px inset;
         }
-        .bold {
-            font-weight: bold;
+        .disabled {
+            color: #757575;
+        }
+        .underline {
+            text-decoration: underline;
         }
 
         .textarea {
@@ -129,6 +154,49 @@
             border-right-color: rgb(184, 184, 184);
             border-bottom-color: rgb(184, 184, 184);
         }
+
+        .startmenu, .startmenu-wrapper {
+            height: 30px;
+            width: 100%;
+            background: rgb(192, 192, 192);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid white;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .startmenu-wrapper {
+            border-top: 1px solid rgb(192, 192, 192);
+            height: 31px;
+        }
+        .startmenu > .button-wrapper, .button-wrapper > .button {
+            height: 90%;
+        }
+        .startmenu > .button-wrapper {
+            display: flex;
+            align-items: center;
+            margin-left: 3px;
+        }
+
+        .startmenu-icon {
+            width: 17px;
+            height: 17px;
+        }
+        .button-content {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+        .button-content img {
+            padding-right: 3px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -139,23 +207,48 @@
                 Document - WordPad
             </div>
             <div class="title-buttons">
-                <button class="button">_</button>
-                <button class="button">□</button>
-                &nbsp;
-                <button class="button">×</button>
+                <button class="button" id="button-minimize">_</button>
+                <button class="button" id="button-maximize">□</button>
+                <button class="button" id="button-close">×</button>
             </div>
         </div>
         <div class="menu">
             <button class="menu-item">File</button>
             <div class="submenu window">
-                <div class="submenu-item bold">Open</div>
-                <div class="submenu-item">Print</div>
-                <div class="submenu-item">Quick View</div>
+                <div class="submenu-item"><span class="underline">N</span>ew...</div>
+                <div class="submenu-item"><span class="underline">O</span>pen</div>
+                <div class="submenu-item"><span class="underline">S</span>ave</div>
+                <div class="submenu-item">Save <span class="underline">A</span>s</div>
                 <hr class="separator">
-                <div class="submenu-item">Close</div>
+                <div class="submenu-item"><span class="underline">P</span>rint</div>
+                <div class="submenu-item"><span class="underline">P</span>rint Preview</div>
+                <div class="submenu-item">Page <span class="underline">S</span>etup</div>
+                <hr class="separator">
+                <div class="submenu-item disabled">Recent File</div>
+                <hr class="separator">
+                <div class="submenu-item">E<span class="underline">x</span>it</div>
             </div>
 
             <button class="menu-item">Edit</button>
+            <div class="submenu window">
+                <div class="submenu-item disabled"><span class="underline">U</span>ndo</div>
+                <hr class="separator">
+                <div class="submenu-item disabled">Cu<span class="underline">t</span></div>
+                <div class="submenu-item disabled"><span class="underline">C</span>opy</div>
+                <div class="submenu-item disabled"><span class="underline">P</span>aste</div>
+                <div class="submenu-item disabled">Paste <span class="underline">S</span>ecial</div>
+                <div class="submenu-item disabled">Cle<span class="underline">a</span>r</div>
+                <div class="submenu-item disabled">Select A<span class="underline">l</span>l</div>
+                <hr class="separator">
+                <div class="submenu-item disabled"><span class="underline">F</span>ind...</div>
+                <div class="submenu-item disabled">Find <span class="underline">N</span>ext</div>
+                <div class="submenu-item disabled">R<span class="underline">e</span>place...</div>
+                <hr class="separator">
+                <div class="submenu-item disabled">Lin<span class="underline">k</span>s...</div>
+                <div class="submenu-item disabled">Object P<span class="underline">r</span>operties</div>
+                <div class="submenu-item disabled"><span class="underline">O</span>bject</div>
+            </div>
+
             <button class="menu-item">View</button>
             <button class="menu-item">Insert</button>
             <button class="menu-item">Help</button>
@@ -169,6 +262,18 @@ Github: https://github.com/j0nas
 Twitter: https://twitter.com/jonas__jensen
 LinkedIn: https://www.linkedin.com/in/j0nas
 Mail: jonas.jensen@msn.com</textarea>
-    </div>
+</div>
+<div class="startmenu-wrapper">
+<div class="startmenu">
+    <span class="button-wrapper">
+        <button class="button startmenu-button">
+            <span class="button-content">
+                <img class="startmenu-icon" src="favicon.ico">
+                <span>Start</span>
+            </span>
+        </button>
+    </span>
+</div>
+</div>
 </body>
 </html>
