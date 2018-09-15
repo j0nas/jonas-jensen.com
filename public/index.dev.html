@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Microsoft Windows 95</title>
+    <style>
+        html {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: "Microsoft Sans Serif", serif;
+            background: url("img/ms-bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #window-main {
+            width: 500px;
+            height: 300px;
+        }
+        .window {
+            padding: 2px;
+            background: rgb(192, 192, 192);
+            border: 2px solid lightgray;
+            border-right-color: #333;
+            border-bottom-color: #333;
+        }
+        .window .title {
+            height: 19px;
+            padding-left: 3px;
+
+            background: rgb(0, 9, 123);
+
+            display: flex;
+            align-items: center;
+
+            font-size: 12px;
+            -webkit-font-smoothing: none;
+            font-smoothing: none;
+            color: white;
+        }
+        .title .icon {
+            height: 17px;
+            width: 17px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: row;
+            color: black;
+            font-size: 12px;
+            text-decoration: none;
+            user-select: none;
+        }
+        .menu .menu-item {
+            padding: 3px;
+            font-size: 12px;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+        .menu .menu-item:first-letter, .submenu .submenu-item:first-letter {
+            text-decoration: underline;
+        }
+        .menu .menu-item:focus {
+            color: white;
+            background: rgb(0, 20, 183);
+        }
+        .menu .menu-item:focus + .submenu {
+            display: block;
+        }
+        .menu-item + .submenu {
+            position: absolute;
+            display: none;
+            padding: 0;
+            top: 50px;
+        }
+        .submenu .submenu-item {
+            padding: 4px 0 4px 24px;
+            min-width: 100px;
+            text-align: start;
+        }
+        .separator {
+            margin: 0;
+            color: gray;
+            border: 1px inset;
+        }
+        .bold {
+            font-weight: bold;
+        }
+
+        .textarea {
+            display: block;
+            width: 100%;
+            height: calc(100% - 42px);
+            box-sizing: border-box;
+            resize: none;
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="window" id="window-main">
+        <div class="title">
+            <img class="icon" src="img/notepad-icon.png" role="presentation">
+            Document - WordPad
+        </div>
+        <div class="menu">
+            <button class="menu-item">File</button>
+            <div class="submenu window">
+                <div class="submenu-item bold">Open</div>
+                <div class="submenu-item">Print</div>
+                <div class="submenu-item">Quick View</div>
+                <hr class="separator">
+                <div class="submenu-item">Close</div>
+            </div>
+
+            <button class="menu-item">Edit</button>
+            <button class="menu-item">View</button>
+            <button class="menu-item">Insert</button>
+            <button class="menu-item">Help</button>
+        </div>
+        <hr class="separator">
+        <textarea class="textarea">Jonas Jensen
+Fullstack JavaScript developer
+Senior Software Engineer at Greenbird Integration Technology
+
+Github: https://github.com/j0nas
+Twitter: https://twitter.com/jonas__jensen
+LinkedIn: https://www.linkedin.com/in/j0nas
+Mail: jonas.jensen@msn.com</textarea>
+    </div>
+</body>
+</html>

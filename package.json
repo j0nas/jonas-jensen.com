@@ -5,8 +5,10 @@
   "description": "Source code for jonas.jensen.com",
   "main": "index.js",
   "scripts": {
+    "build": "node build.js",
     "publish": "npm run build && firebase deploy",
-    "minify": "html-minifier public//index.html"
+    "minify": "html-minifier --minify-css true public/index.html",
+    "precommit": "pretty-quick --staged"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,9 @@
   },
   "homepage": "http://jonas-jensen.com",
   "devDependencies": {
-    "html-minifier": "^3.5.20"
+    "html-minifier": "^3.5.20",
+    "husky": "^0.14.3",
+    "prettier": "^1.14.2",
+    "pretty-quick": "^1.6.0"
   }
 }
