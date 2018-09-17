@@ -243,12 +243,12 @@
   font-size: 20px;
 }
 #menu-WindowsNameLabel {
-  font-family: Arial, serif;
+  font-family: Arial, sans-serif;
   font-weight: bolder;
   color: #b8b8b8;
 }
 #menu-WindowsNumberLabel {
-  font-family: Helvetica Neue, serif;
+  font-family: Helvetica Neue, sans-serif;
   font-weight: lighter;
   color: white;
 }
