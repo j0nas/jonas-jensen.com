@@ -1,0 +1,94 @@
+.window {
+  font-family: "Microsoft Sans Serif", sans-serif;
+
+  min-height: 39px;
+  padding: 2px;
+
+  border: 1px solid white;
+  border-right: 2px ridge #666;
+  border-bottom: 2px ridge #666;
+  background: rgb(192, 192, 192);
+
+  outline: none;
+  user-select: none;
+}
+
+.window-title {
+  height: 19px;
+  padding: 0 2px 0 3px;
+  font-size: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: white;
+  background: rgb(0, 2, 117);
+}
+
+.window-title-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.window-title-button:last-child {
+  margin-left: 2px;
+}
+
+.window-title-button {
+  padding: 2px;
+  height: 15px;
+  width: 15px;
+  font-size: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  outline: none;
+
+  border: 1px solid white;
+  border-right: 2px ridge #666;
+  border-bottom: 2px ridge #666;
+  background: rgb(192, 192, 192);
+}
+
+.window-title-button:active {
+  border: 2px solid black;
+  border-right: 1px white;
+  border-bottom: 1px white;
+}
+
+.window-menu {
+  font-size: 12px;
+  padding-left: 4px;
+
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  user-select: none;
+
+  color: black;
+}
+
+.window-menu-item {
+  font-family: "Microsoft Sans Serif", sans-serif;
+
+  padding: 3px;
+  font-size: 12px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+}
+
+.window-menu-item:first-letter {
+  text-decoration: underline;
+}
+
+.window-menu-item:focus {
+  color: white;
+  background: #000275;
+}

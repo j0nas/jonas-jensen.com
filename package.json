@@ -9,7 +9,9 @@
     "publish": "npm run build && firebase deploy",
     "minify": "html-minifier --minify-css true public/index.html",
     "precommit": "pretty-quick --staged",
-    "dev": "live-server public"
+    "dev": "live-server public",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,12 @@
     "husky": "^0.14.3",
     "live-server": "^1.2.0",
     "prettier": "^1.14.2",
-    "pretty-quick": "^1.6.0"
-  }
+    "pretty-quick": "^1.6.0",
+    "@storybook/html": "^4.0.0-alpha.11",
+    "@babel/core": "^7.1.0",
+    "babel-loader": "^8.0.2",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0"
+  },
+  "dependencies": {}
 }
