@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hacker News</title>
+    <style>
+        html {
+            box-sizing: border-box;
+            font-size: 16px;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            display: block;
+            line-height: 2.5;
+            color: lightgray;
+        }
+
+        a:visited {
+            color: gray;
+        }
+
+        body {
+            padding: 1em;
+            background: #111;
+        }
+    </style>
+    <script>
+      function createLink(result) {
+        const link = document.createElement('a');
+        link.href = result.url;
+        link.innerText = result.title;
+        link.target = '_blank';
+        container.append(link);
+      }
+
+      const container = document.createElement('div');
+      fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
+        .then(res => res.json())
+        .then(res => res.slice(0, 50))
+        .then(posts => Promise.all(posts.map(post =>
+          fetch(`https://hacker-news.firebaseio.com/v0/item/${post}.json`).then(res => res.json()).then(createLink))))
+        .then(() => document.getElementById('main').append(container));
+    </script>
+</head>
+<body id="main">
+<noscript>Javascript is required for this page.</noscript>
+</body>
+</html>

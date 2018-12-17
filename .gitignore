@@ -31,3 +31,4 @@ fabric.properties
 /stats.json
 .DS_Store
 /public/
+.firebase
