@@ -1,392 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Microsoft Windows 95</title>
     <style>
-        html {
-            height: 100%;
-            margin: 0;
-        }
-        body {
-            font-family: "Microsoft Sans Serif", serif;
-            background: url("img/ms-bg.jpg") no-repeat center center fixed;
-            background-size: cover;
-        }
+      html {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        font-family: "Microsoft Sans Serif", serif;
+        background: url("img/ms-bg.jpg") no-repeat center center fixed;
+        background-size: cover;
+      }
 
-        #window-main {
-            width: 500px;
-            height: 300px;
-        }
-        .window {
-            max-width: 100%;
-        }
-        .window, .button {
-            padding: 2px;
-            background: rgb(192, 192, 192);
-            border: 1px solid white;
-            border-right: 2px ridge #666;
-            border-bottom: 2px ridge #666;
-            outline: none;
-        }
-        .button:active {
-            border: 2px solid black;
-            border-right: 1px white;
-            border-bottom: 1px white;
-        }
-        .title > .title-buttons > .button {
-            height: 15px;
-            width: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            font-size: 12px;
-        }
-        #button-close {
-            font-size: 16px;
-            padding-bottom: 5px;
-            margin-left: 2px;
-        }
-        #button-maximize {
-            font-weight: bold;
-        }
-        #button-minimize {
-            font-weight: bold;
-            padding-bottom: 5px;
-        }
-        .title-buttons {
-            justify-self: end;
-            display: flex;
-            flex-direction: row;
-            padding-right: 2px;
-        }
+      #window-main {
+        width: 500px;
+        height: 300px;
+      }
+      .window {
+        max-width: 100%;
+      }
+      .window,
+      .button {
+        padding: 2px;
+        background: rgb(192, 192, 192);
+        border: 1px solid white;
+        border-right: 2px ridge #666;
+        border-bottom: 2px ridge #666;
+        outline: none;
+      }
+      .button:active {
+        border: 2px solid black;
+        border-right: 1px white;
+        border-bottom: 1px white;
+      }
+      .title > .title-buttons > .button {
+        height: 15px;
+        width: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        font-size: 12px;
+      }
+      #button-close {
+        font-size: 16px;
+        padding-bottom: 5px;
+        margin-left: 2px;
+      }
+      #button-maximize {
+        font-weight: bold;
+      }
+      #button-minimize {
+        font-weight: bold;
+        padding-bottom: 5px;
+      }
+      .title-buttons {
+        justify-self: end;
+        display: flex;
+        flex-direction: row;
+        padding-right: 2px;
+      }
 
-        .window .title {
-            height: 19px;
-            padding-left: 3px;
+      .window .title {
+        height: 19px;
+        padding-left: 3px;
 
-            background: rgb(0, 2, 117);
+        background: rgb(0, 2, 117);
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-            font-size: 12px;
-            color: white;
-        }
-        .title-left {
-            display: flex;
-            align-items: center;
-        }
-        .title .icon {
-            height: 17px;
-            width: 17px;
-        }
+        font-size: 12px;
+        color: white;
+      }
+      .title-left {
+        display: flex;
+        align-items: center;
+      }
+      .title .icon {
+        height: 17px;
+        width: 17px;
+      }
 
-        .menu {
-            display: flex;
-            flex-direction: row;
-            color: black;
-            font-size: 12px;
-            text-decoration: none;
-            user-select: none;
-            padding-left: 4px;
-        }
-        .menu .menu-item {
-            padding: 3px;
-            font-size: 12px;
-            background: transparent;
-            border: none;
-            outline: none;
-        }
-        .menu .menu-item:first-letter {
-            text-decoration: underline;
-        }
-        .menu .menu-item:focus {
-            color: white;
-            background: #000275;
-        }
-        .menu .menu-item:focus + .submenu {
-            display: block;
-        }
-        .menu-item + .submenu {
-            position: absolute;
-            display: none;
-            padding: 0;
-            top: 50px;
-        }
-        .submenu {
-            border-left: 2px ridge white;
-        }
-        .submenu-item {
-            padding: 4px 20px 4px 24px;
-            min-width: 100px;
-            text-align: start;
-            font-size: 12px;
-        }
-        .submenu-item:hover {
-            background: #000275;
-            color: white;
-        }
-        .submenu-item.disabled {
-            color: #757575;
-        }
+      .menu {
+        display: flex;
+        flex-direction: row;
+        color: black;
+        font-size: 12px;
+        text-decoration: none;
+        user-select: none;
+        padding-left: 4px;
+      }
+      .menu .menu-item {
+        padding: 3px;
+        font-size: 12px;
+        background: transparent;
+        border: none;
+        outline: none;
+      }
+      .menu .menu-item:first-letter {
+        text-decoration: underline;
+      }
+      .menu .menu-item:focus {
+        color: white;
+        background: #000275;
+      }
+      .menu .menu-item:focus + .submenu {
+        display: block;
+      }
+      .menu-item + .submenu {
+        position: absolute;
+        display: none;
+        padding: 0;
+        top: 50px;
+      }
+      .submenu {
+        border-left: 2px ridge white;
+      }
+      .submenu-item {
+        padding: 4px 20px 4px 24px;
+        min-width: 100px;
+        text-align: start;
+        font-size: 12px;
+      }
+      .submenu-item:hover {
+        background: #000275;
+        color: white;
+      }
+      .submenu-item.disabled {
+        color: #757575;
+      }
 
-        .separator {
-            margin: 0;
-            color: gray;
-            border: 1px inset;
-        }
+      .separator {
+        margin: 0;
+        color: gray;
+        border: 1px inset;
+      }
 
-        .disabled {
-            color: #757575;
-        }
-        .underline {
-            text-decoration: underline;
-        }
+      .disabled {
+        color: #757575;
+      }
+      .underline {
+        text-decoration: underline;
+      }
 
-        .textarea {
-            display: block;
-            width: 100%;
-            height: calc(100% - 42px);
-            box-sizing: border-box;
-            resize: none;
-            padding: 3px;
-            border: 1px solid black;
-            border-right-color: rgb(184, 184, 184);
-            border-bottom-color: rgb(184, 184, 184);
-        }
+      .textarea {
+        display: block;
+        width: 100%;
+        height: calc(100% - 42px);
+        box-sizing: border-box;
+        resize: none;
+        padding: 3px;
+        border: 1px solid black;
+        border-right-color: rgb(184, 184, 184);
+        border-bottom-color: rgb(184, 184, 184);
+      }
 
-        .startmenu, .startmenu-wrapper {
-            height: 30px;
-            width: 100%;
-            background: rgb(192, 192, 192);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-top: 1px solid white;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .startmenu-button:focus + .startmenu-wrapper {
-            display: block;
-        }
+      .startmenu,
+      .startmenu-wrapper {
+        height: 30px;
+        width: 100%;
+        background: rgb(192, 192, 192);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-top: 1px solid white;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .startmenu-button:focus + .startmenu-wrapper {
+        display: block;
+      }
 
-        .startmenu-wrapper {
-            border-top: 1px solid rgb(192, 192, 192);
-            height: 31px;
-            display: none;
-        }
-        .startmenu-button {
-            z-index: 1;
-        }
-        .startmenu-button.startmenu-wrapper {
-            border: 1px solid red;
-        }
-        .startmenu > .button-wrapper, .button-wrapper > .button {
-            height: 90%;
-        }
-        .startmenu > .button-wrapper {
-            display: flex;
-            align-items: center;
-            margin-left: 3px;
-        }
+      .startmenu-wrapper {
+        border-top: 1px solid rgb(192, 192, 192);
+        height: 31px;
+        display: none;
+      }
+      .startmenu-button {
+        z-index: 1;
+      }
+      .startmenu-button.startmenu-wrapper {
+        border: 1px solid red;
+      }
+      .startmenu > .button-wrapper,
+      .button-wrapper > .button {
+        height: 90%;
+      }
+      .startmenu > .button-wrapper {
+        display: flex;
+        align-items: center;
+        margin-left: 3px;
+      }
 
-        .startmenu-icon {
-            width: 17px;
-            height: 17px;
-        }
-        .startmenu > .button-wrapper > .startmenu-button .button-content {
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            padding-right: 3px;
-            padding-left: 3px;
-        }
-        .button-content img {
-            padding-right: 3px;
-        }
+      .startmenu-icon {
+        width: 17px;
+        height: 17px;
+      }
+      .startmenu > .button-wrapper > .startmenu-button .button-content {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        padding-right: 3px;
+        padding-left: 3px;
+      }
+      .button-content img {
+        padding-right: 3px;
+      }
 
+      .startmenu-menu {
+        position: absolute;
+        bottom: 25px;
+        left: 3px;
+        width: 164px;
+      }
+      .startmenu-item {
+        padding-left: 5px;
+        padding-right: 5px;
+        display: flex;
+        align-items: center;
+      }
+      .startmenu-item img {
+        width: 30px;
+        height: 30px;
+        padding-right: 5px;
+      }
+      .startmenu-triangle {
+        display: flex;
+        flex: auto;
+        justify-content: flex-end;
+        width: auto;
+      }
 
-        .startmenu-menu {
-            position: absolute;
-            bottom: 25px;
-            left: 3px;
-            width: 164px;
-        }
-        .startmenu-item {
-            padding-left: 5px;
-            padding-right: 5px;
-            display: flex;
-            align-items: center;
-        }
-        .startmenu-item img {
-            width: 30px;
-            height: 30px;
-            padding-right: 5px;
-        }
-        .startmenu-triangle {
-            display: flex;
-            flex: auto;
-            justify-content: flex-end;
-            width: auto;
-        }
-
-        .startmenu-items-container {
-            position: relative;
-            height: 100%;
-            padding-left: 25px;
-        }
-        .startmenu-menu-windowsLabel {
-            background: #757575;
-            padding: 3px;
-            width: 25px;
-            height: 269px;
-            position: absolute;
-            box-sizing: border-box;
-
-        }
-        #startmenu-menu-windowsLabelContainer {
-            transform: rotate(-90deg);
-            position: relative;
-            top: 90%;
-            font-size: 20px;
-        }
-        #menu-WindowsNameLabel {
-            font-family: Arial, serif;
-            font-weight: bolder;
-            color: #b8b8b8;
-        }
-        #menu-WindowsNumberLabel {
-            font-family: Helvetica Neue, serif;
-            font-weight: lighter;
-            color: white;
-        }
+      .startmenu-items-container {
+        position: relative;
+        height: 100%;
+        padding-left: 25px;
+      }
+      .startmenu-menu-windowsLabel {
+        background: #757575;
+        padding: 3px;
+        width: 25px;
+        height: 269px;
+        position: absolute;
+        box-sizing: border-box;
+      }
+      #startmenu-menu-windowsLabelContainer {
+        transform: rotate(-90deg);
+        position: relative;
+        top: 90%;
+        font-size: 20px;
+      }
+      #menu-WindowsNameLabel {
+        font-family: Arial, serif;
+        font-weight: bolder;
+        color: #b8b8b8;
+      }
+      #menu-WindowsNumberLabel {
+        font-family: Helvetica Neue, serif;
+        font-weight: lighter;
+        color: white;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="window" id="window-main">
-        <div class="title">
-            <div class="title-left">
-                <img class="icon" src="img/win/wordpad.ico" role="presentation">
-                Document - WordPad
-            </div>
-            <div class="title-buttons">
-                <button class="button" id="button-minimize">_</button>
-                <button class="button" id="button-maximize">□</button>
-                <button class="button" id="button-close">×</button>
-            </div>
+      <div class="title">
+        <div class="title-left">
+          <img class="icon" src="img/win/wordpad.ico" role="presentation" />
+          Document - WordPad
         </div>
-        <div class="menu">
-            <button class="menu-item">File</button>
-            <div class="submenu window">
-                <div class="submenu-item"><span class="underline">N</span>ew...</div>
-                <div class="submenu-item"><span class="underline">O</span>pen</div>
-                <div class="submenu-item"><span class="underline">S</span>ave</div>
-                <div class="submenu-item">Save <span class="underline">A</span>s</div>
-                <hr class="separator">
-                <div class="submenu-item"><span class="underline">P</span>rint</div>
-                <div class="submenu-item"><span class="underline">P</span>rint Preview</div>
-                <div class="submenu-item">Page <span class="underline">S</span>etup</div>
-                <hr class="separator">
-                <div class="submenu-item disabled">Recent File</div>
-                <hr class="separator">
-                <div class="submenu-item">E<span class="underline">x</span>it</div>
-            </div>
-
-            <button class="menu-item">Edit</button>
-            <div class="submenu window">
-                <div class="submenu-item disabled"><span class="underline">U</span>ndo</div>
-                <hr class="separator">
-                <div class="submenu-item disabled">Cu<span class="underline">t</span></div>
-                <div class="submenu-item disabled"><span class="underline">C</span>opy</div>
-                <div class="submenu-item disabled"><span class="underline">P</span>aste</div>
-                <div class="submenu-item disabled">Paste <span class="underline">S</span>ecial</div>
-                <div class="submenu-item disabled">Cle<span class="underline">a</span>r</div>
-                <div class="submenu-item disabled">Select A<span class="underline">l</span>l</div>
-                <hr class="separator">
-                <div class="submenu-item disabled"><span class="underline">F</span>ind...</div>
-                <div class="submenu-item disabled">Find <span class="underline">N</span>ext</div>
-                <div class="submenu-item disabled">R<span class="underline">e</span>place...</div>
-                <hr class="separator">
-                <div class="submenu-item disabled">Lin<span class="underline">k</span>s...</div>
-                <div class="submenu-item disabled">Object P<span class="underline">r</span>operties</div>
-                <div class="submenu-item disabled"><span class="underline">O</span>bject</div>
-            </div>
-
-            <button class="menu-item">View</button>
-            <button class="menu-item">Insert</button>
-            <button class="menu-item">Help</button>
+        <div class="title-buttons">
+          <button class="button" id="button-minimize">_</button>
+          <button class="button" id="button-maximize">□</button>
+          <button class="button" id="button-close">×</button>
         </div>
-        <hr class="separator">
-        <textarea class="textarea">Jonas Jensen
-Fullstack JavaScript developer
-Senior Software Engineer at Greenbird Integration Technology
+      </div>
+      <div class="menu">
+        <button class="menu-item">File</button>
+        <div class="submenu window">
+          <div class="submenu-item"><span class="underline">N</span>ew...</div>
+          <div class="submenu-item"><span class="underline">O</span>pen</div>
+          <div class="submenu-item"><span class="underline">S</span>ave</div>
+          <div class="submenu-item">Save <span class="underline">A</span>s</div>
+          <hr class="separator" />
+          <div class="submenu-item"><span class="underline">P</span>rint</div>
+          <div class="submenu-item">
+            <span class="underline">P</span>rint Preview
+          </div>
+          <div class="submenu-item">
+            Page <span class="underline">S</span>etup
+          </div>
+          <hr class="separator" />
+          <div class="submenu-item disabled">Recent File</div>
+          <hr class="separator" />
+          <div class="submenu-item">E<span class="underline">x</span>it</div>
+        </div>
+
+        <button class="menu-item">Edit</button>
+        <div class="submenu window">
+          <div class="submenu-item disabled">
+            <span class="underline">U</span>ndo
+          </div>
+          <hr class="separator" />
+          <div class="submenu-item disabled">
+            Cu<span class="underline">t</span>
+          </div>
+          <div class="submenu-item disabled">
+            <span class="underline">C</span>opy
+          </div>
+          <div class="submenu-item disabled">
+            <span class="underline">P</span>aste
+          </div>
+          <div class="submenu-item disabled">
+            Paste <span class="underline">S</span>ecial
+          </div>
+          <div class="submenu-item disabled">
+            Cle<span class="underline">a</span>r
+          </div>
+          <div class="submenu-item disabled">
+            Select A<span class="underline">l</span>l
+          </div>
+          <hr class="separator" />
+          <div class="submenu-item disabled">
+            <span class="underline">F</span>ind...
+          </div>
+          <div class="submenu-item disabled">
+            Find <span class="underline">N</span>ext
+          </div>
+          <div class="submenu-item disabled">
+            R<span class="underline">e</span>place...
+          </div>
+          <hr class="separator" />
+          <div class="submenu-item disabled">
+            Lin<span class="underline">k</span>s...
+          </div>
+          <div class="submenu-item disabled">
+            Object P<span class="underline">r</span>operties
+          </div>
+          <div class="submenu-item disabled">
+            <span class="underline">O</span>bject
+          </div>
+        </div>
+
+        <button class="menu-item">View</button>
+        <button class="menu-item">Insert</button>
+        <button class="menu-item">Help</button>
+      </div>
+      <hr class="separator" />
+      <textarea class="textarea">
+Jonas Jensen
+Fullstack JavaScript/Ruby on Rails developer
+Working at Minus AS
 
 Github: https://github.com/j0nas
 Twitter: https://twitter.com/jonas__jensen
 LinkedIn: https://www.linkedin.com/in/j0nas
-Mail: jonas.jensen@msn.com</textarea>
-</div>
-<div class="startmenu">
-    <span class="button-wrapper">
+Mail: jonas.jensen@msn.com</textarea
+      >
+    </div>
+    <div class="startmenu">
+      <span class="button-wrapper">
         <button class="button startmenu-button">
-            <span class="button-content">
-                <img class="startmenu-icon" src="favicon.ico">
-                <span>Start</span>
-            </span>
-</button>
+          <span class="button-content">
+            <img class="startmenu-icon" src="favicon.ico" />
+            <span>Start</span>
+          </span>
+        </button>
         <div class="startmenu-wrapper">
-            <div class="startmenu-menu window">
-                <div class="startmenu-menu-windowsLabel">
-                    <div id="startmenu-menu-windowsLabelContainer">
-                        <span id="menu-WindowsNameLabel">Windows</span><span id="menu-WindowsNumberLabel">95</span>
-                    </div>
-                </div>
-                <div class="startmenu-items-container">
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/programs.ico">
-                        <span class="underline">P</span>rograms
-                        <span class="startmenu-triangle">&blacktriangleright;</span>
-                    </div>
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/documents.ico">
-                        <span class="underline">D</span>ocuments
-                        <span class="startmenu-triangle">&blacktriangleright;</span>
-                    </div>
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/shutdown.ico">
-                        <span class="underline">S</span>ettings
-                        <span class="startmenu-triangle">&blacktriangleright;</span>
-                    </div>
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/find.ico">
-                        <span class="underline">F</span>ind
-                        <span class="startmenu-triangle">&blacktriangleright;</span>
-                    </div>
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/help.ico">
-                        <span class="underline">H</span>elp
-                    </div>
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/run.ico">
-                        <span class="underline">R</span>un...
-                    </div>
-                    <hr class="separator">
-                    <div class="submenu-item startmenu-item">
-                        <img src="img/win/shutdown.ico">
-                        Sh<span class="underline">u</span>t Down...
-                    </div>
-                </div>
+          <div class="startmenu-menu window">
+            <div class="startmenu-menu-windowsLabel">
+              <div id="startmenu-menu-windowsLabelContainer">
+                <span id="menu-WindowsNameLabel">Windows</span
+                ><span id="menu-WindowsNumberLabel">95</span>
+              </div>
             </div>
+            <div class="startmenu-items-container">
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/programs.ico" />
+                <span class="underline">P</span>rograms
+                <span class="startmenu-triangle">&blacktriangleright;</span>
+              </div>
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/documents.ico" />
+                <span class="underline">D</span>ocuments
+                <span class="startmenu-triangle">&blacktriangleright;</span>
+              </div>
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/shutdown.ico" />
+                <span class="underline">S</span>ettings
+                <span class="startmenu-triangle">&blacktriangleright;</span>
+              </div>
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/find.ico" />
+                <span class="underline">F</span>ind
+                <span class="startmenu-triangle">&blacktriangleright;</span>
+              </div>
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/help.ico" />
+                <span class="underline">H</span>elp
+              </div>
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/run.ico" />
+                <span class="underline">R</span>un...
+              </div>
+              <hr class="separator" />
+              <div class="submenu-item startmenu-item">
+                <img src="img/win/shutdown.ico" />
+                Sh<span class="underline">u</span>t Down...
+              </div>
+            </div>
+          </div>
         </div>
-    </span>
-</div>
-</div>
-</body>
+      </span>
+    </div>
+  </body>
 </html>
