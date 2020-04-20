@@ -355,7 +355,7 @@
         <button class="menu-item">Help</button>
       </div>
       <hr class="separator" />
-      <textarea class="textarea">
+      <textarea id="textarea__main" class="textarea">
 Jonas Jensen
 Fullstack JavaScript/Ruby on Rails developer
 Working at Minus AS
@@ -363,7 +363,10 @@ Working at Minus AS
 Github: https://github.com/j0nas
 Twitter: https://twitter.com/jonas__jensen
 LinkedIn: https://www.linkedin.com/in/j0nas
-Mail: jonas.jensen@msn.com</textarea
+Mail: jonas.jensen@msn.com
+
+Changes to this textarea are saved to your browser's
+local storage. Feel free to use this as your own notepad!</textarea
       >
     </div>
     <div class="startmenu">
@@ -421,5 +424,21 @@ Mail: jonas.jensen@msn.com</textarea
         </div>
       </span>
     </div>
+    <script>
+      (function() {
+        var textareaMain = "textarea__main";
+        var el = document.getElementById(textareaMain);
+        if (!el) return;
+
+        var storedText = localStorage.getItem(textareaMain);
+        if (storedText) {
+          el.value = storedText;
+        }
+
+        el.onkeyup = function(ev) {
+          localStorage.setItem(textareaMain, ev.target.value);
+        };
+      })();
+    </script>
   </body>
 </html>
