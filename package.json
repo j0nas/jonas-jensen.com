@@ -8,7 +8,7 @@
     "build": "node build.js",
     "publish": "npm run build && firebase deploy",
     "minify": "html-minifier --minify-css true public/index.html",
-    "dev": "live-server public",
+    "dev": "live-server --open=index.dev.html public",
     "install": "curl -sL firebase.tools | bash"
   },
   "repository": {
