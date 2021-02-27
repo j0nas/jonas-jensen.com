@@ -44,21 +44,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
         text-align: center;
         font-size: 12px;
       }
       #button-close {
+        padding-top: 3px;
         font-size: 16px;
-        padding-bottom: 5px;
-        margin-left: 2px;
       }
       #button-maximize {
+        padding-bottom: 5px;
         font-weight: bold;
       }
       #button-minimize {
         font-weight: bold;
-        padding-bottom: 5px;
+      }
+      #button-minimize__inner {
+        margin-bottom: 7px;
       }
       .title-buttons {
         justify-self: end;
@@ -280,7 +281,9 @@
           Document - WordPad
         </div>
         <div class="title-buttons">
-          <button class="button" id="button-minimize">_</button>
+          <button class="button" id="button-minimize">
+            <span id="button-minimize__inner">_</span>
+          </button>
           <button class="button" id="button-maximize">□</button>
           <button class="button" id="button-close">×</button>
         </div>
