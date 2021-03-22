@@ -1,0 +1,36 @@
+Coding:
+1. Small, contained modules
+1. Import rather than rewrite -- don't reinvent the wheel
+1. Duplication is far better than the wrong abstraction
+1. Tests, TDD when patching a bug
+
+Work method:
+1. Iterative
+1. Pragmatic
+   > I find it essential to adjust my approach to the situation I'm in.
+     If budget or time is tight, I will think "disposable MVP" rather than TDD. A prototype requires a different
+     mindset from payment-handling core business logic.
+
+1. Early feedback
+1. I like to be involved in feature specification
+   > I find it easier to achieve 80/20-based victories when I'm involved in creating the roadmap
+
+Ideas:
+1. The concept of cognitive load, and respect for cognitive capacity
+   > Many smaller PRs (+ concept of iteration, get early feedback)
+1. Code is first and foremost written to be read, and only occasionally executed
+1. I will choose the right tools for the job based on all the information available to me and my experience
+   > What's the budget, schedule and scope of the project? Are there tools that, with some effort, will
+     help us do what we want to achieve without us having to re-invent them?
+
+PR workflow:
+1. A feature specification is finalized, e.g. in the form of a Trello card
+1. I move the Trello card to "DOING" and start working on the task
+1. When I have finished the feature, I submit a Pull Request
+1. Reviewers review the code changes and test the functionality added/modified by the PR
+1. Reviewers request changes, if defects in the added/modified code are found
+1. I address all comments in the submitted PR, if any, then re-request reviews
+1. Repeat steps 4-6 until the PR is in a state which satisfies reviewers, at which point the PR is approved
+1. The PR is merged
+1. If there are remaining unsolved aspects of the relevant Trello card, continue working on the card, or grab a new card
+
