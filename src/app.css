@@ -1,0 +1,44 @@
+@import '98.css';
+
+:root {
+  --win95-gray: rgb(192, 192, 192);
+  --win95-title-blue: rgb(0, 2, 117);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-image: url('/img/ms-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: 'Pixelated MS Sans Serif', Arial, sans-serif;
+}
+
+.desktop {
+  height: calc(100vh - 28px);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 16px;
+}
+
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: var(--win95-gray);
+  border-top: 2px solid white;
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 4px;
+}

@@ -1,36 +1,27 @@
 {
-  "name": "jonas-jensen.com",
-  "private": true,
-  "version": "1.0.0",
-  "description": "Source code for jonas.jensen.com",
-  "main": "index.js",
-  "scripts": {
-    "build": "node build.js",
-    "publish": "npm run build && firebase deploy",
-    "minify": "html-minifier --minify-css true public/index.html",
-    "dev": "live-server --open=index.dev.html public",
-    "install": "curl -sL firebase.tools | bash"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/j0nas/jonas-jensen.com.git"
-  },
-  "author": "Jonas Jensen <jonas.jensen@msn.com> (https://jonas-jensen.com)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/j0nas/jonas-jensen.com.git/issues"
-  },
-  "homepage": "http://jonas-jensen.com",
-  "devDependencies": {
-    "html-minifier": "^4.0.0",
-    "husky": "^3.1.0",
-    "live-server": "^1.2.1",
-    "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+	"name": "new-site",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^7.0.0",
+		"@sveltejs/adapter-static": "^3.0.10",
+		"@sveltejs/kit": "^2.49.1",
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"svelte": "^5.45.6",
+		"svelte-check": "^4.3.4",
+		"typescript": "^5.9.3",
+		"vite": "^7.2.6"
+	},
+	"dependencies": {
+		"98.css": "^0.1.21"
+	}
 }

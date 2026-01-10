@@ -1,7 +1,18 @@
-*.iml
+# SvelteKit
+.svelte-kit
+build
 node_modules
-.idea
-.DS_Store
-public/index.html
-.firebase
 
+# IDE
+*.iml
+.idea
+.vscode
+
+# OS
+.DS_Store
+
+# Backup
+.backup
+
+# Local files
+.npmrc
