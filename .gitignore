@@ -19,3 +19,9 @@ node_modules
 
 # Local Netlify folder
 .netlify
+
+# Playwright test screenshots
+.playwright-mcp
+
+# Claude Code local files
+.claude
