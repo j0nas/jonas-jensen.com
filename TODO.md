@@ -2,51 +2,64 @@
 
 ## Critical (MVP - Must Complete)
 
-### Start Menu Foundation
-- [x] Source and download Windows 98 icons for Start menu items (Programs, Documents, Settings, Find, Help, Run, Shut Down) to `static/img/win/`
-- [x] Create StartMenu.svelte component with basic structure: blue sidebar + menu items area
-- [x] Add Start menu open/close state in Taskbar.svelte (click Start to toggle)
-- [x] Style blue sidebar with "Windows 98" rotated text
-- [x] Add all menu items with icons: Programs, Documents, Settings, Find, Help, Run, Shut Down
-- [x] Style menu items with proper Windows 98 appearance (hover = blue bg + white text)
-- [x] **HARD STOP** - Verify Start menu opens/closes and looks authentic
+### Phase 1: Fix Visual Styling (THE MAIN ISSUE)
+- [x] Remove 98.css button styling from DesktopIcon.svelte - reset all button borders, backgrounds, box-shadows to none
+- [x] Verify default state: icon image + white text with black drop shadow, transparent background, NO borders
+- [x] Remove any hover effects from desktop icons (no visual change on hover)
+- [x] **HARD STOP** - Take screenshot, verify icons have NO button borders
 
-### Start Menu Functionality
-- [x] Implement click-outside-to-close behavior for Start menu
-- [x] Add Programs submenu that expands on hover (arrow indicator on right)
-- [x] Add WordPad to Programs submenu with icon
-- [x] Wire WordPad click to open WordPad window AND close Start menu
-- [x] **HARD STOP** - Verify complete Start menu flow: open -> Programs -> WordPad -> window opens
+### Phase 2: Selection State
+- [ ] Create a desktop selection store in `src/lib/stores/desktop.ts` to track selected icon IDs (Set)
+- [ ] Add `selected` prop to DesktopIcon component, wire to store
+- [ ] Add single-click handler to DesktopIcon that selects the icon (and deselects others unless Ctrl held)
+- [ ] Style selected icon text: navy blue (#000080) background with white text
+- [ ] Create 2x2px dithered blue checkerboard CSS pattern for selected icon overlay
+- [ ] Apply dithered overlay to icon image when selected (using ::after pseudo-element)
+- [ ] Add click handler on Desktop.svelte background to deselect all icons
+- [ ] **HARD STOP** - Verify clicking icon shows blue text highlight + dithered icon overlay
 
 ## High Priority
 
-### WordPad Menu Bar Dropdowns
-- [x] Update MenuBar.svelte to support dropdown menus (not just labels)
-- [x] Add menu state: which dropdown is open, hover-to-switch behavior
-- [x] Create dropdown styling matching Windows 98 (white bg, blue hover, divider lines)
-- [x] Add File menu items: New, Open, Save, Save As, [divider], Print, Print Preview, Page Setup, [divider], Exit
-- [x] Add Edit menu items: Undo, [divider], Cut, Copy, Paste, Paste Special, Clear, Select All, [divider], Find, Find Next, Replace
-- [x] Add View menu items: Toolbar, Format Bar, Ruler, Status Bar
-- [x] Add Insert menu items: Date and Time, Object
-- [x] Add Help menu items: Help Topics, About WordPad
-- [x] Implement click-outside-to-close for menu dropdowns
-- [x] **HARD STOP** - Verify all menus open, hover switches between them, looks authentic
+### Phase 3: Keyboard Navigation
+- [ ] Add tabindex to desktop icons for keyboard focus
+- [ ] Style focus state with 1px dotted black border around entire icon (distinct from selection)
+- [ ] Add Enter/Space handler to open app when icon is focused
+- [ ] Add ARIA labels to icons for screen readers
+- [ ] **HARD STOP** - Verify Tab navigates icons, Enter opens app, focus rectangle visible
+
+### Phase 4: Multi-Select
+- [ ] Implement Ctrl+click to toggle icon selection (add/remove from set)
+- [ ] Implement Shift+click to select range of icons (requires tracking order)
+- [ ] Create SelectionRectangle.svelte component for drag-select box
+- [ ] Add mousedown/mousemove/mouseup handlers on Desktop for drag-select
+- [ ] Style drag-select rectangle with animated "marching ants" dashed border
+- [ ] Calculate which icons intersect with selection rectangle
+- [ ] **HARD STOP** - Verify Ctrl+click toggles, drag-select works with animation
 
 ## Medium Priority
 
-### Polish & Mobile
-- [x] Ensure Start menu is touch-friendly on mobile (tap to open/close, tap Programs to expand)
-- [x] Verify WordPad text editing still works (typing, localStorage save/load)
-- [x] Test complete flow in browser: Start -> Programs -> WordPad -> type text -> File menu -> close
-- [x] **HARD STOP** - Full manual testing before completion
+### Phase 5: Drag to Rearrange
+- [ ] Add draggable behavior to DesktopIcon (mousedown starts drag)
+- [ ] Show semi-transparent icon following cursor during drag
+- [ ] Calculate drop position and snap to 75x75 pixel grid
+- [ ] Update icon positions in store after drop
+- [ ] When multiple icons selected, move all selected icons together
+- [ ] Prevent drag from interfering with click-to-select
+- [ ] **HARD STOP** - Verify icons can be dragged and snap to grid
+
+### Phase 6: Additional Icons
+- [ ] Download My Computer icon to `static/img/win/my-computer.png`
+- [ ] Download Recycle Bin icon (empty) to `static/img/win/recycle-bin.png`
+- [ ] Add "my-computer" app config in `src/lib/apps/index.ts` (placeholder window)
+- [ ] Add "recycle-bin" app config (placeholder window)
+- [ ] Add My Computer and Recycle Bin icons to Desktop.svelte
+- [ ] **HARD STOP** - Verify all icons display and open placeholder windows
 
 ## Low Priority / Nice-to-Have
-- [ ] Add subtle 3D beveled borders to Start menu if missing from 98.css
-- [ ] Fine-tune spacing/padding to match Windows 98 pixel-perfectly
+- [ ] Fine-tune dithered pattern to exactly match Win98 ILD_BLEND50 effect
+- [ ] Add subtle icon label text-shadow refinements
+- [ ] Consider arrow key navigation between icons
 
 ---
 ## Completed
-- [x] Start Menu Foundation (all tasks)
-- [x] Start Menu Functionality (all tasks)
-- [x] WordPad Menu Bar Dropdowns (all tasks)
-- [x] Polish & Mobile (all tasks)
+(Tasks move here when done)

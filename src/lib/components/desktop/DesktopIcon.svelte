@@ -17,27 +17,42 @@
 
 <style>
   .desktop-icon {
+    /* Reset all 98.css button styles */
+    all: unset;
+
+    /* Desktop icon layout */
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    background: none;
-    border: none;
     padding: 4px;
     cursor: pointer;
     width: 64px;
+    box-sizing: border-box;
   }
+
+  /* Explicitly ensure no button styling remains */
+  .desktop-icon,
+  .desktop-icon:hover,
+  .desktop-icon:active,
   .desktop-icon:focus {
-    outline: 1px dotted white;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
   }
+
   .desktop-icon img {
     width: 32px;
     height: 32px;
+    pointer-events: none;
   }
+
   .desktop-icon span {
     color: white;
     text-shadow: 1px 1px 1px black;
     font-size: 11px;
     text-align: center;
+    pointer-events: none;
   }
 </style>
