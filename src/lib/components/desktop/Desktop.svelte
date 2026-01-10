@@ -4,13 +4,17 @@
   import Taskbar from './Taskbar.svelte';
   import Window from '$lib/components/window/Window.svelte';
   import WordPad from '$lib/apps/wordpad/WordPad.svelte';
+  import MyComputer from '$lib/apps/my-computer/MyComputer.svelte';
+  import RecycleBin from '$lib/apps/recycle-bin/RecycleBin.svelte';
   import { apps } from '$lib/apps';
   import { desktopSelection, desktopIcons as desktopIconsStore, GRID_SIZE } from '$lib/stores/desktop.svelte';
   import { onMount } from 'svelte';
 
   // Desktop icons configuration
   const iconConfigs = [
-    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 8 }
+    { id: 'my-computer', icon: apps['my-computer'].icon, label: 'My Computer', appId: 'my-computer', defaultX: 8, defaultY: 8 },
+    { id: 'recycle-bin', icon: apps['recycle-bin'].icon, label: 'Recycle Bin', appId: 'recycle-bin', defaultX: 8, defaultY: 83 },
+    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 158 }
   ];
 
   // Initialize icon positions on mount
@@ -134,6 +138,26 @@
   height={apps.wordpad.defaultSize.height}
 >
   <WordPad />
+</Window>
+
+<Window
+  id="my-computer"
+  title={apps['my-computer'].title}
+  icon={apps['my-computer'].icon}
+  width={apps['my-computer'].defaultSize.width}
+  height={apps['my-computer'].defaultSize.height}
+>
+  <MyComputer />
+</Window>
+
+<Window
+  id="recycle-bin"
+  title={apps['recycle-bin'].title}
+  icon={apps['recycle-bin'].icon}
+  width={apps['recycle-bin'].defaultSize.width}
+  height={apps['recycle-bin'].defaultSize.height}
+>
+  <RecycleBin />
 </Window>
 
 <Taskbar />
