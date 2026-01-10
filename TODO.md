@@ -28,13 +28,13 @@
 - [x] **HARD STOP** - Verify Tab navigates icons, Enter opens app, focus rectangle visible
 
 ### Phase 4: Multi-Select
-- [ ] Implement Ctrl+click to toggle icon selection (add/remove from set)
-- [ ] Implement Shift+click to select range of icons (requires tracking order)
-- [ ] Create SelectionRectangle.svelte component for drag-select box
-- [ ] Add mousedown/mousemove/mouseup handlers on Desktop for drag-select
-- [ ] Style drag-select rectangle with animated "marching ants" dashed border
-- [ ] Calculate which icons intersect with selection rectangle
-- [ ] **HARD STOP** - Verify Ctrl+click toggles, drag-select works with animation
+- [x] Implement Ctrl+click to toggle icon selection (add/remove from set)
+- [x] Implement Shift+click to select range of icons (requires tracking order)
+- [x] Create SelectionRectangle.svelte component for drag-select box
+- [x] Add mousedown/mousemove/mouseup handlers on Desktop for drag-select
+- [x] Style drag-select rectangle with animated "marching ants" dashed border
+- [x] Calculate which icons intersect with selection rectangle
+- [x] **HARD STOP** - Verify Ctrl+click toggles, drag-select works with animation
 
 ## Medium Priority
 

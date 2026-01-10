@@ -34,6 +34,7 @@
 <button
   class="desktop-icon"
   class:selected
+  data-icon-id={id}
   onclick={handleClick}
   ondblclick={handleDblClick}
   onkeydown={handleKeyDown}
