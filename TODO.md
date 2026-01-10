@@ -39,13 +39,13 @@
 ## Medium Priority
 
 ### Phase 5: Drag to Rearrange
-- [ ] Add draggable behavior to DesktopIcon (mousedown starts drag)
-- [ ] Show semi-transparent icon following cursor during drag
-- [ ] Calculate drop position and snap to 75x75 pixel grid
-- [ ] Update icon positions in store after drop
-- [ ] When multiple icons selected, move all selected icons together
-- [ ] Prevent drag from interfering with click-to-select
-- [ ] **HARD STOP** - Verify icons can be dragged and snap to grid
+- [x] Add draggable behavior to DesktopIcon (mousedown starts drag)
+- [x] Show semi-transparent icon following cursor during drag
+- [x] Calculate drop position and snap to 75x75 pixel grid
+- [x] Update icon positions in store after drop
+- [x] When multiple icons selected, move all selected icons together
+- [x] Prevent drag from interfering with click-to-select
+- [x] **HARD STOP** - Verify icons can be dragged and snap to grid
 
 ### Phase 6: Additional Icons
 - [ ] Download My Computer icon to `static/img/win/my-computer.png`

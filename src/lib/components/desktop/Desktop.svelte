@@ -5,16 +5,29 @@
   import Window from '$lib/components/window/Window.svelte';
   import WordPad from '$lib/apps/wordpad/WordPad.svelte';
   import { apps } from '$lib/apps';
-  import { desktopSelection } from '$lib/stores/desktop.svelte';
+  import { desktopSelection, desktopIcons as desktopIconsStore, GRID_SIZE } from '$lib/stores/desktop.svelte';
+  import { onMount } from 'svelte';
 
-  // Desktop icons configuration with positions
-  const desktopIcons = [
-    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', x: 8, y: 8 }
+  // Desktop icons configuration
+  const iconConfigs = [
+    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 8 }
   ];
+
+  // Initialize icon positions on mount
+  onMount(() => {
+    iconConfigs.forEach(config => {
+      desktopIconsStore.initPosition(config.id, { x: config.defaultX, y: config.defaultY });
+    });
+  });
+
+  // Get position for icon from store
+  function getIconPosition(id: string) {
+    return desktopIconsStore.positions.get(id) ?? { x: 8, y: 8 };
+  }
 
   // Drag selection state
   let isDragging = $state(false);
-  let wasDragging = $state(false); // Track if a drag just completed
+  let wasDragging = $state(false);
   let dragStart = $state({ x: 0, y: 0 });
   let dragEnd = $state({ x: 0, y: 0 });
 
@@ -31,12 +44,11 @@
     if (event.target === event.currentTarget && !isDragging && !wasDragging) {
       desktopSelection.deselectAll();
     }
-    // Reset the wasDragging flag after click
     wasDragging = false;
   }
 
   function handleMouseDown(event: MouseEvent) {
-    // Only start drag if clicking directly on desktop background
+    // Only start drag-select if clicking directly on desktop background
     if (event.target === event.currentTarget && event.button === 0) {
       isDragging = true;
       dragStart = { x: event.clientX, y: event.clientY };
@@ -47,20 +59,18 @@
   function handleMouseMove(event: MouseEvent) {
     if (isDragging) {
       dragEnd = { x: event.clientX, y: event.clientY };
-      // Calculate which icons are inside the selection rectangle
       updateSelectionFromRect();
     }
   }
 
   function handleMouseUp() {
     if (isDragging) {
-      wasDragging = true; // Mark that we just finished dragging
+      wasDragging = true;
       isDragging = false;
     }
   }
 
   function updateSelectionFromRect() {
-    // Get all desktop icon elements and check intersection
     const iconElements = document.querySelectorAll('.desktop-icon');
     const selectedIds: string[] = [];
 
@@ -97,12 +107,13 @@
   onclick={handleDesktopClick}
   onmousedown={handleMouseDown}
 >
-  {#each desktopIcons as iconConfig (iconConfig.id)}
+  {#each iconConfigs as config (config.id)}
     <DesktopIcon
-      id={iconConfig.id}
-      icon={iconConfig.icon}
-      label={iconConfig.label}
-      appId={iconConfig.appId}
+      id={config.id}
+      icon={config.icon}
+      label={config.label}
+      appId={config.appId}
+      position={getIconPosition(config.id)}
     />
   {/each}
 </div>
@@ -129,12 +140,8 @@
 
 <style>
   .desktop {
+    position: relative;
     height: calc(100vh - 28px);
     padding: 8px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 16px;
   }
 </style>

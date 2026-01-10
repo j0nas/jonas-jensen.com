@@ -1,25 +1,43 @@
 <script lang="ts">
   import { windows } from '$lib/stores/windows';
-  import { desktopSelection } from '$lib/stores/desktop.svelte';
+  import { desktopSelection, desktopIcons, GRID_SIZE, type IconPosition } from '$lib/stores/desktop.svelte';
 
   interface Props {
     icon: string;
     label: string;
     appId: string;
     id: string;
+    position?: IconPosition;
+    onDragStart?: (id: string, startX: number, startY: number) => void;
+    onDrag?: (id: string, deltaX: number, deltaY: number) => void;
+    onDragEnd?: (id: string) => void;
   }
 
-  let { icon, label, appId, id }: Props = $props();
+  let { icon, label, appId, id, position, onDragStart, onDrag, onDragEnd }: Props = $props();
 
-  // Reactive check for selection state - access the Set directly to trigger reactivity
+  // Reactive check for selection state
   let selected = $derived(desktopSelection.selected.has(id));
 
+  // Dragging state
+  let isDragging = $state(false);
+  let dragStartPos = $state({ x: 0, y: 0 });
+  let currentDragOffset = $state({ x: 0, y: 0 });
+
+  // Calculate display position
+  let displayPosition = $derived({
+    x: (position?.x ?? 0) + (isDragging ? currentDragOffset.x : 0),
+    y: (position?.y ?? 0) + (isDragging ? currentDragOffset.y : 0)
+  });
+
   function handleClick(event: MouseEvent) {
+    // Don't select if we just finished dragging
+    if (isDragging) return;
     event.stopPropagation();
     desktopSelection.select(id, event.ctrlKey || event.metaKey);
   }
 
   function handleDblClick() {
+    if (isDragging) return;
     windows.open(appId);
   }
 
@@ -29,15 +47,76 @@
       windows.open(appId);
     }
   }
+
+  function handleMouseDown(event: MouseEvent) {
+    if (event.button !== 0) return;
+
+    // Select this icon if not already selected
+    if (!selected) {
+      desktopSelection.select(id, event.ctrlKey || event.metaKey);
+    }
+
+    // Start drag tracking
+    dragStartPos = { x: event.clientX, y: event.clientY };
+
+    // Add global mouse listeners for drag
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+
+    event.preventDefault(); // Prevent text selection
+  }
+
+  function handleGlobalMouseMove(event: MouseEvent) {
+    const deltaX = event.clientX - dragStartPos.x;
+    const deltaY = event.clientY - dragStartPos.y;
+
+    // Only start visual drag after moving a few pixels (prevents accidental drags)
+    if (!isDragging && (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5)) {
+      isDragging = true;
+      onDragStart?.(id, dragStartPos.x, dragStartPos.y);
+    }
+
+    if (isDragging) {
+      currentDragOffset = { x: deltaX, y: deltaY };
+      onDrag?.(id, deltaX, deltaY);
+    }
+  }
+
+  function handleGlobalMouseUp(event: MouseEvent) {
+    window.removeEventListener('mousemove', handleGlobalMouseMove);
+    window.removeEventListener('mouseup', handleGlobalMouseUp);
+
+    if (isDragging) {
+      const deltaX = event.clientX - dragStartPos.x;
+      const deltaY = event.clientY - dragStartPos.y;
+
+      // Update position in store with grid snapping
+      if (position) {
+        const newPos = desktopIcons.snapToGrid(position.x + deltaX, position.y + deltaY);
+        desktopIcons.setPosition(id, newPos);
+      }
+
+      onDragEnd?.(id);
+
+      // Reset drag state after a short delay to prevent click from firing
+      requestAnimationFrame(() => {
+        isDragging = false;
+        currentDragOffset = { x: 0, y: 0 };
+      });
+    }
+  }
 </script>
 
 <button
   class="desktop-icon"
   class:selected
+  class:dragging={isDragging}
   data-icon-id={id}
+  style="left: {displayPosition.x}px; top: {displayPosition.y}px;"
   onclick={handleClick}
   ondblclick={handleDblClick}
   onkeydown={handleKeyDown}
+  onmousedown={handleMouseDown}
   aria-label="{label} - double-click or press Enter to open"
   aria-pressed={selected}
 >
@@ -55,6 +134,9 @@
     /* Reset all 98.css button styles */
     all: unset;
 
+    /* Positioning */
+    position: absolute;
+
     /* Desktop icon layout */
     display: flex;
     flex-direction: column;
@@ -64,6 +146,13 @@
     cursor: pointer;
     width: 64px;
     box-sizing: border-box;
+  }
+
+  /* Dragging state */
+  .desktop-icon.dragging {
+    opacity: 0.7;
+    cursor: grabbing;
+    z-index: 1000;
   }
 
   /* Explicitly ensure no button styling remains */
