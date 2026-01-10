@@ -35,10 +35,10 @@
 ## Medium Priority
 
 ### Polish & Mobile
-- [ ] Ensure Start menu is touch-friendly on mobile (tap to open/close, tap Programs to expand)
-- [ ] Verify WordPad text editing still works (typing, localStorage save/load)
-- [ ] Test complete flow in browser: Start -> Programs -> WordPad -> type text -> File menu -> close
-- [ ] **HARD STOP** - Full manual testing before completion
+- [x] Ensure Start menu is touch-friendly on mobile (tap to open/close, tap Programs to expand)
+- [x] Verify WordPad text editing still works (typing, localStorage save/load)
+- [x] Test complete flow in browser: Start -> Programs -> WordPad -> type text -> File menu -> close
+- [x] **HARD STOP** - Full manual testing before completion
 
 ## Low Priority / Nice-to-Have
 - [ ] Add subtle 3D beveled borders to Start menu if missing from 98.css
@@ -49,3 +49,4 @@
 - [x] Start Menu Foundation (all tasks)
 - [x] Start Menu Functionality (all tasks)
 - [x] WordPad Menu Bar Dropdowns (all tasks)
+- [x] Polish & Mobile (all tasks)
