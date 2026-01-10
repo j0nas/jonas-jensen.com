@@ -1,14 +1,10 @@
 # PROMPT.md
 
 ## Project
-Deploy jonas-jensen.com static site to Netlify
+Fix Windows 98 UI: Rebuild Start Menu with authentic styling/functionality and add working dropdown menus to WordPad menu bar.
 
 ## Requirements
-Full requirements provided inline:
-- Site is already built (`npm run build` creates `build/` directory)
-- Install Netlify CLI and deploy the site
-- Verify the live URL works
-- Document manual steps for Firebase deletion and DNS changes
+Full requirements in `.claude/clarify-session.md`
 
 ## Each Iteration
 
@@ -16,24 +12,38 @@ Full requirements provided inline:
 2. Pick the highest priority incomplete task (top `- [ ]` item)
 3. Read any files before editing them
 4. Implement the task completely
-5. Run tests/validation relevant to the task
-6. If tests fail, fix before continuing
-7. Mark task complete in `TODO.md` with `[x]`
-8. Commit changes: `git add -A && git commit -m "descriptive message"`
-9. Continue to next task
+5. Run `npm run build` to verify no build errors
+6. If build fails, fix before continuing
+7. Use the Playwright Skill to verify the UI matches Windows 98 exactly
+8. Mark task complete in `TODO.md` with `[x]`
+9. Commit changes: `git add -A && git commit -m "descriptive message"`
+10. Continue to next task
 
 ## Guardrails
 
 - Always read files before editing
-- The build directory is `build/` (SvelteKit static adapter output)
-- Use `npx netlify-cli` to avoid global install if preferred
-- When deploying, use `--prod` flag for production deployment
-- Verify deployment by fetching the live URL
-- Do NOT delete Firebase or change DNS - only document what needs to happen
-- If Netlify CLI requires authentication, guide user through it
+- Never skip failing builds
+- If build fails 3 times on same issue, output: <promise>STUCK</promise>
+- Don't refactor unrelated code
+- Keep changes focused on current task
+- Update TODO.md immediately after completing each task
+- Preserve existing WordPad text editing and localStorage functionality
+- Visual authenticity is priority - match real Windows 98 exactly
+- Use 98.css classes where available, custom CSS only when needed
+- Icons: Download to static/img/win/ directory
+
+## Tech Stack Reference
+
+- Framework: SvelteKit with Svelte 5
+- Styling: 98.css library + custom CSS in app.css
+- Key files:
+  - `src/lib/components/desktop/Taskbar.svelte` - Start button and menu
+  - `src/lib/components/window/MenuBar.svelte` - WordPad menu bar
+  - `src/lib/apps/wordpad/WordPad.svelte` - WordPad app
+  - `src/lib/stores/windows.ts` - Window state management
 
 ## Completion
 
-When all tasks in TODO.md are marked `[x]` and deployment is verified, output:
+When all tasks in TODO.md are marked `[x]` and build passes, output:
 
 <promise>DONE</promise>
