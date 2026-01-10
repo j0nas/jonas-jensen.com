@@ -21,16 +21,16 @@
 ## High Priority
 
 ### WordPad Menu Bar Dropdowns
-- [ ] Update MenuBar.svelte to support dropdown menus (not just labels)
-- [ ] Add menu state: which dropdown is open, hover-to-switch behavior
-- [ ] Create dropdown styling matching Windows 98 (white bg, blue hover, divider lines)
-- [ ] Add File menu items: New, Open, Save, Save As, [divider], Print, Print Preview, Page Setup, [divider], Exit
-- [ ] Add Edit menu items: Undo, [divider], Cut, Copy, Paste, Paste Special, Clear, Select All, [divider], Find, Find Next, Replace
-- [ ] Add View menu items: Toolbar, Format Bar, Ruler, Status Bar
-- [ ] Add Insert menu items: Date and Time, Object
-- [ ] Add Help menu items: Help Topics, About WordPad
-- [ ] Implement click-outside-to-close for menu dropdowns
-- [ ] **HARD STOP** - Verify all menus open, hover switches between them, looks authentic
+- [x] Update MenuBar.svelte to support dropdown menus (not just labels)
+- [x] Add menu state: which dropdown is open, hover-to-switch behavior
+- [x] Create dropdown styling matching Windows 98 (white bg, blue hover, divider lines)
+- [x] Add File menu items: New, Open, Save, Save As, [divider], Print, Print Preview, Page Setup, [divider], Exit
+- [x] Add Edit menu items: Undo, [divider], Cut, Copy, Paste, Paste Special, Clear, Select All, [divider], Find, Find Next, Replace
+- [x] Add View menu items: Toolbar, Format Bar, Ruler, Status Bar
+- [x] Add Insert menu items: Date and Time, Object
+- [x] Add Help menu items: Help Topics, About WordPad
+- [x] Implement click-outside-to-close for menu dropdowns
+- [x] **HARD STOP** - Verify all menus open, hover switches between them, looks authentic
 
 ## Medium Priority
 
@@ -48,3 +48,4 @@
 ## Completed
 - [x] Start Menu Foundation (all tasks)
 - [x] Start Menu Functionality (all tasks)
+- [x] WordPad Menu Bar Dropdowns (all tasks)

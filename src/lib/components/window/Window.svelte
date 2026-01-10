@@ -57,6 +57,6 @@
   }
   .window-body {
     height: calc(100% - 40px);
-    overflow: auto;
+    overflow: visible;
   }
 </style>

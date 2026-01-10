@@ -5,6 +5,65 @@
   const STORAGE_KEY = 'textarea__main';
   let content = '';
 
+  const menus = [
+    {
+      label: 'File',
+      items: [
+        { label: 'New' },
+        { label: 'Open...' },
+        { label: 'Save' },
+        { label: 'Save As...' },
+        { divider: true },
+        { label: 'Print...' },
+        { label: 'Print Preview' },
+        { label: 'Page Setup...' },
+        { divider: true },
+        { label: 'Exit' }
+      ]
+    },
+    {
+      label: 'Edit',
+      items: [
+        { label: 'Undo' },
+        { divider: true },
+        { label: 'Cut' },
+        { label: 'Copy' },
+        { label: 'Paste' },
+        { label: 'Paste Special...' },
+        { label: 'Clear' },
+        { label: 'Select All' },
+        { divider: true },
+        { label: 'Find...' },
+        { label: 'Find Next' },
+        { label: 'Replace...' }
+      ]
+    },
+    {
+      label: 'View',
+      items: [
+        { label: 'Toolbar' },
+        { label: 'Format Bar' },
+        { label: 'Ruler' },
+        { label: 'Status Bar' }
+      ]
+    },
+    {
+      label: 'Insert',
+      items: [
+        { label: 'Date and Time...' },
+        { label: 'Object...' }
+      ]
+    },
+    {
+      label: 'Help',
+      items: [
+        { label: 'Help Topics' },
+        { divider: true },
+        { label: 'About WordPad' }
+      ]
+    }
+  ];
+
   onMount(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) content = stored;
@@ -17,7 +76,7 @@
   }
 </script>
 
-<MenuBar items={['File', 'Edit', 'View', 'Insert', 'Help']} />
+<MenuBar {menus} />
 
 <textarea
   value={content}
