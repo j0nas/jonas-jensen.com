@@ -4,19 +4,19 @@
 
 ### Start Menu Foundation
 - [x] Source and download Windows 98 icons for Start menu items (Programs, Documents, Settings, Find, Help, Run, Shut Down) to `static/img/win/`
-- [ ] Create StartMenu.svelte component with basic structure: blue sidebar + menu items area
-- [ ] Add Start menu open/close state in Taskbar.svelte (click Start to toggle)
-- [ ] Style blue sidebar with "Windows 98" rotated text
-- [ ] Add all menu items with icons: Programs, Documents, Settings, Find, Help, Run, Shut Down
-- [ ] Style menu items with proper Windows 98 appearance (hover = blue bg + white text)
-- [ ] **HARD STOP** - Verify Start menu opens/closes and looks authentic
+- [x] Create StartMenu.svelte component with basic structure: blue sidebar + menu items area
+- [x] Add Start menu open/close state in Taskbar.svelte (click Start to toggle)
+- [x] Style blue sidebar with "Windows 98" rotated text
+- [x] Add all menu items with icons: Programs, Documents, Settings, Find, Help, Run, Shut Down
+- [x] Style menu items with proper Windows 98 appearance (hover = blue bg + white text)
+- [x] **HARD STOP** - Verify Start menu opens/closes and looks authentic
 
 ### Start Menu Functionality
-- [ ] Implement click-outside-to-close behavior for Start menu
-- [ ] Add Programs submenu that expands on hover (arrow indicator on right)
-- [ ] Add WordPad to Programs submenu with icon
-- [ ] Wire WordPad click to open WordPad window AND close Start menu
-- [ ] **HARD STOP** - Verify complete Start menu flow: open -> Programs -> WordPad -> window opens
+- [x] Implement click-outside-to-close behavior for Start menu
+- [x] Add Programs submenu that expands on hover (arrow indicator on right)
+- [x] Add WordPad to Programs submenu with icon
+- [x] Wire WordPad click to open WordPad window AND close Start menu
+- [x] **HARD STOP** - Verify complete Start menu flow: open -> Programs -> WordPad -> window opens
 
 ## High Priority
 
@@ -46,4 +46,5 @@
 
 ---
 ## Completed
-(Tasks move here when done)
+- [x] Start Menu Foundation (all tasks)
+- [x] Start Menu Functionality (all tasks)
