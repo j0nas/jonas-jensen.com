@@ -16,3 +16,6 @@ node_modules
 
 # Local files
 .npmrc
+
+# Local Netlify folder
+.netlify
