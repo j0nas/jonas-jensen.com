@@ -21,11 +21,11 @@
 ## High Priority
 
 ### Phase 3: Keyboard Navigation
-- [ ] Add tabindex to desktop icons for keyboard focus
-- [ ] Style focus state with 1px dotted black border around entire icon (distinct from selection)
-- [ ] Add Enter/Space handler to open app when icon is focused
-- [ ] Add ARIA labels to icons for screen readers
-- [ ] **HARD STOP** - Verify Tab navigates icons, Enter opens app, focus rectangle visible
+- [x] Add tabindex to desktop icons for keyboard focus
+- [x] Style focus state with 1px dotted black border around entire icon (distinct from selection)
+- [x] Add Enter/Space handler to open app when icon is focused
+- [x] Add ARIA labels to icons for screen readers
+- [x] **HARD STOP** - Verify Tab navigates icons, Enter opens app, focus rectangle visible
 
 ### Phase 4: Multi-Select
 - [ ] Implement Ctrl+click to toggle icon selection (add/remove from set)

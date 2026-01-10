@@ -22,6 +22,13 @@
   function handleDblClick() {
     windows.open(appId);
   }
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      windows.open(appId);
+    }
+  }
 </script>
 
 <button
@@ -29,14 +36,17 @@
   class:selected
   onclick={handleClick}
   ondblclick={handleDblClick}
+  onkeydown={handleKeyDown}
+  aria-label="{label} - double-click or press Enter to open"
+  aria-pressed={selected}
 >
   <div class="icon-wrapper">
-    <img src={icon} alt="" />
+    <img src={icon} alt="" aria-hidden="true" />
     {#if selected}
-      <div class="dithered-overlay"></div>
+      <div class="dithered-overlay" aria-hidden="true"></div>
     {/if}
   </div>
-  <span class="label">{label}</span>
+  <span class="label" aria-hidden="true">{label}</span>
 </button>
 
 <style>
@@ -58,12 +68,19 @@
   /* Explicitly ensure no button styling remains */
   .desktop-icon,
   .desktop-icon:hover,
-  .desktop-icon:active,
-  .desktop-icon:focus {
+  .desktop-icon:active {
     background: transparent;
     border: none;
     box-shadow: none;
     outline: none;
+  }
+
+  /* Focus state: 1px dotted black border around entire icon */
+  .desktop-icon:focus {
+    background: transparent;
+    box-shadow: none;
+    outline: 1px dotted black;
+    outline-offset: 0px;
   }
 
   .icon-wrapper {
