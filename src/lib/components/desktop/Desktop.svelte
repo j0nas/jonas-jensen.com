@@ -4,10 +4,20 @@
   import Window from '$lib/components/window/Window.svelte';
   import WordPad from '$lib/apps/wordpad/WordPad.svelte';
   import { apps } from '$lib/apps';
+  import { desktopSelection } from '$lib/stores/desktop.svelte';
+
+  function handleDesktopClick(event: MouseEvent) {
+    // Only deselect if clicking directly on the desktop background
+    if (event.target === event.currentTarget) {
+      desktopSelection.deselectAll();
+    }
+  }
 </script>
 
-<div class="desktop">
+<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+<div class="desktop" on:click={handleDesktopClick}>
   <DesktopIcon
+    id="wordpad-doc"
     icon={apps.wordpad.icon}
     label="Document"
     appId="wordpad"

@@ -9,14 +9,14 @@
 - [x] **HARD STOP** - Take screenshot, verify icons have NO button borders
 
 ### Phase 2: Selection State
-- [ ] Create a desktop selection store in `src/lib/stores/desktop.ts` to track selected icon IDs (Set)
-- [ ] Add `selected` prop to DesktopIcon component, wire to store
-- [ ] Add single-click handler to DesktopIcon that selects the icon (and deselects others unless Ctrl held)
-- [ ] Style selected icon text: navy blue (#000080) background with white text
-- [ ] Create 2x2px dithered blue checkerboard CSS pattern for selected icon overlay
-- [ ] Apply dithered overlay to icon image when selected (using ::after pseudo-element)
-- [ ] Add click handler on Desktop.svelte background to deselect all icons
-- [ ] **HARD STOP** - Verify clicking icon shows blue text highlight + dithered icon overlay
+- [x] Create a desktop selection store in `src/lib/stores/desktop.svelte.ts` to track selected icon IDs (Set)
+- [x] Add `selected` prop to DesktopIcon component, wire to store
+- [x] Add single-click handler to DesktopIcon that selects the icon (and deselects others unless Ctrl held)
+- [x] Style selected icon text: navy blue (#000080) background with white text
+- [x] Create 2x2px dithered blue checkerboard CSS pattern for selected icon overlay
+- [x] Apply dithered overlay to icon image when selected (using ::after pseudo-element)
+- [x] Add click handler on Desktop.svelte background to deselect all icons
+- [x] **HARD STOP** - Verify clicking icon shows blue text highlight + dithered icon overlay
 
 ## High Priority
 
