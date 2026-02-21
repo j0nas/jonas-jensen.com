@@ -1,5 +1,6 @@
 <script lang="ts">
   import { windows } from '$lib/stores/windows';
+  import { apps, type AppId } from '$lib/apps';
   import { desktopSelection, desktopIcons, GRID_SIZE, type IconPosition } from '$lib/stores/desktop.svelte';
 
   interface Props {
@@ -38,13 +39,13 @@
 
   function handleDblClick() {
     if (isDragging) return;
-    windows.open(appId);
+    windows.open(appId, apps[appId as AppId]?.defaultSize);
   }
 
   function handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      windows.open(appId);
+      windows.open(appId, apps[appId as AppId]?.defaultSize);
     }
   }
 
