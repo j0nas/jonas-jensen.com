@@ -6,6 +6,7 @@
   import WordPad from '$lib/apps/wordpad/WordPad.svelte';
   import MyComputer from '$lib/apps/my-computer/MyComputer.svelte';
   import RecycleBin from '$lib/apps/recycle-bin/RecycleBin.svelte';
+  import Notepad from '$lib/apps/notepad/Notepad.svelte';
   import { apps } from '$lib/apps';
   import { desktopSelection, desktopIcons as desktopIconsStore, GRID_SIZE } from '$lib/stores/desktop.svelte';
   import { onMount } from 'svelte';
@@ -14,7 +15,9 @@
   const iconConfigs = [
     { id: 'my-computer', icon: apps['my-computer'].icon, label: 'My Computer', appId: 'my-computer', defaultX: 8, defaultY: 8 },
     { id: 'recycle-bin', icon: apps['recycle-bin'].icon, label: 'Recycle Bin', appId: 'recycle-bin', defaultX: 8, defaultY: 83 },
-    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 158 }
+    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 158 },
+    { id: 'amethyst-shortcuts', icon: apps['amethyst-shortcuts'].icon, label: 'amethyst-shortcuts.txt', appId: 'amethyst-shortcuts', defaultX: 8, defaultY: 233 },
+    { id: 'tmux-shortcuts', icon: apps['tmux-shortcuts'].icon, label: 'tmux-shortcuts.txt', appId: 'tmux-shortcuts', defaultX: 8, defaultY: 308 }
   ];
 
   // Initialize icon positions on mount
@@ -158,6 +161,127 @@
   height={apps['recycle-bin'].defaultSize.height}
 >
   <RecycleBin />
+</Window>
+
+<Window
+  id="amethyst-shortcuts"
+  title={apps['amethyst-shortcuts'].title}
+  icon={apps['amethyst-shortcuts'].icon}
+  width={apps['amethyst-shortcuts'].defaultSize.width}
+  height={apps['amethyst-shortcuts'].defaultSize.height}
+>
+  <Notepad content={`========================================
+  AMETHYST SHORTCUTS
+========================================
+
+mod1 = opt+shift
+mod2 = ctrl+opt+shift
+
+LAYOUTS
+-------
+mod1+space              Cycle layout forward
+mod2+space              Cycle layout backward
+mod1+a                  Tall
+mod1+s                  Wide
+mod1+d                  Fullscreen
+mod1+f                  Column
+
+FOCUS / SWAP
+------------
+mod1+j                  Focus counter clockwise
+mod1+k                  Focus clockwise
+mod2+j                  Swap window counter clockwise
+mod2+k                  Swap window clockwise
+mod1+enter              Swap focused with main
+
+RESIZE
+------
+mod1+h                  Shrink main pane
+mod1+l                  Expand main pane
+mod1+,                  Increase main pane count
+mod1+.                  Decrease main pane count
+
+SCREENS
+-------
+mod1+p                  Focus counter clockwise screen
+mod1+n                  Focus clockwise screen
+mod2+h                  Throw window counter clockwise screen
+mod2+l                  Throw window clockwise screen
+
+SPACES
+------
+mod2+1..0               Throw window to space 1-10
+
+OTHER
+-----
+mod1+z                  Reevaluate windows
+mod1+t                  Toggle float for window
+mod1+i                  Display current layout
+mod2+z                  Relaunch Amethyst`} />
+</Window>
+
+<Window
+  id="tmux-shortcuts"
+  title={apps['tmux-shortcuts'].title}
+  icon={apps['tmux-shortcuts'].icon}
+  width={apps['tmux-shortcuts'].defaultSize.width}
+  height={apps['tmux-shortcuts'].defaultSize.height}
+>
+  <Notepad content={`========================================
+  TMUX QUICK REFERENCE
+========================================
+
+Prefix key: Ctrl+b
+
+SESSIONS
+--------
+tmux new -s <name>      New named session
+tmux ls                 List sessions
+tmux a -t <name>        Attach to session
+tmux kill-ses -t <name> Kill session
+Prefix + d              Detach
+Prefix + s              List sessions
+Prefix + $              Rename session
+Prefix + ( / )          Prev / next session
+
+WINDOWS
+-------
+Prefix + c              New window
+Prefix + n / p          Next / prev window
+Prefix + <number>       Go to window #
+Prefix + l              Toggle last active window
+Prefix + ,              Rename window
+Prefix + &              Close window
+Prefix + w              List windows
+
+PANES
+-----
+Prefix + %              Split vertical
+Prefix + "              Split horizontal
+Prefix + arrow keys     Move between panes
+Prefix + o              Next pane
+Prefix + ;              Toggle last active pane
+Prefix + q              Show pane numbers
+Prefix + z              Toggle pane zoom
+Prefix + x              Close pane
+Prefix + !              Convert pane to window
+Prefix + {  /  }        Swap pane left / right
+Prefix + Space          Cycle pane layouts
+
+COPY MODE
+---------
+Prefix + [              Enter copy mode
+q                       Exit copy mode
+Space                   Start selection
+Enter                   Copy selection
+Prefix + ]              Paste
+
+MISC
+----
+Prefix + :              Command prompt
+Prefix + t              Show clock
+Prefix + ?              List all keybindings
+tmux source ~/.tmux.conf  Reload config`} />
 </Window>
 
 <Taskbar />
