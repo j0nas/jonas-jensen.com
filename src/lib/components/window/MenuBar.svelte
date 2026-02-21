@@ -104,8 +104,7 @@
   }
 
   .menu-button {
-    background: none;
-    border: none;
+    all: unset;
     padding: 2px 8px;
     cursor: pointer;
     font-size: 11px;
@@ -129,13 +128,13 @@
   }
 
   .dropdown-item {
+    all: unset;
     display: block;
     width: 100%;
+    box-sizing: border-box;
     text-align: left;
-    background: none;
-    border: none;
     padding: 4px 20px;
-    cursor: pointer;
+    cursor: default;
     font-size: 11px;
     white-space: nowrap;
   }
