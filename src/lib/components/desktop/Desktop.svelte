@@ -7,6 +7,7 @@
   import MyComputer from '$lib/apps/my-computer/MyComputer.svelte';
   import RecycleBin from '$lib/apps/recycle-bin/RecycleBin.svelte';
   import Notepad from '$lib/apps/notepad/Notepad.svelte';
+  import Personal from '$lib/apps/personal/Personal.svelte';
   import { apps } from '$lib/apps';
   import { desktopSelection, desktopIcons as desktopIconsStore, GRID_SIZE } from '$lib/stores/desktop.svelte';
   import { onMount } from 'svelte';
@@ -17,7 +18,8 @@
     { id: 'recycle-bin', icon: apps['recycle-bin'].icon, label: 'Recycle Bin', appId: 'recycle-bin', defaultX: 8, defaultY: 83 },
     { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 158 },
     { id: 'amethyst-shortcuts', icon: apps['amethyst-shortcuts'].icon, label: 'amethyst-shortcuts.txt', appId: 'amethyst-shortcuts', defaultX: 8, defaultY: 233 },
-    { id: 'tmux-shortcuts', icon: apps['tmux-shortcuts'].icon, label: 'tmux-shortcuts.txt', appId: 'tmux-shortcuts', defaultX: 8, defaultY: 308 }
+    { id: 'tmux-shortcuts', icon: apps['tmux-shortcuts'].icon, label: 'tmux-shortcuts.txt', appId: 'tmux-shortcuts', defaultX: 8, defaultY: 308 },
+    { id: 'personal', icon: apps.personal.icon, label: 'Personal', appId: 'personal', defaultX: 8, defaultY: 383 }
   ];
 
   // Initialize icon positions on mount
@@ -282,6 +284,16 @@ Prefix + :              Command prompt
 Prefix + t              Show clock
 Prefix + ?              List all keybindings
 tmux source ~/.tmux.conf  Reload config`} />
+</Window>
+
+<Window
+  id="personal"
+  title={apps.personal.title}
+  icon={apps.personal.icon}
+  width={apps.personal.defaultSize.width}
+  height={apps.personal.defaultSize.height}
+>
+  <Personal />
 </Window>
 
 <Taskbar />

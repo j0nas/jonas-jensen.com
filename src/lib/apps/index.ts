@@ -23,6 +23,11 @@ export const apps = {
     icon: '/img/notepad-icon.png',
     title: 'tmux-shortcuts.txt - Notepad',
     defaultSize: { width: 480, height: 420 }
+  },
+  personal: {
+    icon: '/img/personal/folder.png',
+    title: 'Personal',
+    defaultSize: { width: 400, height: 300 }
   }
 } as const;
 
