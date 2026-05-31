@@ -62,12 +62,13 @@
     height: calc(100% - 24px);
     overflow: auto;
     background: white;
-    padding: 2px;
   }
 
   pre {
     margin: 0;
     padding: 4px;
+    min-height: 100%;
+    box-sizing: border-box;
     font-family: 'Fixedsys', 'Courier New', monospace;
     font-size: 12px;
     line-height: 1.4;

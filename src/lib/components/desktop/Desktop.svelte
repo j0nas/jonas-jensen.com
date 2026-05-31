@@ -184,20 +184,13 @@ Occupation  : Passionate software developer
 
 ABOUT
 -----
-Hi, I'm Jonas. Welcome to my little corner of the web,
-rendered in glorious Windows 98.
+Hi, I'm Jonas. I'm super passionate about computers, technology, animal rights and tinkering. Currently working on https://pep.dev.
 
-I recently went independent to go all-in on something new
-— these days I'm building pep.dev. I write software for a
-living and tinker with it for fun: tiling window managers,
-terminal setups, and the odd nostalgia project like this.
+I love to make people's lives better in whatever ways I can and to build things that do so. If you do too, feel free to reach out!
 
-ELSEWHERE
----------
-Currently   : https://pep.dev
-GitHub      : https://github.com/j0nas
-LinkedIn    : https://linked.in/j0nas
-Email       : jonas.jensen@msn.com`} />
+Jonas Jensen
+jonas.jensen@msn.com
+Oslo, Norway`} />
 </Window>
 
 <Window
