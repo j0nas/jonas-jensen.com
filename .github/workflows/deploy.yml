@@ -2,7 +2,7 @@ name: Deploy to Netlify
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   deploy:
@@ -20,7 +20,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
 
-      - run: pnpm dlx netlify-cli deploy --prod --dir=build
+      - run: pnpm --package=netlify-cli dlx netlify deploy --prod --dir=build
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
