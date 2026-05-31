@@ -177,6 +177,8 @@
 <style>
   .window {
     position: absolute;
+    display: flex;
+    flex-direction: column;
   }
 
   .window.dragging,
@@ -194,8 +196,13 @@
     gap: 4px;
   }
 
+  /* Fill the window below the title bar; override 98.css's default 8px margin
+     so app content (Notepad/WordPad text areas, file views) sits flush in a thin
+     frame like real Win98, rather than inside a fat gray border. */
   .window-body {
-    height: calc(100% - 40px);
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
     overflow: visible;
   }
 
