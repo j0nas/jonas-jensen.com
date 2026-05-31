@@ -9,6 +9,7 @@
   import Notepad from '$lib/apps/notepad/Notepad.svelte';
   import Personal from '$lib/apps/personal/Personal.svelte';
   import { apps } from '$lib/apps';
+  import { windows } from '$lib/stores/windows';
   import { desktopSelection, desktopIcons as desktopIconsStore, GRID_SIZE } from '$lib/stores/desktop.svelte';
   import { onMount } from 'svelte';
 
@@ -17,9 +18,8 @@
     { id: 'my-computer', icon: apps['my-computer'].icon, label: 'My Computer', appId: 'my-computer', defaultX: 8, defaultY: 8 },
     { id: 'recycle-bin', icon: apps['recycle-bin'].icon, label: 'Recycle Bin', appId: 'recycle-bin', defaultX: 8, defaultY: 83 },
     { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 158 },
-    { id: 'amethyst-shortcuts', icon: apps['amethyst-shortcuts'].icon, label: 'amethyst-shortcuts.txt', appId: 'amethyst-shortcuts', defaultX: 8, defaultY: 233 },
-    { id: 'tmux-shortcuts', icon: apps['tmux-shortcuts'].icon, label: 'tmux-shortcuts.txt', appId: 'tmux-shortcuts', defaultX: 8, defaultY: 308 },
-    { id: 'personal', icon: apps.personal.icon, label: 'Personal', appId: 'personal', defaultX: 8, defaultY: 383 }
+    { id: 'personal-details', icon: apps['personal-details'].icon, label: 'personal-details.txt', appId: 'personal-details', defaultX: 8, defaultY: 233 },
+    { id: 'personal', icon: apps.personal.icon, label: 'Personal', appId: 'personal', defaultX: 8, defaultY: 308 }
   ];
 
   // Initialize icon positions on mount
@@ -27,6 +27,8 @@
     iconConfigs.forEach(config => {
       desktopIconsStore.initPosition(config.id, { x: config.defaultX, y: config.defaultY });
     });
+    // Open personal-details.txt by default on first paint.
+    windows.open('personal-details', apps['personal-details'].defaultSize);
   });
 
   // Get position for icon from store
@@ -166,124 +168,36 @@
 </Window>
 
 <Window
-  id="amethyst-shortcuts"
-  title={apps['amethyst-shortcuts'].title}
-  icon={apps['amethyst-shortcuts'].icon}
-  width={apps['amethyst-shortcuts'].defaultSize.width}
-  height={apps['amethyst-shortcuts'].defaultSize.height}
+  id="personal-details"
+  title={apps['personal-details'].title}
+  icon={apps['personal-details'].icon}
+  width={apps['personal-details'].defaultSize.width}
+  height={apps['personal-details'].defaultSize.height}
 >
   <Notepad content={`========================================
-  AMETHYST SHORTCUTS
+  PERSONAL DETAILS
 ========================================
 
-mod1 = opt+shift
-mod2 = ctrl+opt+shift
+Name        : Jonas Jensen
+Location    : Oslo, Norway
+Occupation  : Passionate software developer
 
-LAYOUTS
--------
-mod1+space              Cycle layout forward
-mod2+space              Cycle layout backward
-mod1+a                  Tall
-mod1+s                  Wide
-mod1+d                  Fullscreen
-mod1+f                  Column
-
-FOCUS / SWAP
-------------
-mod1+j                  Focus counter clockwise
-mod1+k                  Focus clockwise
-mod2+j                  Swap window counter clockwise
-mod2+k                  Swap window clockwise
-mod1+enter              Swap focused with main
-
-RESIZE
-------
-mod1+h                  Shrink main pane
-mod1+l                  Expand main pane
-mod1+,                  Increase main pane count
-mod1+.                  Decrease main pane count
-
-SCREENS
--------
-mod1+p                  Focus counter clockwise screen
-mod1+n                  Focus clockwise screen
-mod2+h                  Throw window counter clockwise screen
-mod2+l                  Throw window clockwise screen
-
-SPACES
-------
-mod2+1..0               Throw window to space 1-10
-
-OTHER
+ABOUT
 -----
-mod1+z                  Reevaluate windows
-mod1+t                  Toggle float for window
-mod1+i                  Display current layout
-mod2+z                  Relaunch Amethyst`} />
-</Window>
+Hi, I'm Jonas. Welcome to my little corner of the web,
+rendered in glorious Windows 98.
 
-<Window
-  id="tmux-shortcuts"
-  title={apps['tmux-shortcuts'].title}
-  icon={apps['tmux-shortcuts'].icon}
-  width={apps['tmux-shortcuts'].defaultSize.width}
-  height={apps['tmux-shortcuts'].defaultSize.height}
->
-  <Notepad content={`========================================
-  TMUX QUICK REFERENCE
-========================================
+I recently went independent to go all-in on something new
+— these days I'm building pep.dev. I write software for a
+living and tinker with it for fun: tiling window managers,
+terminal setups, and the odd nostalgia project like this.
 
-Prefix key: Ctrl+b
-
-SESSIONS
---------
-tmux new -s <name>      New named session
-tmux ls                 List sessions
-tmux a -t <name>        Attach to session
-tmux kill-ses -t <name> Kill session
-Prefix + d              Detach
-Prefix + s              List sessions
-Prefix + $              Rename session
-Prefix + ( / )          Prev / next session
-
-WINDOWS
--------
-Prefix + c              New window
-Prefix + n / p          Next / prev window
-Prefix + <number>       Go to window #
-Prefix + l              Toggle last active window
-Prefix + ,              Rename window
-Prefix + &              Close window
-Prefix + w              List windows
-
-PANES
------
-Prefix + %              Split vertical
-Prefix + "              Split horizontal
-Prefix + arrow keys     Move between panes
-Prefix + o              Next pane
-Prefix + ;              Toggle last active pane
-Prefix + q              Show pane numbers
-Prefix + z              Toggle pane zoom
-Prefix + x              Close pane
-Prefix + !              Convert pane to window
-Prefix + {  /  }        Swap pane left / right
-Prefix + Space          Cycle pane layouts
-
-COPY MODE
+ELSEWHERE
 ---------
-Prefix + [              Enter copy mode
-q                       Exit copy mode
-Space                   Start selection
-Enter                   Copy selection
-Prefix + ]              Paste
-
-MISC
-----
-Prefix + :              Command prompt
-Prefix + t              Show clock
-Prefix + ?              List all keybindings
-tmux source ~/.tmux.conf  Reload config`} />
+Currently   : https://pep.dev
+GitHub      : https://github.com/j0nas
+LinkedIn    : https://linked.in/j0nas
+Email       : jonas.jensen@msn.com`} />
 </Window>
 
 <Window

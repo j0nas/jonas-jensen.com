@@ -14,14 +14,9 @@ export const apps = {
     title: 'Recycle Bin',
     defaultSize: { width: 400, height: 300 }
   },
-  'amethyst-shortcuts': {
+  'personal-details': {
     icon: '/img/notepad-icon.png',
-    title: 'amethyst-shortcuts.txt - Notepad',
-    defaultSize: { width: 480, height: 420 }
-  },
-  'tmux-shortcuts': {
-    icon: '/img/notepad-icon.png',
-    title: 'tmux-shortcuts.txt - Notepad',
+    title: 'personal-details.txt - Notepad',
     defaultSize: { width: 480, height: 420 }
   },
   personal: {
