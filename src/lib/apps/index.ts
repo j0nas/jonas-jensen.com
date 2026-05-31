@@ -1,7 +1,7 @@
 export const apps = {
   wordpad: {
     icon: '/img/win/wordpad.ico',
-    title: 'Document - WordPad',
+    title: 'Document.rtf - WordPad',
     defaultSize: { width: 500, height: 350 }
   },
   'my-computer': {

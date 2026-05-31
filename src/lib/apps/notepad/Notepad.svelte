@@ -62,11 +62,17 @@
     height: calc(100% - 24px);
     overflow: auto;
     background: white;
+    /* Win98 edit-control "client edge": a sunken field border around the text
+       area, which also visually separates the text from the window frame. */
+    box-shadow: inset -1px -1px #fff, inset 1px 1px grey,
+      inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
   }
 
   pre {
     margin: 0;
-    padding: 2px;
+    /* Canonical Win98 text-field padding (98.css textarea: 3px vertical,
+       4px horizontal). */
+    padding: 3px 4px;
     min-height: 100%;
     box-sizing: border-box;
     font-family: 'Fixedsys', 'Courier New', monospace;

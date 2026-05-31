@@ -1,5 +1,6 @@
 <script lang="ts">
   import { windows } from '$lib/stores/windows';
+  import { apps, type AppId } from '$lib/apps';
   import StartMenu from './StartMenu.svelte';
 
   let startMenuOpen = false;
@@ -36,6 +37,7 @@
   <div class="taskbar-windows">
     {#each Object.values($windows).filter(w => w.isOpen) as win}
       <button class="taskbar-item" on:click={() => windows.focus(win.id)}>
+        <img src={apps[win.id as AppId].icon} alt="" width="16" height="16" />
         {win.id}
       </button>
     {/each}
@@ -76,6 +78,9 @@
     flex: 1;
   }
   .taskbar-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     min-width: 120px;
     text-align: left;
     padding: 2px 8px;

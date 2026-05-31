@@ -17,7 +17,7 @@
   const iconConfigs = [
     { id: 'my-computer', icon: apps['my-computer'].icon, label: 'My Computer', appId: 'my-computer', defaultX: 8, defaultY: 8 },
     { id: 'recycle-bin', icon: apps['recycle-bin'].icon, label: 'Recycle Bin', appId: 'recycle-bin', defaultX: 8, defaultY: 83 },
-    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document', appId: 'wordpad', defaultX: 8, defaultY: 158 },
+    { id: 'wordpad-doc', icon: apps.wordpad.icon, label: 'Document.rtf', appId: 'wordpad', defaultX: 8, defaultY: 158 },
     { id: 'personal-details', icon: apps['personal-details'].icon, label: 'personal-details.txt', appId: 'personal-details', defaultX: 8, defaultY: 233 },
     { id: 'personal', icon: apps.personal.icon, label: 'Personal', appId: 'personal', defaultX: 8, defaultY: 308 }
   ];
