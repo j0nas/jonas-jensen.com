@@ -66,7 +66,7 @@
 
   pre {
     margin: 0;
-    padding: 4px;
+    padding: 2px;
     min-height: 100%;
     box-sizing: border-box;
     font-family: 'Fixedsys', 'Courier New', monospace;
