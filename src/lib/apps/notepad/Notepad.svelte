@@ -72,7 +72,8 @@
     font-family: 'Fixedsys', 'Courier New', monospace;
     font-size: 12px;
     line-height: 1.4;
-    white-space: pre;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
     color: black;
   }
 </style>
