@@ -27,16 +27,29 @@ function createWindowStore() {
       const offset = (openCount % 8) * 30;
       openCount++;
 
+      const width = defaultSize?.width ?? 400;
+      const height = defaultSize?.height ?? 300;
+
+      // Desktop icons occupy a ~88px column down the left edge. When the
+      // viewport has room, spawn clear of that column so the window doesn't
+      // cover the icons; otherwise fall back to the classic top-left stagger
+      // (e.g. on narrow/mobile viewports where there's no room beside them).
+      const ICON_COLUMN = 88;
+      const vw = typeof window !== 'undefined' ? window.innerWidth : 0;
+      const clearX = ICON_COLUMN + offset;
+      const x = vw && clearX + width + 16 <= vw ? clearX : 50 + offset;
+      const y = 50 + offset;
+
       return {
         ...state,
         [id]: {
           id,
           isOpen: true,
           zIndex: ++topZ,
-          x: 50 + offset,
-          y: 50 + offset,
-          width: defaultSize?.width ?? 400,
-          height: defaultSize?.height ?? 300
+          x,
+          y,
+          width,
+          height
         }
       };
     }),
