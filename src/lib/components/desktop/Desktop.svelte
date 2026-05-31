@@ -174,7 +174,7 @@
   width={apps['personal-details'].defaultSize.width}
   height={apps['personal-details'].defaultSize.height}
 >
-  <Notepad content={`Hi, I'm Jonas. I'm a software developer based in Oslo, Noraw. I'm super passionate about computers, technology, animal rights and tinkering. Currently working on https://pep.dev.
+  <Notepad content={`Hi, I'm Jonas. I'm a software developer based in Oslo, Norway. I'm super passionate about computers, technology, animal rights and tinkering. Currently working on https://pep.dev.
 
 I love to use my skills to make people's lives better in whatever ways I can and to build things that do so. If you do too, feel free to reach out at: jonas.jensen@msn.com`} />
 </Window>
