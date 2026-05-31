@@ -10,15 +10,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
+          node-version-file: .node-version
+          cache: pnpm
 
-      - run: npm ci
-      - run: npm run build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
 
-      - run: npx netlify-cli deploy --prod --dir=build
+      - run: pnpm dlx netlify-cli deploy --prod --dir=build
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

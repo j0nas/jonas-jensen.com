@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"packageManager": "pnpm@11.5.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -23,8 +24,5 @@
 	},
 	"dependencies": {
 		"98.css": "^0.1.21"
-	},
-	"overrides": {
-		"cookie": "^1.1.1"
 	}
 }
