@@ -1,8 +1,8 @@
 <script lang="ts">
   const shortcuts = [
     {
-      label: 'Overseerr',
-      url: 'https://j0nas.comet.usbx.me/overseerr',
+      label: 'Seerr',
+      url: 'https://j0nas.comet.usbx.me/seerr',
       icon: '/img/personal/overseerr.png'
     },
     {
