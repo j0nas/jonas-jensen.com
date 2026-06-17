@@ -1,0 +1,37 @@
+/* The pixel UI font. @react95/core's GlobalStyle inlines this same face as
+   ~460 KB of base64 TTF (no WOFF2); we serve a 12 KB WOFF2 instead and strip
+   the inlined copies at build time (see vite.config.ts). Registered under the
+   "MS Sans Serif" family name React95 components reference. */
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("/fonts/ms_sans_serif.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("/fonts/ms_sans_serif_bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-image: url("/img/ms-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+#root {
+  height: 100%;
+}

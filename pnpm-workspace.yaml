@@ -1,4 +1,16 @@
-allowBuilds:
-  esbuild: false
+# pnpm v11 reads overrides / patchedDependencies from here (no longer the
+# package.json "pnpm" field).
+#
+# React95's two latest releases are mis-published: @react95/core 9.8.0 is
+# repo-rooted with broken exports, and @react95/icons 2.5.0 ships no
+# component code at all. We pin core to 9.7.3 (in package.json) and force
+# every @react95/icons — including core's transitive ^2.4.1 dependency, which
+# would otherwise resolve up to the broken 2.5.0 — to 2.4.1.
 overrides:
-  cookie: ^1.1.1
+  "@react95/icons": 2.4.1
+
+# 2.4.1 lacks a `sideEffects` field, so bundlers can't tree-shake the 975-icon
+# barrel (core itself imports `{ Logo } from "@react95/icons"`). This patch adds
+# `sideEffects: ["**/*.css"]` so unused icons are dropped from the bundle.
+patchedDependencies:
+  "@react95/icons@2.4.1": patches/@react95__icons@2.4.1.patch

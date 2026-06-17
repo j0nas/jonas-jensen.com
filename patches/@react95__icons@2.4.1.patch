@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index e75afc6821253f85b3d9718265c6f4de00b8865b..9ad97de43233804ab883a958523a2c77e2b2450f 100644
+--- a/package.json
++++ b/package.json
+@@ -20,6 +20,9 @@
+   "author": "ggdaltoso <ggdaltoso@gmail.com>",
+   "homepage": "https://react95.github.io/React95/",
+   "license": "MIT",
++  "sideEffects": [
++    "**/*.css"
++  ],
+   "main": "cjs/index.js",
+   "unpkg": "icons.css",
+   "exports": {

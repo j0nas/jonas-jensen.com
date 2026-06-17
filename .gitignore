@@ -1,24 +1,34 @@
-# SvelteKit
-.svelte-kit
-build
+# Build output
+dist
+dist-ssr
 node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # IDE
 *.iml
 .idea
-.vscode
+.vscode/*
+!.vscode/extensions.json
 
 # OS
 .DS_Store
 
-# Backup
-.backup
-
 # Local files
+*.local
 .npmrc
 
 # Local Netlify folder
 .netlify
+
+# Vite+ cache
+.vite
 
 # Playwright test screenshots
 .playwright-mcp
