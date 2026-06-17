@@ -1,0 +1,20 @@
+.bar {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--w95-3d-face);
+  flex: 0 0 auto;
+}
+
+.field {
+  padding: 1px 4px;
+  font-size: var(--w95-font-size);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: var(--w95-bevel-sunken-thin);
+}
+
+.grow {
+  flex: 1;
+}

@@ -1,16 +1,15 @@
 import { useState } from "react";
-import type { ChangeEvent, ComponentProps } from "react";
-import { List, Modal, TextArea } from "@react95/core";
-import AppWindow from "../../components/window/AppWindow";
+import type { ChangeEvent } from "react";
+import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
+import { TextArea, type Menu } from "../../win95";
 
 const STORAGE_KEY = "textarea__main";
 
 interface WordPadProps {
-  position: { x: number; y: number };
-  onClose: () => void;
+  controls: WindowControls;
 }
 
-export default function WordPad({ position, onClose }: WordPadProps) {
+export default function WordPad({ controls }: WordPadProps) {
   const [content, setContent] = useState(() => localStorage.getItem(STORAGE_KEY) ?? "");
 
   function handleInput(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -19,83 +18,61 @@ export default function WordPad({ position, onClose }: WordPadProps) {
     localStorage.setItem(STORAGE_KEY, value);
   }
 
-  const menu: ComponentProps<typeof Modal>["menu"] = [
+  const menu: Menu[] = [
     {
-      name: "File",
-      list: (
-        <List width="200px">
-          <List.Item>New</List.Item>
-          <List.Item>Open...</List.Item>
-          <List.Item>Save</List.Item>
-          <List.Item>Save As...</List.Item>
-          <List.Divider />
-          <List.Item>Print...</List.Item>
-          <List.Item>Print Preview</List.Item>
-          <List.Item>Page Setup...</List.Item>
-          <List.Divider />
-          <List.Item onClick={onClose}>Exit</List.Item>
-        </List>
-      ),
+      label: "&File",
+      items: [
+        { label: "&New" },
+        { label: "&Open..." },
+        { label: "&Save" },
+        { label: "Save &As..." },
+        "divider",
+        { label: "&Print..." },
+        { label: "Print Pre&view" },
+        { label: "Page Set&up..." },
+        "divider",
+        { label: "E&xit", onClick: controls.onClose },
+      ],
     },
     {
-      name: "Edit",
-      list: (
-        <List width="200px">
-          <List.Item>Undo</List.Item>
-          <List.Divider />
-          <List.Item>Cut</List.Item>
-          <List.Item>Copy</List.Item>
-          <List.Item>Paste</List.Item>
-          <List.Item>Paste Special...</List.Item>
-          <List.Item>Clear</List.Item>
-          <List.Item>Select All</List.Item>
-          <List.Divider />
-          <List.Item>Find...</List.Item>
-          <List.Item>Find Next</List.Item>
-          <List.Item>Replace...</List.Item>
-        </List>
-      ),
+      label: "&Edit",
+      items: [
+        { label: "&Undo" },
+        "divider",
+        { label: "Cu&t" },
+        { label: "&Copy" },
+        { label: "&Paste" },
+        { label: "Paste &Special..." },
+        { label: "Cle&ar" },
+        { label: "Se&lect All" },
+        "divider",
+        { label: "&Find..." },
+        { label: "Find &Next" },
+        { label: "R&eplace..." },
+      ],
     },
     {
-      name: "View",
-      list: (
-        <List width="200px">
-          <List.Item>Toolbar</List.Item>
-          <List.Item>Format Bar</List.Item>
-          <List.Item>Ruler</List.Item>
-          <List.Item>Status Bar</List.Item>
-        </List>
-      ),
+      label: "&View",
+      items: [
+        { label: "&Toolbar" },
+        { label: "&Format Bar" },
+        { label: "&Ruler" },
+        { label: "&Status Bar" },
+      ],
     },
     {
-      name: "Insert",
-      list: (
-        <List width="200px">
-          <List.Item>Date and Time...</List.Item>
-          <List.Item>Object...</List.Item>
-        </List>
-      ),
+      label: "&Insert",
+      items: [{ label: "&Date and Time..." }, { label: "&Object..." }],
     },
     {
-      name: "Help",
-      list: (
-        <List width="200px">
-          <List.Item>Help Topics</List.Item>
-          <List.Divider />
-          <List.Item>About WordPad</List.Item>
-        </List>
-      ),
+      label: "&Help",
+      items: [{ label: "&Help Topics" }, "divider", { label: "&About WordPad" }],
     },
   ];
 
   return (
-    <AppWindow id="wordpad" position={position} onClose={onClose} menu={menu}>
-      <TextArea
-        value={content}
-        onChange={handleInput}
-        placeholder="Type here..."
-        style={{ flex: 1, width: "100%", minHeight: 0, resize: "none" }}
-      />
+    <AppWindow id="wordpad" controls={controls} menu={menu}>
+      <TextArea value={content} onChange={handleInput} placeholder="Type here..." />
     </AppWindow>
   );
 }

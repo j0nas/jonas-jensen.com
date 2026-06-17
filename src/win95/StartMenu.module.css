@@ -1,0 +1,95 @@
+.menu {
+  display: flex;
+  min-width: 200px;
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised);
+}
+
+/* The left banner reproduces the Win95 Start bitmap (explorer.exe resource 157):
+   a SOLID grey ground (COLOR_3DSHADOW) with "Windows 95" reading bottom-to-top,
+   "Windows" in white and "95" in light grey, set in Franklin Gothic. The blue
+   gradient banner belongs to Windows 98 (res 157) / ME (161) — see SOURCES.md. */
+/* The banner is the authentic explorer.exe resource-157 bitmap (real Franklin
+   Gothic "Windows 95" on COLOR_3DSHADOW grey), sampled from the original at its
+   native 21px width — see SOURCES.md [S5]. Bottom-aligned, with the grey ground
+   extending above for taller menus; rendered crisp (no smoothing). */
+.banner {
+  flex: 0 0 21px;
+  background: var(--w95-3d-shadow) url("/img/win95/start-banner.png") no-repeat bottom center;
+  background-size: 21px auto;
+  image-rendering: pixelated;
+}
+
+.entries {
+  flex: 1;
+  padding: 2px;
+}
+
+.row {
+  position: relative;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--w95-menu-text);
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  text-align: left;
+  padding: 4px 6px;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.item:hover:not(:disabled) {
+  background: var(--w95-highlight);
+  color: var(--w95-highlight-text);
+}
+
+.item:disabled {
+  color: var(--w95-gray-text);
+  text-shadow: 1px 1px 0 var(--w95-3d-highlight);
+}
+
+.icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+}
+
+.label {
+  flex: 1;
+}
+
+.arrow {
+  font-size: 8px;
+  margin-left: 12px;
+}
+
+.flyout {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  z-index: 1;
+  min-width: 150px;
+  padding: 2px;
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised);
+}
+
+.flyout .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.divider {
+  height: 2px;
+  margin: 3px 2px;
+  border-top: 1px solid var(--w95-3d-shadow);
+  border-bottom: 1px solid var(--w95-3d-highlight);
+}

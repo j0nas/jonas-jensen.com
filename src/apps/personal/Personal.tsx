@@ -1,5 +1,5 @@
-import { Modal } from "@react95/core";
-import AppWindow from "../../components/window/AppWindow";
+import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
+import { StatusBar } from "../../win95";
 import styles from "./Personal.module.css";
 
 const shortcuts = [
@@ -9,14 +9,13 @@ const shortcuts = [
 ];
 
 interface PersonalProps {
-  position: { x: number; y: number };
-  onClose: () => void;
+  controls: WindowControls;
 }
 
-export default function Personal({ position, onClose }: PersonalProps) {
+export default function Personal({ controls }: PersonalProps) {
   return (
-    <AppWindow id="personal" position={position} onClose={onClose}>
-      <Modal.Content boxShadow="$in" bgColor="white" style={{ flex: 1, minHeight: 0 }}>
+    <AppWindow id="personal" controls={controls}>
+      <div className={styles.folder}>
         <div className={styles.grid}>
           {shortcuts.map((shortcut) => (
             <a
@@ -40,8 +39,8 @@ export default function Personal({ position, onClose }: PersonalProps) {
             </a>
           ))}
         </div>
-      </Modal.Content>
-      <div className={styles.statusBar}>{shortcuts.length} object(s)</div>
+      </div>
+      <StatusBar>{shortcuts.length} object(s)</StatusBar>
     </AppWindow>
   );
 }

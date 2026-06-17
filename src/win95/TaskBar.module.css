@@ -1,0 +1,115 @@
+.taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 2px;
+  background: var(--w95-3d-face);
+  /* A single raised highlight line along the top edge. */
+  box-shadow: inset 0 1px 0 0 var(--w95-3d-highlight);
+}
+
+.startRegion {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.start {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+  padding: 2px 5px 2px 3px;
+  border: none;
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised-soft);
+  cursor: default;
+}
+
+.start img {
+  display: block;
+}
+
+.startLabel {
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  font-weight: 700;
+}
+
+.startActive {
+  box-shadow: var(--w95-bevel-pressed);
+  padding: 3px 4px 1px 4px;
+}
+
+.startMenu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 2px;
+}
+
+.tasks {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 1 160px;
+  min-width: 0;
+  height: 22px;
+  padding: 2px 6px;
+  border: none;
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised-soft);
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  text-align: left;
+  cursor: default;
+}
+
+.task img {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.taskTitle {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Active window's button: pressed in, with the 50% highlight dither GDI paints
+   behind the depressed taskbar button, and a bold label. */
+.taskActive {
+  box-shadow: var(--w95-bevel-pressed);
+  padding: 3px 5px 1px 7px;
+  background-color: var(--w95-3d-face);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+}
+
+.taskActive .taskTitle {
+  font-weight: 700;
+}
+
+.tray {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  margin-left: auto;
+  font-size: var(--w95-font-size);
+  box-shadow: var(--w95-bevel-sunken-thin);
+}

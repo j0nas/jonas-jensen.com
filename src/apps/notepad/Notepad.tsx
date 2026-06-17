@@ -1,75 +1,54 @@
-import type { ComponentProps } from "react";
-import { List, Modal, TextArea } from "@react95/core";
-import AppWindow from "../../components/window/AppWindow";
+import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
+import { TextArea, type Menu } from "../../win95";
 
 interface NotepadProps {
-  position: { x: number; y: number };
-  onClose: () => void;
+  controls: WindowControls;
   content?: string;
 }
 
-export default function Notepad({ position, onClose, content = "" }: NotepadProps) {
-  const menu: ComponentProps<typeof Modal>["menu"] = [
+export default function Notepad({ controls, content = "" }: NotepadProps) {
+  const menu: Menu[] = [
     {
-      name: "File",
-      list: (
-        <List width="200px">
-          <List.Item>New</List.Item>
-          <List.Item>Open...</List.Item>
-          <List.Item>Save</List.Item>
-          <List.Item>Save As...</List.Item>
-          <List.Divider />
-          <List.Item>Page Setup...</List.Item>
-          <List.Item>Print...</List.Item>
-          <List.Divider />
-          <List.Item onClick={onClose}>Exit</List.Item>
-        </List>
-      ),
+      label: "&File",
+      items: [
+        { label: "&New" },
+        { label: "&Open..." },
+        { label: "&Save" },
+        { label: "Save &As..." },
+        "divider",
+        { label: "Page Set&up..." },
+        { label: "&Print..." },
+        "divider",
+        { label: "E&xit", onClick: controls.onClose },
+      ],
     },
     {
-      name: "Edit",
-      list: (
-        <List width="200px">
-          <List.Item>Undo</List.Item>
-          <List.Divider />
-          <List.Item>Cut</List.Item>
-          <List.Item>Copy</List.Item>
-          <List.Item>Paste</List.Item>
-          <List.Item>Delete</List.Item>
-          <List.Divider />
-          <List.Item>Select All</List.Item>
-          <List.Item>Time/Date</List.Item>
-        </List>
-      ),
+      label: "&Edit",
+      items: [
+        { label: "&Undo" },
+        "divider",
+        { label: "Cu&t" },
+        { label: "&Copy" },
+        { label: "&Paste" },
+        { label: "De&lete" },
+        "divider",
+        { label: "Select &All" },
+        { label: "Time/&Date" },
+      ],
     },
     {
-      name: "Search",
-      list: (
-        <List width="200px">
-          <List.Item>Find...</List.Item>
-          <List.Item>Find Next</List.Item>
-        </List>
-      ),
+      label: "&Search",
+      items: [{ label: "&Find..." }, { label: "Find &Next" }],
     },
     {
-      name: "Help",
-      list: (
-        <List width="200px">
-          <List.Item>Help Topics</List.Item>
-          <List.Divider />
-          <List.Item>About Notepad</List.Item>
-        </List>
-      ),
+      label: "&Help",
+      items: [{ label: "&Help Topics" }, "divider", { label: "&About Notepad" }],
     },
   ];
 
   return (
-    <AppWindow id="personal-details" position={position} onClose={onClose} menu={menu}>
-      <TextArea
-        readOnly
-        value={content}
-        style={{ flex: 1, width: "100%", minHeight: 0, resize: "none" }}
-      />
+    <AppWindow id="personal-details" controls={controls} menu={menu}>
+      <TextArea readOnly value={content} />
     </AppWindow>
   );
 }

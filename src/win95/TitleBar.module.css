@@ -1,0 +1,78 @@
+.titlebar {
+  display: flex;
+  align-items: center;
+  height: var(--w95-caption-height);
+  padding: 0 2px;
+  background: var(--w95-inactive-title);
+  color: var(--w95-inactive-title-text);
+  user-select: none;
+}
+
+.titlebar.active {
+  background: var(--w95-active-title);
+  color: var(--w95-active-title-text);
+}
+
+.icon {
+  display: block;
+  margin-right: 3px;
+  flex: 0 0 auto;
+}
+
+.caption {
+  flex: 1;
+  min-width: 0;
+  font-weight: 700;
+  font-size: var(--w95-font-size);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.controls {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+/* Caption buttons: 16×14 raised-soft, black glyph, always on the face colour
+   (never tinted by the active/inactive title). */
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 14px;
+  padding: 0;
+  border: none;
+  background: var(--w95-3d-face);
+  color: #000000;
+  box-shadow: var(--w95-bevel-raised-soft);
+  cursor: default;
+}
+
+.control:active {
+  box-shadow: var(--w95-bevel-pressed);
+}
+
+/* The Close button is separated from the Minimize/Maximize pair by a 2px gap. */
+.close {
+  margin-left: 2px;
+}
+
+/* Minimize: a short bar resting on the button's lower edge. */
+.glyphMinimize {
+  width: 6px;
+  height: 2px;
+  margin-top: 6px;
+  background: #000000;
+}
+
+/* Maximize: a box with a thick (title-bar) top edge. */
+.glyphMaximize {
+  width: 9px;
+  height: 8px;
+  border: 1px solid #000000;
+  border-top-width: 2px;
+}

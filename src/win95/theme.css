@@ -1,0 +1,211 @@
+/*
+ * Windows 95 — canonical theme foundation
+ * ----------------------------------------
+ * Every value here is sourced from a Microsoft primary source rather than
+ * reverse-engineered by eye, so the chrome is provably accurate.
+ *
+ *   - Palette: the "Windows Standard" scheme = the GDI GetSysColor() defaults.
+ *     https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
+ *   - Metrics: GetSystemMetrics() defaults at 96 DPI.
+ *     https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics
+ *   - Bevels: the GDI DrawEdge() algorithm. The edge→color mapping is taken
+ *     from ReactOS's faithful user32 reimplementation (LT/RB Inner/Outer tables):
+ *     https://github.com/reactos/reactos/blob/master/win32ss/user/user32/windows/draw.c
+ *   - UI anatomy/spacing: "The Windows Interface Guidelines for Software Design"
+ *     (Microsoft Press, 1995). https://archive.org/details/windowsinterface00micr
+ */
+
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("/fonts/ms_sans_serif.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("/fonts/ms_sans_serif_bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ===== System palette — "Windows Standard" (GetSysColor defaults) ===== */
+  --w95-3d-dark-shadow: #000000; /* COLOR_3DDKSHADOW  */
+  --w95-3d-shadow: #808080; /* COLOR_3DSHADOW / COLOR_BTNSHADOW */
+  --w95-3d-face: #c0c0c0; /* COLOR_3DFACE / COLOR_BTNFACE */
+  --w95-3d-light: #dfdfdf; /* COLOR_3DLIGHT */
+  --w95-3d-highlight: #ffffff; /* COLOR_3DHIGHLIGHT / COLOR_BTNHIGHLIGHT */
+
+  --w95-window: #ffffff; /* COLOR_WINDOW */
+  --w95-window-text: #000000; /* COLOR_WINDOWTEXT */
+  --w95-window-frame: #000000; /* COLOR_WINDOWFRAME */
+
+  --w95-active-title: #000080; /* COLOR_ACTIVECAPTION — Win95 is a SOLID navy
+                                  bar; the gradient was a Win98/Plus! addition */
+  --w95-active-title-text: #ffffff; /* COLOR_CAPTIONTEXT */
+  --w95-inactive-title: #808080; /* COLOR_INACTIVECAPTION */
+  --w95-inactive-title-text: #c0c0c0; /* COLOR_INACTIVECAPTIONTEXT */
+
+  --w95-menu: #c0c0c0; /* COLOR_MENU */
+  --w95-menu-text: #000000; /* COLOR_MENUTEXT */
+  --w95-highlight: #000080; /* COLOR_HIGHLIGHT (selection) */
+  --w95-highlight-text: #ffffff; /* COLOR_HIGHLIGHTTEXT */
+  --w95-gray-text: #808080; /* COLOR_GRAYTEXT (disabled) */
+  --w95-desktop: #008080; /* COLOR_BACKGROUND (the teal desktop) */
+
+  /* ===== Metrics — GetSystemMetrics defaults @96 DPI ===== */
+  --w95-edge: 2px; /* SM_CXEDGE / SM_CYEDGE — the 3D border width */
+  --w95-border: 1px; /* SM_CXBORDER / SM_CYBORDER */
+  --w95-frame: 4px; /* SM_CXFRAME / SM_CYFRAME — sizing border */
+  --w95-caption-height: 18px; /* SM_CYCAPTION — title bar height */
+  --w95-scrollbar: 16px; /* SM_CXVSCROLL / SM_CYHSCROLL */
+  --w95-menu-height: 18px; /* SM_CYMENU */
+  --w95-taskbar-height: 28px; /* taskbar strip height */
+
+  /* ===== Typography — 8pt MS Sans Serif renders as an 11px bitmap @96 DPI ===== */
+  --w95-font: "MS Sans Serif", "Pixelated MS Sans Serif", "Segoe UI", sans-serif;
+  --w95-font-size: 11px;
+
+  /*
+   * ===== 3D bevels — derived from the DrawEdge edge→color tables =====
+   * Each border stacks 1px outer + 1px inner lines per side. Outer (±1px) lines
+   * are listed first so they paint on top of the inner (±2px) lines.
+   *
+   * EDGE_RAISED (idx 5):  TL outer 3DLIGHT,  TL inner HIGHLIGHT; BR outer DKSHADOW, BR inner SHADOW
+   * EDGE_RAISED|BF_SOFT:  TL outer HIGHLIGHT, TL inner 3DLIGHT;  BR outer DKSHADOW, BR inner SHADOW
+   * EDGE_SUNKEN (idx 10): TL outer SHADOW,    TL inner DKSHADOW; BR outer HIGHLIGHT, BR inner 3DLIGHT
+   * BDR_SUNKENOUTER:      TL SHADOW (1px);                       BR HIGHLIGHT (1px)
+   */
+
+  /* Raised, "hard" — window bodies, group boxes, status bars, taskbar. */
+  --w95-bevel-raised:
+    inset -1px -1px 0 0 var(--w95-3d-dark-shadow), inset 1px 1px 0 0 var(--w95-3d-light),
+    inset -2px -2px 0 0 var(--w95-3d-shadow), inset 2px 2px 0 0 var(--w95-3d-highlight);
+
+  /* Raised, "soft" — push buttons, caption buttons, scrollbar parts. Verified by
+     sampling the authentic Win95 button bitmap (SOURCES.md §Bevels): a SINGLE
+     white highlight top-left, a two-line shadow bottom-right (shadow inner,
+     dark-shadow outer). The top-left inner line is the face colour (invisible) —
+     there is NO 3DLIGHT inner-light line (that's a 98.css-style embellishment). */
+  --w95-bevel-raised-soft:
+    inset 1px 1px 0 0 var(--w95-3d-highlight), inset -1px -1px 0 0 var(--w95-3d-dark-shadow),
+    inset -2px -2px 0 0 var(--w95-3d-shadow);
+
+  /* Sunken — text fields, list/tree panes, the WS_EX_CLIENTEDGE look. */
+  --w95-bevel-sunken:
+    inset -1px -1px 0 0 var(--w95-3d-highlight), inset 1px 1px 0 0 var(--w95-3d-shadow),
+    inset -2px -2px 0 0 var(--w95-3d-light), inset 2px 2px 0 0 var(--w95-3d-dark-shadow);
+
+  /* Sunken, 1px — status-bar fields, separators. */
+  --w95-bevel-sunken-thin:
+    inset -1px -1px 0 0 var(--w95-3d-highlight), inset 1px 1px 0 0 var(--w95-3d-shadow);
+
+  /* Pressed button — 1px sunken; content nudges 1px down-right (handled per-component). */
+  --w95-bevel-pressed:
+    inset -1px -1px 0 0 var(--w95-3d-highlight), inset 1px 1px 0 0 var(--w95-3d-dark-shadow),
+    inset -2px -2px 0 0 var(--w95-3d-light), inset 2px 2px 0 0 var(--w95-3d-shadow);
+
+  /* Dotted "focus rectangle" — the 1px on/off marching dots GDI's DrawFocusRect
+     paints inside focused buttons / selected list rows. */
+  --w95-focus-dots: #000000;
+}
+
+/* ===== Base — everything inside the desktop renders in the system font ===== */
+.w95,
+.w95 *,
+.w95 *::before,
+.w95 *::after {
+  box-sizing: border-box;
+}
+
+.w95 {
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  color: var(--w95-window-text);
+  /* Win95 bitmap text is never anti-aliased; keep edges crisp. */
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+/*
+ * ===== Scrollbars — SM_CXVSCROLL/SM_CYHSCROLL = 16px =====
+ * GDI draws the track as a 50% dither of COLOR_3DFACE over COLOR_3DHIGHLIGHT
+ * (a light checker), raised-soft thumb and end buttons, black arrow glyphs.
+ * Rendered with the WebKit/Blink scrollbar pseudo-elements (what 98.css also
+ * does); Firefox falls back to the flat themed colors below.
+ */
+.w95 {
+  scrollbar-color: var(--w95-3d-face) var(--w95-window);
+}
+
+.w95 ::-webkit-scrollbar,
+.w95::-webkit-scrollbar {
+  width: var(--w95-scrollbar);
+  height: var(--w95-scrollbar);
+}
+
+.w95 ::-webkit-scrollbar-track,
+.w95::-webkit-scrollbar-track {
+  background-color: var(--w95-3d-face);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+}
+
+.w95 ::-webkit-scrollbar-thumb,
+.w95::-webkit-scrollbar-thumb {
+  background-color: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised-soft);
+}
+
+/* End buttons carry a centered black triangle glyph for each direction. */
+.w95 ::-webkit-scrollbar-button,
+.w95::-webkit-scrollbar-button {
+  background-color: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised-soft);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.w95 ::-webkit-scrollbar-button:vertical:decrement,
+.w95::-webkit-scrollbar-button:vertical:decrement {
+  height: var(--w95-scrollbar);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4'%3E%3Cpath d='M3 0 0 4h7z'/%3E%3C/svg%3E");
+}
+
+.w95 ::-webkit-scrollbar-button:vertical:increment,
+.w95::-webkit-scrollbar-button:vertical:increment {
+  height: var(--w95-scrollbar);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4'%3E%3Cpath d='M0 0h7L3 4z'/%3E%3C/svg%3E");
+}
+
+.w95 ::-webkit-scrollbar-button:horizontal:decrement,
+.w95::-webkit-scrollbar-button:horizontal:decrement {
+  width: var(--w95-scrollbar);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='7'%3E%3Cpath d='M0 3 4 0v7z'/%3E%3C/svg%3E");
+}
+
+.w95 ::-webkit-scrollbar-button:horizontal:increment,
+.w95::-webkit-scrollbar-button:horizontal:increment {
+  width: var(--w95-scrollbar);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='7'%3E%3Cpath d='M0 0 4 3 0 7z'/%3E%3C/svg%3E");
+}
+
+/* Suppress the doubled buttons and the dead corner square WebKit adds. */
+.w95 ::-webkit-scrollbar-button:horizontal:start:increment,
+.w95 ::-webkit-scrollbar-button:horizontal:end:decrement,
+.w95 ::-webkit-scrollbar-button:vertical:start:increment,
+.w95 ::-webkit-scrollbar-button:vertical:end:decrement,
+.w95::-webkit-scrollbar-button:horizontal:start:increment,
+.w95::-webkit-scrollbar-button:horizontal:end:decrement,
+.w95::-webkit-scrollbar-button:vertical:start:increment,
+.w95::-webkit-scrollbar-button:vertical:end:decrement {
+  display: none;
+}
+
+.w95 ::-webkit-scrollbar-corner,
+.w95::-webkit-scrollbar-corner {
+  background-color: var(--w95-3d-face);
+}

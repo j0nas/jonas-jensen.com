@@ -1,38 +1,40 @@
-import type { ComponentProps, ReactNode } from "react";
-import { Modal, TitleBar } from "@react95/core";
+import type { ReactNode } from "react";
+import { Window, type Menu } from "../../win95";
 import { apps, type AppId } from "../../apps/registry";
+
+/** The per-window state Desktop owns and threads into each app's window. */
+export interface WindowControls {
+  initialX: number;
+  initialY: number;
+  zIndex: number;
+  active: boolean;
+  minimized: boolean;
+  onFocus: () => void;
+  onClose: () => void;
+  onMinimize: () => void;
+}
 
 interface AppWindowProps {
   id: AppId;
-  position: { x: number; y: number };
-  onClose: () => void;
-  // React95's menu-bar shape: [{ name, list: <List>… }]. Optional — folders
-  // and placeholders render no menu bar.
-  menu?: ComponentProps<typeof Modal>["menu"];
+  controls: WindowControls;
+  menu?: Menu[];
   children: ReactNode;
 }
 
-// Thin wrapper over React95's <Modal>. The library handles dragging, focus,
-// z-ordering, minimize/restore, and TaskBar registration via its global modal
-// controller — so this just wires per-app metadata and the close handler.
-export default function AppWindow({ id, position, onClose, menu, children }: AppWindowProps) {
+// Pairs an app's registry metadata (icon, title, default size) with the live
+// window controls Desktop supplies, then renders our owned <Window>.
+export default function AppWindow({ id, controls, menu, children }: AppWindowProps) {
   const { iconSmall, title, defaultSize } = apps[id];
-
   return (
-    <Modal
-      id={id}
-      icon={iconSmall}
+    <Window
       title={title}
-      width={`${defaultSize.width}px`}
-      height={`${defaultSize.height}px`}
-      dragOptions={{ defaultPosition: position }}
+      icon={iconSmall}
+      width={defaultSize.width}
+      height={defaultSize.height}
       menu={menu}
-      titleBarOptions={[
-        <Modal.Minimize key="minimize" />,
-        <TitleBar.Close key="close" onClick={onClose} />,
-      ]}
+      {...controls}
     >
       {children}
-    </Modal>
+    </Window>
   );
 }

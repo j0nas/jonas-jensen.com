@@ -1,44 +1,34 @@
-/* The white folder client area, recessed behind the sunken client edge. */
-.folder {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 4px;
-  background: var(--w95-window);
-  box-shadow: var(--w95-bevel-sunken);
-}
-
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 8px;
-}
-
-.shortcut {
+.icon {
   all: unset;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   width: 75px;
   padding: 4px;
-  box-sizing: border-box;
   cursor: default;
 }
 
-.shortcut:active .shortcutLabel {
-  background-color: var(--w95-highlight);
-  color: var(--w95-highlight-text);
+.icon:focus-visible {
+  outline: 1px dotted var(--w95-3d-highlight);
+  outline-offset: -2px;
 }
 
-.shortcutIconWrapper {
+.iconImage {
   position: relative;
   width: 32px;
   height: 32px;
 }
 
-.shortcutIconWrapper::after {
+.iconImage img {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+/* Selected: a 50% navy dither over the glyph + a navy label fill. */
+.iconImage::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -49,19 +39,22 @@
   opacity: 0;
 }
 
-.shortcut:active .shortcutIconWrapper::after {
+.selected .iconImage::after {
   opacity: 1;
 }
 
-.shortcutArrow {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+.label {
+  color: var(--w95-active-title-text);
+  text-shadow: 1px 1px 1px #000000;
+  font-size: var(--w95-font-size);
+  line-height: 1.3;
+  text-align: center;
+  padding: 1px 3px;
+  word-break: break-word;
 }
 
-.shortcutLabel {
-  font-size: var(--w95-font-size);
-  text-align: center;
-  padding: 1px 2px;
-  word-break: break-word;
+.selected .label {
+  background-color: var(--w95-highlight);
+  color: var(--w95-highlight-text);
+  text-shadow: none;
 }

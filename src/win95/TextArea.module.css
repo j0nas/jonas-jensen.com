@@ -1,0 +1,21 @@
+.textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 2px;
+  border: none;
+  resize: none;
+  background: var(--w95-window);
+  color: var(--w95-window-text);
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  line-height: 1.35;
+  box-shadow: var(--w95-bevel-sunken);
+  /* The sunken bevel eats 2px per side; keep text off the dark edge. */
+  outline: none;
+}
+
+.textarea:focus-visible {
+  outline: none;
+}

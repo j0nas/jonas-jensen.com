@@ -1,0 +1,77 @@
+.bar {
+  display: flex;
+  flex: 0 0 auto;
+  padding: 1px 0;
+  background: var(--w95-menu);
+}
+
+.slot {
+  position: relative;
+}
+
+.title {
+  border: none;
+  background: transparent;
+  color: var(--w95-menu-text);
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  padding: 3px 7px;
+  cursor: default;
+  user-select: none;
+}
+
+/* The title whose popup is open inverts to the navy selection highlight. */
+.titleOpen {
+  background: var(--w95-highlight);
+  color: var(--w95-highlight-text);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 160px;
+  padding: 2px;
+  background: var(--w95-menu);
+  box-shadow: var(--w95-bevel-raised);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--w95-menu-text);
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  text-align: left;
+  padding: 3px 8px 3px 20px;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.item:hover:not(:disabled) {
+  background: var(--w95-highlight);
+  color: var(--w95-highlight-text);
+}
+
+.item:disabled {
+  color: var(--w95-gray-text);
+  text-shadow: 1px 1px 0 var(--w95-3d-highlight);
+}
+
+.shortcut {
+  color: inherit;
+}
+
+/* Etched separator: a shadow line above a highlight line. */
+.divider {
+  height: 2px;
+  margin: 3px 2px;
+  border-top: 1px solid var(--w95-3d-shadow);
+  border-bottom: 1px solid var(--w95-3d-highlight);
+}

@@ -1,0 +1,48 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 75px;
+  min-height: 23px;
+  padding: 2px 8px;
+  border: none;
+  background: var(--w95-3d-face);
+  color: var(--w95-window-text);
+  font-family: var(--w95-font);
+  font-size: var(--w95-font-size);
+  box-shadow: var(--w95-bevel-raised-soft);
+  cursor: default;
+  user-select: none;
+}
+
+/* Held down (and the toggled-open state): sunken bevel, content shifts 1px
+   down-right — the classic Win95 "the label moves with the press". */
+.button:active,
+.active {
+  box-shadow: var(--w95-bevel-pressed);
+  padding: 3px 7px 1px 9px;
+}
+
+/* DrawFocusRect: 1px dotted rectangle inset one pixel from the face. */
+.button:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  outline: 1px dotted var(--w95-focus-dots);
+}
+
+.button {
+  position: relative;
+}
+
+/* Default (Enter-activated) button: a 1px black frame around the raised face.
+   border-box keeps the outer size; the bevel renders inside the border. */
+.default {
+  border: 1px solid #000000;
+}
+
+.button:disabled {
+  color: var(--w95-gray-text);
+  text-shadow: 1px 1px 0 var(--w95-3d-highlight);
+}

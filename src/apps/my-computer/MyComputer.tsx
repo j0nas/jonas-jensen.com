@@ -1,18 +1,21 @@
-import { Modal } from "@react95/core";
-import AppWindow from "../../components/window/AppWindow";
+import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
 
-interface MyComputerProps {
-  position: { x: number; y: number };
-  onClose: () => void;
-}
+const panel: React.CSSProperties = {
+  flex: 1,
+  minHeight: 0,
+  padding: 8,
+  overflow: "auto",
+  background: "var(--w95-window)",
+  boxShadow: "var(--w95-bevel-sunken)",
+};
 
-export default function MyComputer({ position, onClose }: MyComputerProps) {
+export default function MyComputer({ controls }: { controls: WindowControls }) {
   return (
-    <AppWindow id="my-computer" position={position} onClose={onClose}>
-      <Modal.Content boxShadow="$in" bgColor="white" style={{ flex: 1, minHeight: 0 }}>
+    <AppWindow id="my-computer" controls={controls}>
+      <div style={panel}>
         <p style={{ margin: 0 }}>My Computer</p>
-        <p style={{ marginTop: 8, color: "#555" }}>This is a placeholder window.</p>
-      </Modal.Content>
+        <p style={{ marginTop: 8, color: "var(--w95-gray-text)" }}>This is a placeholder window.</p>
+      </div>
     </AppWindow>
   );
 }

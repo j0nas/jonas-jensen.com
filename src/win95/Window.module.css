@@ -1,0 +1,104 @@
+.window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: var(--w95-frame);
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised);
+}
+
+/* Holds the chrome above the sizing grips and covers the interior, so the grips
+   are only grabbable in the surrounding frame ring. */
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.client {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-top: 1px;
+}
+
+/* The eight sizing-border grips occupy the SM_CXFRAME (4px) ring. */
+.rn,
+.rs,
+.re,
+.rw,
+.rne,
+.rnw,
+.rse,
+.rsw {
+  position: absolute;
+  z-index: 0;
+}
+
+.rn {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--w95-frame);
+  cursor: ns-resize;
+}
+
+.rs {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--w95-frame);
+  cursor: ns-resize;
+}
+
+.rw {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--w95-frame);
+  cursor: ew-resize;
+}
+
+.re {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: var(--w95-frame);
+  cursor: ew-resize;
+}
+
+.rnw {
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nwse-resize;
+}
+
+.rse {
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nwse-resize;
+}
+
+.rne {
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nesw-resize;
+}
+
+.rsw {
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nesw-resize;
+}
