@@ -1,7 +1,8 @@
-import { Fragment, useCallback, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactElement } from "react";
 import { DesktopIcon, StartMenu, TaskBar, type StartEntry } from "../../win95";
 import type { WindowControls } from "../window/AppWindow";
+import { appIdFromPath, syncPath } from "./route";
 import WordPad from "../../apps/wordpad/WordPad";
 import MyComputer from "../../apps/my-computer/MyComputer";
 import RecycleBin from "../../apps/recycle-bin/RecycleBin";
@@ -62,8 +63,10 @@ function spawnPosition(index: number, width: number): { x: number; y: number } {
 export default function Desktop() {
   const topZ = useRef(1);
   const [wins, setWins] = useState<WinState[]>(() => {
-    const pos = spawnPosition(0, apps["personal-details"].defaultSize.width);
-    return [{ id: "personal-details", x: pos.x, y: pos.y, z: 1, minimized: false }];
+    // A /<id> deep link opens straight into that app; otherwise land on Notepad.
+    const id = appIdFromPath() ?? "personal-details";
+    const pos = spawnPosition(0, apps[id].defaultSize.width);
+    return [{ id, x: pos.x, y: pos.y, z: 1, minimized: false }];
   });
   const [selected, setSelected] = useState<string | null>(null);
   const [startOpen, setStartOpen] = useState(false);
@@ -103,6 +106,18 @@ export default function Desktop() {
     if (!visible.length) return null;
     return visible.reduce((a, b) => (b.z > a.z ? b : a)).id;
   }, [wins]);
+
+  // Keep the URL in sync with the focused app so it's shareable as /<id>. We skip
+  // a plain "/" landing (don't rewrite it to the default Notepad's id); once the
+  // user opens or focuses anything, the address bar tracks the active window.
+  const routed = useRef(appIdFromPath() !== null);
+  useEffect(() => {
+    if (!routed.current) {
+      routed.current = true;
+      return;
+    }
+    syncPath(activeId);
+  }, [activeId]);
 
   // Win95 taskbar toggle: clicking the active window minimizes it; any other
   // click restores + raises.

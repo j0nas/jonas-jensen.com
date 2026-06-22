@@ -46,6 +46,15 @@ Update an embedded app later by re-running `pnpm sync-apps <id>` and committing 
 - `sync-apps` is a **local-only** step — it needs the app's source checkout, which never
   exists in CI. Don't add it to the build/deploy pipeline.
 
+## Sharable links (desktop routing)
+
+`src/components/desktop/route.ts` routes the desktop by the focused app: every app — built-in
+or embedded — is shareable at `/<id>` (e.g. `/floor-planner`), which opens the desktop with
+that window open. `Desktop` derives its initial window from the path and `replaceState`s the
+active app's id into the URL as windows open/focus/close. App routes are single-segment, so
+they don't collide with the bare embedded builds at `/apps/<id>/`. There's no router library
+and no per-app wiring — a new registry entry is automatically deep-linkable.
+
 ## Validate
 
 Run `vp check` (format, lint, type-check) and `vp build` before committing. See `AGENTS.md`.

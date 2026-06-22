@@ -57,7 +57,7 @@ How it fits together:
 1. In the app's own repo, set a **relative base** so its bundle works from a subpath:
    `base: "./"` in its `vite.config.ts`.
 2. Add it to **`apps.manifest.json`**: `{ "id", "source" (path to the checkout, relative to
-   this repo), "build", "dist" }`.
+this repo), "build", "dist" }`.
 3. Run **`pnpm sync-apps <id>`** (omit `<id>` to sync all). This builds the app and vendors
    it into `public/apps/<id>/`.
 4. Drop a **`public/img/apps/<id>.svg`** icon (an SVG scales to both the 32px desktop icon
@@ -67,6 +67,16 @@ How it fits together:
 6. `vp check && vp build`, then commit — including the vendored `public/apps/<id>/`.
 
 To pick up new changes from an app later, re-run `pnpm sync-apps <id>` and commit the diff.
+
+## Sharable app links
+
+The desktop is routed by the focused app: every app — built-in or embedded — is shareable at
+`/<id>` (e.g. `/floor-planner`, `/wordpad`), which opens the desktop with that window already
+open and focused. Opening, focusing or closing a window keeps the address bar in sync, so the
+URL you copy always reflects what's on screen. The whole thing is client-side
+(`src/components/desktop/route.ts`) layered on the Netlify SPA rewrite — an unknown path falls
+through to the shell, which opens the matching app. (The bare embedded builds stay at
+`/apps/<id>/` for sharing an app on its own, with no desktop chrome.)
 
 ## Develop
 
