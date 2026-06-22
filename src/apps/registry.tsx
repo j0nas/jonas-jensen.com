@@ -6,6 +6,11 @@ interface AppMeta {
   iconSmall: string;
   title: string;
   defaultSize: { width: number; height: number };
+  // Set for an *embedded* app: a standalone web app built separately and vendored
+  // under public/apps/<id>/ (see scripts/sync-apps.mjs). The value is the path the
+  // hosting <iframe> points at; presence of this field is what makes the desktop
+  // render the app via EmbeddedApp and auto-surface it as an icon + Start entry.
+  embed?: string;
 }
 
 export const apps = {
@@ -39,6 +44,23 @@ export const apps = {
     title: "Personal",
     defaultSize: { width: 400, height: 300 },
   },
+  "floor-planner": {
+    icon: "/img/apps/floor-planner.svg",
+    iconSmall: "/img/apps/floor-planner.svg",
+    title: "Floor Planner",
+    defaultSize: { width: 940, height: 660 },
+    embed: "/apps/floor-planner/",
+  },
 } satisfies Record<string, AppMeta>;
 
 export type AppId = keyof typeof apps;
+
+// `apps` is declared with `satisfies` so its keys stay literal (for AppId); that
+// also narrows each value to its own literal type, hiding optional fields like
+// `embed`. Go through this accessor when you need the full AppMeta shape.
+export function appMeta(id: AppId): AppMeta {
+  return apps[id];
+}
+
+/** Ids of embedded apps (those vendored under public/apps/ and shown via an iframe). */
+export const embeddedAppIds = (Object.keys(apps) as AppId[]).filter((id) => appMeta(id).embed);

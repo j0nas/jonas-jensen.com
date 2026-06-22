@@ -1,0 +1,11 @@
+{
+  "$comment": "External apps embedded on the desktop. `source` is a path to the app's local checkout, relative to this repo's root. `scripts/sync-apps.mjs` builds each app and vendors its static output into public/apps/<id>/ (committed) so Netlify can serve it without ever seeing the app's source. After adding an entry here, also add the matching `embed` entry to src/apps/registry.tsx and an icon under public/img/apps/.",
+  "apps": [
+    {
+      "id": "floor-planner",
+      "source": "../../3d/floor-boards-planner",
+      "build": "pnpm run build",
+      "dist": "dist"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- seam/backing colour shows through the 1px gaps between planks -->
+  <rect x="1" y="1" width="30" height="30" fill="#7a5a30"/>
+  <!-- five staggered plank rows, two wood tones -->
+  <rect x="2"  y="2"  width="11" height="5" fill="#caa15f"/>
+  <rect x="14" y="2"  width="16" height="5" fill="#bd9152"/>
+  <rect x="2"  y="8"  width="20" height="5" fill="#bd9152"/>
+  <rect x="23" y="8"  width="7"  height="5" fill="#caa15f"/>
+  <rect x="2"  y="14" width="7"  height="5" fill="#caa15f"/>
+  <rect x="10" y="14" width="20" height="5" fill="#bd9152"/>
+  <rect x="2"  y="20" width="16" height="5" fill="#bd9152"/>
+  <rect x="19" y="20" width="11" height="5" fill="#caa15f"/>
+  <rect x="2"  y="26" width="11" height="4" fill="#caa15f"/>
+  <rect x="14" y="26" width="16" height="4" fill="#bd9152"/>
+  <!-- frame -->
+  <rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="#4a3520"/>
+</svg>

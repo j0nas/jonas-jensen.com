@@ -7,7 +7,8 @@ import MyComputer from "../../apps/my-computer/MyComputer";
 import RecycleBin from "../../apps/recycle-bin/RecycleBin";
 import Notepad from "../../apps/notepad/Notepad";
 import Personal from "../../apps/personal/Personal";
-import { apps, type AppId } from "../../apps/registry";
+import EmbeddedApp from "../../apps/embedded/EmbeddedApp";
+import { apps, appMeta, embeddedAppIds, type AppId } from "../../apps/registry";
 import styles from "./Desktop.module.css";
 
 // Desktop icons down the left edge. Labels differ from window titles (e.g. the
@@ -18,6 +19,8 @@ const DESKTOP_ICONS: { id: string; appId: AppId; label: string }[] = [
   { id: "wordpad", appId: "wordpad", label: "Document.rtf" },
   { id: "personal-details", appId: "personal-details", label: "personal-details.txt" },
   { id: "personal", appId: "personal", label: "Personal" },
+  // Embedded apps (registry `embed` field) get a desktop icon automatically.
+  ...embeddedAppIds.map((id) => ({ id, appId: id, label: apps[id].title })),
 ];
 
 const NOTEPAD_CONTENT = `Hi, I'm Jonas. I'm a software developer based in Oslo, Norway. I'm super passionate about computers, technology, animal rights and tinkering. Currently working on https://pep.dev.
@@ -34,8 +37,10 @@ interface WinState {
   minimized: boolean;
 }
 
-// Renders each app's body, handing it the window controls Desktop computes.
-const renderers: Record<AppId, (controls: WindowControls) => ReactElement> = {
+// Renders each built-in app's body, handing it the window controls Desktop
+// computes. Embedded apps (registry `embed` field) aren't listed here — they're
+// rendered generically via <EmbeddedApp> in the window loop below.
+const renderers: Partial<Record<AppId, (controls: WindowControls) => ReactElement>> = {
   "personal-details": (controls) => <Notepad controls={controls} content={NOTEPAD_CONTENT} />,
   wordpad: (controls) => <WordPad controls={controls} />,
   "my-computer": (controls) => <MyComputer controls={controls} />,
@@ -125,6 +130,12 @@ export default function Desktop() {
         submenu: [
           { label: "&WordPad", icon: apps.wordpad.iconSmall, onClick: () => openApp("wordpad") },
           { label: "&Personal", icon: apps.personal.iconSmall, onClick: () => openApp("personal") },
+          // Embedded apps (registry `embed` field) get a Programs entry automatically.
+          ...embeddedAppIds.map((id) => ({
+            label: apps[id].title,
+            icon: apps[id].iconSmall,
+            onClick: () => openApp(id),
+          })),
         ],
       },
       {
@@ -183,20 +194,27 @@ export default function Desktop() {
         ))}
       </div>
 
-      {wins.map((w) => (
-        <Fragment key={w.id}>
-          {renderers[w.id]({
-            initialX: w.x,
-            initialY: w.y,
-            zIndex: w.z,
-            active: w.id === activeId,
-            minimized: w.minimized,
-            onFocus: () => focusApp(w.id),
-            onClose: () => closeApp(w.id),
-            onMinimize: () => minimizeApp(w.id),
-          })}
-        </Fragment>
-      ))}
+      {wins.map((w) => {
+        const controls: WindowControls = {
+          initialX: w.x,
+          initialY: w.y,
+          zIndex: w.z,
+          active: w.id === activeId,
+          minimized: w.minimized,
+          onFocus: () => focusApp(w.id),
+          onClose: () => closeApp(w.id),
+          onMinimize: () => minimizeApp(w.id),
+        };
+        return (
+          <Fragment key={w.id}>
+            {appMeta(w.id).embed ? (
+              <EmbeddedApp id={w.id} controls={controls} />
+            ) : (
+              renderers[w.id]?.(controls)
+            )}
+          </Fragment>
+        );
+      })}
 
       <TaskBar
         windows={taskButtons}
