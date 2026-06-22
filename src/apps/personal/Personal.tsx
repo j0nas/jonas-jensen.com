@@ -3,6 +3,7 @@ import { StatusBar } from "../../win95";
 import styles from "./Personal.module.css";
 
 const shortcuts = [
+  { label: "Jellyfin", url: "https://j0nas.comet.usbx.me/jellyfin/", icon: "/img/personal/jellyfin.png" },
   { label: "Seerr", url: "https://j0nas.comet.usbx.me/seerr", icon: "/img/personal/overseerr.png" },
   { label: "Sonarr", url: "https://j0nas.comet.usbx.me/sonarr", icon: "/img/personal/sonarr.png" },
   { label: "Radarr", url: "https://j0nas.comet.usbx.me/radarr", icon: "/img/personal/radarr.png" },
