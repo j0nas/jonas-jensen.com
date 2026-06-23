@@ -3,8 +3,16 @@ import { StatusBar } from "../../win95";
 import styles from "./Personal.module.css";
 
 const shortcuts = [
-  { label: "Jellyfin", url: "https://j0nas.comet.usbx.me/jellyfin/", icon: "/img/personal/jellyfin.png" },
-  { label: "Audiobookshelf", url: "https://audiobookshelf-j0nas.comet.usbx.me/audiobookshelf/", icon: "/img/personal/audiobookshelf.png" },
+  {
+    label: "Jellyfin",
+    url: "https://j0nas.comet.usbx.me/jellyfin/",
+    icon: "/img/personal/jellyfin.png",
+  },
+  {
+    label: "Audiobookshelf",
+    url: "https://audiobookshelf-j0nas.comet.usbx.me/audiobookshelf/",
+    icon: "/img/personal/audiobookshelf.png",
+  },
 ];
 
 interface PersonalProps {
