@@ -11,40 +11,48 @@ component library in `src/win95/`. There are two kinds of "apps" on the desktop:
 - **Built-in apps** — written against `src/win95/` (Notepad, WordPad, My Computer, …). Each
   renders its body inside an `AppWindow` and is wired in `src/components/desktop/Desktop.tsx`.
 - **Embedded apps** — separate, standalone web apps (their own repo, toolchain, deps and
-  styles) hosted inside a Win95 window via an `<iframe>`. The Floor Planner is the first.
+  styles) that **deploy themselves**. The desktop embeds each one's _live_ deploy inside a
+  Win95 window via an `<iframe>`, served under a same-origin proxy. The Floor Planner
+  (`github.com/j0nas/floor-boards-planner` → GitHub Pages) is the first.
 
 ## Adding an embedded app
 
-Embedded apps are vendored as static bundles under `public/apps/<id>/` and surfaced by a
-single registry entry. Adding one is fully data-driven — no new component, no `Desktop.tsx`
-edit:
+The app owns its build and deploy; this repo only proxies to it and registers it. The app is
+the source of truth — once added, **updating it is just pushing the app's repo** (it
+redeploys and the desktop serves the new build live; no change here). Adding one is
+data-driven — no new component, no `Desktop.tsx` edit:
 
-1. **In the app's own repo:** set a relative base so the bundle works from a subpath —
-   `base: "./"` in its `vite.config.ts`.
-2. **Manifest:** add an entry to `apps.manifest.json` — `{ "id", "source", "build", "dist" }`,
-   where `source` is the path to the app's local checkout, relative to this repo.
-3. **Vendor it:** `pnpm sync-apps <id>` (omit `<id>` to sync every app in the manifest). This
-   builds the app and copies its `dist/` into `public/apps/<id>/`.
+1. **In the app's own repo:** set a relative base (`base: "./"` in its `vite.config.ts`) so
+   assets resolve under both its own deploy path and the proxied subpath, and give it a deploy
+   that publishes on push (e.g. a GitHub Pages Actions workflow). Note its deploy URL.
+2. **Proxy it (prod):** add a rule to `netlify.toml`, _above_ the SPA catch-all:
+   ```toml
+   [[redirects]]
+   from = "/apps/<id>/*"
+   to = "<app deploy URL>/:splat"
+   status = 200
+   ```
+3. **Proxy it (dev/preview):** mirror that in `vite.config.ts`'s `embeddedProxy` so `vp dev` /
+   `vp preview` load the same live build locally.
 4. **Icon:** add `public/img/apps/<id>.svg` (one SVG scales to both the 32px desktop icon and
    the 16px title-bar/taskbar icon).
 5. **Register:** add an entry to `src/apps/registry.tsx` with `title`, `defaultSize`,
    `icon`/`iconSmall` (the SVG at both), and `embed: "/apps/<id>/"`. The desktop icon, the
    Start › Programs entry, and the window rendering all derive from this automatically.
-6. **Validate & commit:** `vp check && vp build`, then commit — including the vendored
-   `public/apps/<id>/`.
-
-Update an embedded app later by re-running `pnpm sync-apps <id>` and committing the diff.
+6. **Validate & commit:** `vp check && vp build`, then commit.
 
 ### Invariants — do not break these
 
-- `public/apps/**` is **generated, committed output**. Never hand-edit it; refresh it only via
-  `pnpm sync-apps`. It is excluded from format/lint via `ignorePatterns` in `vite.config.ts`.
-- The bundle is committed on purpose: Netlify only ever checks out this repo, so vendoring is
-  what makes the app deployable. CI does nothing app-specific — `pnpm run build` just copies
-  `public/` into `dist/`. The SPA rewrite in `netlify.toml` has no `force`, so real files at
-  `/apps/<id>/` are served in preference to the `/index.html` fallback.
-- `sync-apps` is a **local-only** step — it needs the app's source checkout, which never
-  exists in CI. Don't add it to the build/deploy pipeline.
+- The embedded app is the **source of truth** and deploys itself. This repo never vendors,
+  builds, or commits the app's bundle — it only proxies to the live deploy. An app update
+  needs no commit here.
+- The proxy rule must **precede** the SPA catch-all in `netlify.toml` (Netlify applies the
+  first matching rule). A `200`-rewrite to an external URL proxies it **same-origin**, so the
+  `<iframe>` and the shareable `/apps/<id>/` link need no CORS or framing exceptions.
+- Keep the two proxy definitions in sync: `netlify.toml` (production) and the `embeddedProxy`
+  in `vite.config.ts` (dev + preview) must point at the same deploy.
+- The app **must** use a relative base (`base: "./"`); an absolute base would break under the
+  proxied subpath.
 
 ## Sharable links (desktop routing)
 

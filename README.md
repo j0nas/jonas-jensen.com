@@ -36,37 +36,38 @@ registry metadata with the live window controls.
 Some "apps" on the desktop are **separate, self-contained web apps** — their own repo,
 toolchain, dependencies and styles — hosted inside a Win95 window via an `<iframe>` rather
 than written against `src/win95/`. The first is the **Floor Planner** (a React + Tailwind
-laminate floor-layout planner). Embedding keeps the desktop shell free of each app's
-dependencies and gives every app full style/JS isolation; the Win95 chrome just supplies the
-window frame.
+laminate floor-layout planner, at
+[`j0nas/floor-boards-planner`](https://github.com/j0nas/floor-boards-planner)). Embedding
+keeps the desktop shell free of each app's dependencies and gives every app full style/JS
+isolation; the Win95 chrome just supplies the window frame.
+
+Each embedded app **is the source of truth and deploys itself** (the Floor Planner builds to
+GitHub Pages on every push). The desktop embeds its _live_ deploy rather than a vendored copy,
+so updating an app is just pushing that app's repo — nothing here changes.
 
 How it fits together:
 
-- **`apps.manifest.json`** lists each external app and the path to its local checkout.
-- **`scripts/sync-apps.mjs`** (`pnpm sync-apps`) builds each app and copies its static
-  bundle into **`public/apps/<id>/`**, which is committed. Netlify only ever checks out this
-  repo, so vendoring the build is what lets it serve the app — CI does nothing special, it
-  just copies `public/` into `dist/`. Netlify serves these real files in preference to the
-  SPA rewrite, so `/apps/<id>/` loads the app, not the desktop shell.
+- **`netlify.toml`** proxies `/apps/<id>/*` to the app's live deploy with a `200` rewrite,
+  which keeps it **same-origin** — so the `<iframe>` and the shareable `/apps/<id>/` link need
+  no CORS or framing exceptions. The proxy rule sits above the SPA catch-all (first match
+  wins). `vite.config.ts` mirrors the same proxy for `vp dev` / `vp preview`.
 - **`src/apps/registry.tsx`** — an app with an `embed` path is rendered generically by
   **`src/apps/embedded/EmbeddedApp.tsx`** and is automatically given a desktop icon and a
   Start › Programs entry. No per-app component or `Desktop` wiring is needed.
 
 ### Adding an embedded app
 
-1. In the app's own repo, set a **relative base** so its bundle works from a subpath:
-   `base: "./"` in its `vite.config.ts`.
-2. Add it to **`apps.manifest.json`**: `{ "id", "source" (path to the checkout, relative to
-this repo), "build", "dist" }`.
-3. Run **`pnpm sync-apps <id>`** (omit `<id>` to sync all). This builds the app and vendors
-   it into `public/apps/<id>/`.
+1. In the app's own repo, set a **relative base** (`base: "./"`) so its bundle works under a
+   subpath, and give it a deploy that publishes on push (e.g. a GitHub Pages workflow). Note
+   its deploy URL.
+2. Add a **proxy rule** to `netlify.toml`, above the SPA catch-all:
+   `from = "/apps/<id>/*"`, `to = "<app deploy URL>/:splat"`, `status = 200`.
+3. Mirror that proxy in **`vite.config.ts`**'s `embeddedProxy` (so dev/preview match prod).
 4. Drop a **`public/img/apps/<id>.svg`** icon (an SVG scales to both the 32px desktop icon
    and 16px title-bar/taskbar icon).
 5. Add a registry entry to **`src/apps/registry.tsx`** with `title`, `defaultSize`, the icon
    at both `icon`/`iconSmall`, and `embed: "/apps/<id>/"`.
-6. `vp check && vp build`, then commit — including the vendored `public/apps/<id>/`.
-
-To pick up new changes from an app later, re-run `pnpm sync-apps <id>` and commit the diff.
+6. `vp check && vp build`, then commit.
 
 ## Sharable app links
 

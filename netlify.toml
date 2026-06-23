@@ -2,6 +2,24 @@
 command = "pnpm run build"
 publish = "dist"
 
+# ── Embedded apps ───────────────────────────────────────────────────────────
+# Each embedded app is a separate repo that deploys itself — the app is the
+# source of truth. The desktop embeds the *live* deploy by proxying its path to
+# that deploy, so nothing is re-vendored here: pushing the app ships it.
+#
+# These proxy rules MUST precede the SPA catch-all below. Netlify applies the
+# first matching rule, and a 200-rewrite to an external URL proxies it
+# same-origin — so the <iframe> and the shareable /apps/<id>/ link need no CORS
+# or framing exceptions, and the app's relative (base: "./") asset paths resolve
+# under the subpath.
+[[redirects]]
+from = "/apps/floor-planner/*"
+to = "https://j0nas.github.io/floor-boards-planner/:splat"
+status = 200
+
+# SPA fallback for the desktop shell. A deep link like /floor-planner is an
+# unknown path that falls through to the shell, which opens the matching window.
+# Keep this last.
 [[redirects]]
 from = "/*"
 to = "/index.html"

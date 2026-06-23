@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vp dev",
     "build": "tsc -b && vp build",
-    "preview": "vp preview",
-    "sync-apps": "node scripts/sync-apps.mjs"
+    "preview": "vp preview"
   },
   "dependencies": {
     "react": "^19.2.7",

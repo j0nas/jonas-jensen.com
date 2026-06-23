@@ -6,10 +6,11 @@ interface AppMeta {
   iconSmall: string;
   title: string;
   defaultSize: { width: number; height: number };
-  // Set for an *embedded* app: a standalone web app built separately and vendored
-  // under public/apps/<id>/ (see scripts/sync-apps.mjs). The value is the path the
-  // hosting <iframe> points at; presence of this field is what makes the desktop
-  // render the app via EmbeddedApp and auto-surface it as an icon + Start entry.
+  // Set for an *embedded* app: a standalone web app in its own repo that deploys
+  // itself, served here by a same-origin proxy to that live deploy (see the
+  // /apps/<id>/ rule in netlify.toml). The value is the path the hosting <iframe>
+  // points at; presence of this field is what makes the desktop render the app
+  // via EmbeddedApp and auto-surface it as an icon + Start entry.
   embed?: string;
 }
 
@@ -62,5 +63,5 @@ export function appMeta(id: AppId): AppMeta {
   return apps[id];
 }
 
-/** Ids of embedded apps (those vendored under public/apps/ and shown via an iframe). */
+/** Ids of embedded apps (separate self-deploying apps shown via a proxied iframe). */
 export const embeddedAppIds = (Object.keys(apps) as AppId[]).filter((id) => appMeta(id).embed);
