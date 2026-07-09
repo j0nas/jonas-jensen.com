@@ -10,6 +10,11 @@ const embeddedProxy = {
     changeOrigin: true,
     rewrite: (p: string) => p.replace(/^\/apps\/floor-planner/, "/floor-boards-planner"),
   },
+  "/apps/deck-box": {
+    target: "https://j0nas.github.io",
+    changeOrigin: true,
+    rewrite: (p: string) => p.replace(/^\/apps\/deck-box/, "/parametric-mtg-deck-box"),
+  },
 };
 
 // https://vite.dev/config/

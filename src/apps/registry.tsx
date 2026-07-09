@@ -52,6 +52,13 @@ export const apps = {
     defaultSize: { width: 940, height: 660 },
     embed: "/apps/floor-planner/",
   },
+  "deck-box": {
+    icon: "/img/apps/deck-box.svg",
+    iconSmall: "/img/apps/deck-box.svg",
+    title: "Deck Box Builder",
+    defaultSize: { width: 980, height: 680 },
+    embed: "/apps/deck-box/",
+  },
 } satisfies Record<string, AppMeta>;
 
 export type AppId = keyof typeof apps;
