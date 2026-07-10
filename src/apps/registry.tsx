@@ -59,6 +59,13 @@ export const apps = {
     defaultSize: { width: 980, height: 680 },
     embed: "/apps/deck-box/",
   },
+  "laser-deck-box": {
+    icon: "/img/apps/laser-deck-box.svg",
+    iconSmall: "/img/apps/laser-deck-box.svg",
+    title: "Laser Deck Box",
+    defaultSize: { width: 980, height: 680 },
+    embed: "/apps/laser-deck-box/",
+  },
 } satisfies Record<string, AppMeta>;
 
 export type AppId = keyof typeof apps;

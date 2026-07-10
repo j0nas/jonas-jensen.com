@@ -15,6 +15,11 @@ const embeddedProxy = {
     changeOrigin: true,
     rewrite: (p: string) => p.replace(/^\/apps\/deck-box/, "/parametric-mtg-deck-box"),
   },
+  "/apps/laser-deck-box": {
+    target: "https://j0nas.github.io",
+    changeOrigin: true,
+    rewrite: (p: string) => p.replace(/^\/apps\/laser-deck-box/, "/laser-mtg-deck-box"),
+  },
 };
 
 // https://vite.dev/config/
