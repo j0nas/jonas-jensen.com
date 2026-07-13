@@ -36,6 +36,7 @@ interface WinState {
   y: number;
   z: number;
   minimized: boolean;
+  maximized: boolean; // spawn state only — the window owns maximize/restore after that
 }
 
 // Renders each built-in app's body, handing it the window controls Desktop
@@ -60,13 +61,30 @@ function spawnPosition(index: number, width: number): { x: number; y: number } {
   return { x, y: offset };
 }
 
+// A window whose default frame can't fit the viewport spawns maximized: win95 chrome at 980px on
+// a 390px phone is unusable, and a deep-linked builder should land ready to use. Height leaves
+// room for the taskbar and a little cascade offset. Desktop-sized viewports are unaffected.
+function spawnMaximized({ width, height }: { width: number; height: number }): boolean {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < width + 16 || window.innerHeight < height + 76;
+}
+
 export default function Desktop() {
   const topZ = useRef(1);
   const [wins, setWins] = useState<WinState[]>(() => {
     // A /<id> deep link opens straight into that app; otherwise land on Notepad.
     const id = appIdFromPath() ?? "personal-details";
     const pos = spawnPosition(0, apps[id].defaultSize.width);
-    return [{ id, x: pos.x, y: pos.y, z: 1, minimized: false }];
+    return [
+      {
+        id,
+        x: pos.x,
+        y: pos.y,
+        z: 1,
+        minimized: false,
+        maximized: spawnMaximized(apps[id].defaultSize),
+      },
+    ];
   });
   const [selected, setSelected] = useState<string | null>(null);
   const [startOpen, setStartOpen] = useState(false);
@@ -79,7 +97,17 @@ export default function Desktop() {
         return prev.map((w) => (w.id === id ? { ...w, z: topZ.current, minimized: false } : w));
       }
       const pos = spawnPosition(prev.length, apps[id].defaultSize.width);
-      return [...prev, { id, x: pos.x, y: pos.y, z: topZ.current, minimized: false }];
+      return [
+        ...prev,
+        {
+          id,
+          x: pos.x,
+          y: pos.y,
+          z: topZ.current,
+          minimized: false,
+          maximized: spawnMaximized(apps[id].defaultSize),
+        },
+      ];
     });
   }, []);
 
@@ -216,6 +244,7 @@ export default function Desktop() {
           zIndex: w.z,
           active: w.id === activeId,
           minimized: w.minimized,
+          initialMaximized: w.maximized,
           onFocus: () => focusApp(w.id),
           onClose: () => closeApp(w.id),
           onMinimize: () => minimizeApp(w.id),

@@ -17,6 +17,8 @@ interface WindowProps {
   active: boolean;
   /** Minimised windows stay mounted (preserving scroll/input) but unpainted. */
   minimized?: boolean;
+  /** Spawn maximized (small viewports); Restore falls back to the initial bounds. */
+  initialMaximized?: boolean;
   menu?: Menu[];
   onFocus: () => void;
   onClose: () => void;
@@ -58,6 +60,7 @@ export default function Window({
   zIndex,
   active,
   minimized = false,
+  initialMaximized = false,
   menu,
   onFocus,
   onClose,
@@ -66,7 +69,7 @@ export default function Window({
 }: WindowProps) {
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const [size, setSize] = useState({ w: width, h: height });
-  const [maximized, setMaximized] = useState(false);
+  const [maximized, setMaximized] = useState(initialMaximized);
   const restoreBounds = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const dragCleanup = useRef<(() => void) | undefined>(undefined);
 

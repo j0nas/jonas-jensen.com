@@ -9,6 +9,7 @@ export interface WindowControls {
   zIndex: number;
   active: boolean;
   minimized: boolean;
+  initialMaximized?: boolean;
   onFocus: () => void;
   onClose: () => void;
   onMinimize: () => void;
