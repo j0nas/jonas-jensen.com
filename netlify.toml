@@ -2,6 +2,28 @@
 command = "pnpm run build"
 publish = "dist"
 
+# ── Canonical host ──────────────────────────────────────────────────────────
+# jona.no is the primary domain. jonas-jensen.com stays attached to the site so
+# existing links keep resolving, but every request to it 301s to the canonical
+# host. Netlify's "primary domain" setting only governs the www/apex pairing of
+# the primary itself — it does *not* redirect other domain aliases, which would
+# otherwise leave both hosts serving identical content at 200.
+#
+# These MUST precede the proxy and SPA rules below: Netlify applies the first
+# matching rule, so anything above would strand legacy-host traffic on the old
+# domain. `force = true` is required to override the alias's own 200 response.
+[[redirects]]
+from = "https://jonas-jensen.com/*"
+to = "https://jona.no/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://www.jonas-jensen.com/*"
+to = "https://jona.no/:splat"
+status = 301
+force = true
+
 # ── Embedded apps ───────────────────────────────────────────────────────────
 # Each embedded app is a separate repo that deploys itself — the app is the
 # source of truth. The desktop embeds the *live* deploy by proxying its path to
