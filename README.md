@@ -4,6 +4,9 @@ A personal site styled as a Windows 95 desktop — draggable windows, a Start me
 taskbar, and a handful of "apps" (Notepad, WordPad, My Computer, Recycle Bin, Personal), plus
 standalone web apps (e.g. the Floor Planner) embedded in their own windows.
 
+Live at **[jona.no](https://jona.no)** (the older `jonas-jensen.com` redirects there — see
+[Domains](#domains)).
+
 Built with **React 19**, managed end-to-end by **[Vite+](https://viteplus.dev/)** (the `vp`
 CLI — Vite/Rolldown build, Oxlint, Oxfmt, Vitest). The Windows 95 UI is **our own component
 library** (`src/win95/`) — no third-party UI dependency.
@@ -93,3 +96,53 @@ vp preview   # serve the production build
 
 Deployed to Netlify. `pnpm run build` outputs a static SPA to `dist/`; `netlify.toml`
 rewrites all routes to `/index.html`.
+
+## Domains
+
+**`jona.no` is the canonical domain.** `jonas-jensen.com` stays attached to the site so older
+links keep resolving, but every request to it `301`s to `jona.no` with the path and query
+preserved. Both are registered at Domeneshop.
+
+DNS for `jona.no` is served by **Domeneshop's own nameservers** (`hyp.net`), not Netlify DNS.
+That's deliberate: the domain has **DNSSEC** enabled and Netlify DNS cannot sign zones, so
+delegating would mean giving it up. Netlify issues Let's Encrypt certificates for
+externally-hosted DNS either way, so managed DNS would only have bought convenience.
+
+The zone is two records, both pointing at the Netlify site:
+
+| Host          | TTL   | Type  | Value                          |
+| ------------- | ----- | ----- | ------------------------------ |
+| `jona.no`     | 5 min | ANAME | `jonas-jensen-com.netlify.app` |
+| `www.jona.no` | 5 min | CNAME | `jonas-jensen-com.netlify.app` |
+
+The apex is an **ANAME** (Domeneshop's flattened alias), not a hardcoded `A` record — Netlify
+serves the apex from load-balancer IPs that change, so an ANAME follows them automatically.
+For the same reason the TTL is deliberately **short**: Netlify's own DNS serves these records
+at 120s. Don't raise it to "reduce query volume" — the only effect is a longer window pointing
+at a dead IP if Netlify moves one.
+
+`www.jona.no` and `http://` are redirected to the canonical apex by Netlify itself; the
+`jonas-jensen.com` redirect is not, and lives in `netlify.toml` (see below).
+
+### Adding or changing a domain
+
+Four things have to line up, and three of them fail quietly:
+
+1. **DNS records** at Domeneshop — apex `ANAME`, `www` `CNAME`, both to
+   `<site>.netlify.app`.
+2. **A domain alias on the Netlify site.** DNS alone is not enough: until the hostname is
+   attached to the site, Netlify answers `404` and won't request a certificate for it.
+3. **A certificate covering the new hostname.** Netlify does _not_ auto-provision one when an
+   alias is added — force it with `POST /api/v1/sites/<site_id>/ssl/renew`. (The documented
+   `POST …/ssl` refuses with "certificate parameter is required" whenever a cert already
+   exists, and issuance is async — the CDN edge trails the API by a few minutes.)
+4. **An explicit redirect**, if the domain should be non-canonical. Netlify's "primary domain"
+   setting only governs the `www`/apex pairing _of the primary itself_ — it does **not**
+   redirect other aliases, which otherwise keep serving identical content at `200`. The
+   host-scoped `301`s in `netlify.toml` do that, and must precede the `/apps/*` proxies and the
+   SPA catch-all so legacy-host traffic is redirected before any other rule can match.
+
+**Never change nameservers while DNSSEC is enabled.** The registry's `DS` records pin the old
+signing keys, so delegating elsewhere without removing them first makes every validating
+resolver return `SERVFAIL` — a hard outage, not a degraded one. Order is: records at the new
+provider → switch nameservers → verify resolution → _then_ re-enable DNSSEC.

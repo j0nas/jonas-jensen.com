@@ -49,6 +49,11 @@ from = "/apps/laser-deck-box/*"
 to = "https://j0nas.github.io/laser-mtg-deck-box/:splat"
 status = 200
 
+[[redirects]]
+from = "/apps/lamp-shade/*"
+to = "https://j0nas.github.io/lamp-shade-designer/:splat"
+status = 200
+
 # SPA fallback for the desktop shell. A deep link like /floor-planner is an
 # unknown path that falls through to the shell, which opens the matching window.
 # Keep this last.

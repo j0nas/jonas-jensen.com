@@ -66,6 +66,13 @@ export const apps = {
     defaultSize: { width: 980, height: 680 },
     embed: "/apps/laser-deck-box/",
   },
+  "lamp-shade": {
+    icon: "/img/apps/lamp-shade.svg",
+    iconSmall: "/img/apps/lamp-shade.svg",
+    title: "Lamp Shade Designer",
+    defaultSize: { width: 1040, height: 720 },
+    embed: "/apps/lamp-shade/",
+  },
 } satisfies Record<string, AppMeta>;
 
 export type AppId = keyof typeof apps;
