@@ -13,6 +13,11 @@ const shortcuts = [
     url: "https://audiobookshelf-j0nas.comet.usbx.me/audiobookshelf/",
     icon: "/img/personal/audiobookshelf.png",
   },
+  {
+    label: "LazyLibrarian",
+    url: "https://j0nas.comet.usbx.me/lazylibrarian/",
+    icon: "/img/personal/lazylibrarian.png",
+  },
 ];
 
 interface PersonalProps {
