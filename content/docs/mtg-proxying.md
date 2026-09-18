@@ -47,8 +47,10 @@ Norwegian prices, September 2026, incl. VAT. Ink costs are rough estimates based
 | Epson 114 ink, original, 6 x 70 ml at ~200 kr each, ~1 200 kr / set                                                                                                   | ~0.27 kr     | ~0.55 kr     | ~0.27 kr                |
 | A bulk common to stick the foil on                                                                                                                                    |              |              | whatever you paid       |
 | [66x91 mm perfect-fit inner sleeves, black](https://www.aliexpress.com/item/1005006897863485.html), ~250 kr / 500                                                     | 0.50 kr      | 0.50 kr      | 0.50 kr                 |
-| **Per card**                                                                                                                                                          | **~1.22 kr** | **~1.75 kr** | **~1.42 kr + a common** |
-| **Per 100-card deck**                                                                                                                                                 | **~120 kr**  | **~175 kr**  | **~140 kr + commons**   |
+| **Per card, unsleeved**                                                                                                                                               | **~0.72 kr** | **~1.25 kr** | **~0.92 kr + a common** |
+| **Per card, sleeved**                                                                                                                                                 | **~1.22 kr** | **~1.75 kr** | **~1.42 kr + a common** |
+| **Per 100-card deck, unsleeved**                                                                                                                                      | **~70 kr**   | **~125 kr**  | **~90 kr + commons**    |
+| **Per 100-card deck, sleeved**                                                                                                                                        | **~120 kr**  | **~175 kr**  | **~140 kr + commons**   |
 
 ## One-off equipment
 
