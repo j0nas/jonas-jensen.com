@@ -1,4 +1,5 @@
 import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
+import { folderMenu } from "../folderMenu";
 
 const panel: React.CSSProperties = {
   flex: 1,
@@ -11,7 +12,7 @@ const panel: React.CSSProperties = {
 
 export default function MyComputer({ controls }: { controls: WindowControls }) {
   return (
-    <AppWindow id="my-computer" controls={controls}>
+    <AppWindow id="my-computer" controls={controls} menu={folderMenu(controls.onClose)}>
       <div style={panel}>
         <p style={{ margin: 0 }}>My Computer</p>
         <p style={{ marginTop: 8, color: "var(--w95-gray-text)" }}>This is a placeholder window.</p>

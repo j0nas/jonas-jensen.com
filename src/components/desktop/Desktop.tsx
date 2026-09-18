@@ -2,14 +2,24 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import type { ReactElement } from "react";
 import { DesktopIcon, StartMenu, TaskBar, type StartEntry } from "../../win95";
 import type { WindowControls } from "../window/AppWindow";
-import { appIdFromPath, syncPath } from "./route";
+import { windowIdFromPath, syncPath } from "./route";
 import WordPad from "../../apps/wordpad/WordPad";
 import MyComputer from "../../apps/my-computer/MyComputer";
 import RecycleBin from "../../apps/recycle-bin/RecycleBin";
 import Notepad from "../../apps/notepad/Notepad";
 import Personal from "../../apps/personal/Personal";
+import Documents from "../../apps/documents/Documents";
+import DocViewer from "../../apps/documents/DocViewer";
 import EmbeddedApp from "../../apps/embedded/EmbeddedApp";
-import { apps, appMeta, embeddedAppIds, type AppId } from "../../apps/registry";
+import {
+  apps,
+  embeddedAppIds,
+  isDocWindow,
+  windowMeta,
+  type AppId,
+  type WindowId,
+} from "../../apps/registry";
+import { docs } from "../../docs";
 import styles from "./Desktop.module.css";
 
 // Desktop icons down the left edge. Labels differ from window titles (e.g. the
@@ -20,6 +30,7 @@ const DESKTOP_ICONS: { id: string; appId: AppId; label: string }[] = [
   { id: "wordpad", appId: "wordpad", label: "Document.rtf" },
   { id: "personal-details", appId: "personal-details", label: "personal-details.txt" },
   { id: "personal", appId: "personal", label: "Personal" },
+  { id: "documents", appId: "documents", label: "Documents" },
   // Embedded apps (registry `embed` field) get a desktop icon automatically.
   ...embeddedAppIds.map((id) => ({ id, appId: id, label: apps[id].title })),
 ];
@@ -28,10 +39,10 @@ const NOTEPAD_CONTENT = `Hi, I'm Jonas. I'm a software developer based in Oslo, 
 
 I love to use my skills to make people's lives better in whatever ways I can and to build things that do so. If you do too, feel free to reach out at: jonas.jensen@msn.com`;
 
-// Each open window's live state. Position is fixed at spawn; the window owns
-// its own dragging after that.
+// Each open window's live state — an app or a document (see WindowId). Position
+// is fixed at spawn; the window owns its own dragging after that.
 interface WinState {
-  id: AppId;
+  id: WindowId;
   x: number;
   y: number;
   z: number;
@@ -40,14 +51,17 @@ interface WinState {
 }
 
 // Renders each built-in app's body, handing it the window controls Desktop
-// computes. Embedded apps (registry `embed` field) aren't listed here — they're
-// rendered generically via <EmbeddedApp> in the window loop below.
-const renderers: Partial<Record<AppId, (controls: WindowControls) => ReactElement>> = {
+// computes. Embedded apps (registry `embed` field) and documents (docs/<slug>
+// window ids) aren't listed here — they're rendered generically in the window
+// loop below.
+type Renderer = (controls: WindowControls, open: (id: WindowId) => void) => ReactElement;
+const renderers: Partial<Record<AppId, Renderer>> = {
   "personal-details": (controls) => <Notepad controls={controls} content={NOTEPAD_CONTENT} />,
   wordpad: (controls) => <WordPad controls={controls} />,
   "my-computer": (controls) => <MyComputer controls={controls} />,
   "recycle-bin": (controls) => <RecycleBin controls={controls} />,
   personal: (controls) => <Personal controls={controls} />,
+  documents: (controls, open) => <Documents controls={controls} onOpen={open} />,
 };
 
 // Desktop icons occupy a ~96px column on the left; spawn windows clear of it
@@ -72,9 +86,9 @@ function spawnMaximized({ width, height }: { width: number; height: number }): b
 export default function Desktop() {
   const topZ = useRef(1);
   const [wins, setWins] = useState<WinState[]>(() => {
-    // A /<id> deep link opens straight into that app; otherwise land on Notepad.
-    const id = appIdFromPath() ?? "personal-details";
-    const pos = spawnPosition(0, apps[id].defaultSize.width);
+    // A /<id> or /docs/<slug> deep link opens straight into that window; otherwise land on Notepad.
+    const id = windowIdFromPath() ?? "personal-details";
+    const pos = spawnPosition(0, windowMeta(id).defaultSize.width);
     return [
       {
         id,
@@ -82,21 +96,21 @@ export default function Desktop() {
         y: pos.y,
         z: 1,
         minimized: false,
-        maximized: spawnMaximized(apps[id].defaultSize),
+        maximized: spawnMaximized(windowMeta(id).defaultSize),
       },
     ];
   });
   const [selected, setSelected] = useState<string | null>(null);
   const [startOpen, setStartOpen] = useState(false);
 
-  const openApp = useCallback((id: AppId) => {
+  const openApp = useCallback((id: WindowId) => {
     setWins((prev) => {
       topZ.current += 1;
       const existing = prev.find((w) => w.id === id);
       if (existing) {
         return prev.map((w) => (w.id === id ? { ...w, z: topZ.current, minimized: false } : w));
       }
-      const pos = spawnPosition(prev.length, apps[id].defaultSize.width);
+      const pos = spawnPosition(prev.length, windowMeta(id).defaultSize.width);
       return [
         ...prev,
         {
@@ -105,17 +119,17 @@ export default function Desktop() {
           y: pos.y,
           z: topZ.current,
           minimized: false,
-          maximized: spawnMaximized(apps[id].defaultSize),
+          maximized: spawnMaximized(windowMeta(id).defaultSize),
         },
       ];
     });
   }, []);
 
-  const closeApp = useCallback((id: AppId) => {
+  const closeApp = useCallback((id: WindowId) => {
     setWins((prev) => prev.filter((w) => w.id !== id));
   }, []);
 
-  const focusApp = useCallback((id: AppId) => {
+  const focusApp = useCallback((id: WindowId) => {
     setWins((prev) => {
       const w = prev.find((x) => x.id === id);
       if (w && w.z === topZ.current && !w.minimized) return prev;
@@ -124,7 +138,7 @@ export default function Desktop() {
     });
   }, []);
 
-  const minimizeApp = useCallback((id: AppId) => {
+  const minimizeApp = useCallback((id: WindowId) => {
     setWins((prev) => prev.map((w) => (w.id === id ? { ...w, minimized: true } : w)));
   }, []);
 
@@ -135,10 +149,11 @@ export default function Desktop() {
     return visible.reduce((a, b) => (b.z > a.z ? b : a)).id;
   }, [wins]);
 
-  // Keep the URL in sync with the focused app so it's shareable as /<id>. We skip
-  // a plain "/" landing (don't rewrite it to the default Notepad's id); once the
-  // user opens or focuses anything, the address bar tracks the active window.
-  const routed = useRef(appIdFromPath() !== null);
+  // Keep the URL in sync with the focused window so it's shareable as /<id> or
+  // /docs/<slug>. We skip a plain "/" landing (don't rewrite it to the default
+  // Notepad's id); once the user opens or focuses anything, the address bar
+  // tracks the active window.
+  const routed = useRef(windowIdFromPath() !== null);
   useEffect(() => {
     if (!routed.current) {
       routed.current = true;
@@ -151,7 +166,7 @@ export default function Desktop() {
   // click restores + raises.
   const onTaskClick = useCallback(
     (id: string) => {
-      const appId = id as AppId;
+      const appId = id as WindowId;
       setWins((prev) => {
         const w = prev.find((x) => x.id === appId);
         if (!w) return prev;
@@ -173,6 +188,11 @@ export default function Desktop() {
         submenu: [
           { label: "&WordPad", icon: apps.wordpad.iconSmall, onClick: () => openApp("wordpad") },
           { label: "&Personal", icon: apps.personal.iconSmall, onClick: () => openApp("personal") },
+          {
+            label: "&Documents",
+            icon: apps.documents.iconSmall,
+            onClick: () => openApp("documents"),
+          },
           // Embedded apps (registry `embed` field) get a Programs entry automatically.
           ...embeddedAppIds.map((id) => ({
             label: apps[id].title,
@@ -190,6 +210,12 @@ export default function Desktop() {
             icon: apps["personal-details"].iconSmall,
             onClick: () => openApp("personal-details"),
           },
+          // Every document in content/docs/ is listed automatically.
+          ...docs.map((doc) => ({
+            label: doc.fileName,
+            icon: apps.wordpad.iconSmall,
+            onClick: () => openApp(`docs/${doc.slug}` as const),
+          })),
         ],
       },
       {
@@ -212,8 +238,8 @@ export default function Desktop() {
 
   const taskButtons = wins.map((w) => ({
     id: w.id,
-    title: apps[w.id].title,
-    icon: apps[w.id].iconSmall,
+    title: windowMeta(w.id).title,
+    icon: windowMeta(w.id).iconSmall,
     active: w.id === activeId,
   }));
 
@@ -251,10 +277,12 @@ export default function Desktop() {
         };
         return (
           <Fragment key={w.id}>
-            {appMeta(w.id).embed ? (
+            {isDocWindow(w.id) ? (
+              <DocViewer id={w.id} controls={controls} />
+            ) : windowMeta(w.id).embed ? (
               <EmbeddedApp id={w.id} controls={controls} />
             ) : (
-              renderers[w.id]?.(controls)
+              renderers[w.id]?.(controls, openApp)
             )}
           </Fragment>
         );

@@ -1,0 +1,140 @@
+/*
+ * WordPad's document area: the white client area behind the sunken client edge,
+ * and the document set in WordPad's default face — 10pt Times New Roman, with
+ * Arial for headings (the two faces every Win95 install shipped with).
+ */
+.page {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--w95-window);
+  box-shadow: var(--w95-bevel-sunken);
+}
+
+.document {
+  max-width: 820px;
+  padding: 12px 16px 24px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--w95-window-text);
+}
+
+.document h1,
+.document h2,
+.document h3 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 1.2em 0 0.4em;
+}
+
+.document h1 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+.document h2 {
+  font-size: 15px;
+}
+
+.document h3 {
+  font-size: 13px;
+}
+
+.document p,
+.document ul,
+.document ol,
+.document blockquote,
+.document pre,
+.document table {
+  margin: 0 0 0.8em;
+}
+
+.document ul,
+.document ol {
+  padding-left: 1.8em;
+}
+
+.document li > p {
+  margin: 0;
+}
+
+.document blockquote {
+  margin-left: 1em;
+  padding-left: 0.8em;
+  border-left: 2px solid var(--w95-3d-shadow);
+  color: var(--w95-3d-shadow);
+}
+
+.document a {
+  color: #0000ff;
+}
+
+.document a:visited {
+  color: #800080;
+}
+
+.document code,
+.document pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+}
+
+.document pre {
+  padding: 4px 6px;
+  overflow-x: auto;
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-sunken-thin);
+}
+
+/* Tables ruled the way Word 6 ruled them: a plain 1px grid. */
+.document table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.document th,
+.document td {
+  padding: 2px 6px;
+  border: 1px solid var(--w95-window-text);
+  vertical-align: top;
+}
+
+.document th {
+  font-weight: 700;
+  text-align: left;
+  background: var(--w95-3d-face);
+}
+
+.document hr {
+  border: 0;
+  border-top: 1px solid var(--w95-3d-shadow);
+  border-bottom: 1px solid var(--w95-3d-highlight);
+}
+
+.document img {
+  max-width: 100%;
+}
+
+/* GFM footnotes (marked-footnote): a ruled "Notes" section at the end, set smaller. */
+.document :global(.footnotes) {
+  margin-top: 1.5em;
+  font-size: 12px;
+}
+
+.document :global(.footnotes) h2 {
+  font-size: 13px;
+}
+
+.document :global(.footnotes) ol {
+  padding-left: 1.5em;
+}
+
+.document :global(.footnotes) li {
+  margin-bottom: 0.4em;
+}
+
+.document sup a {
+  text-decoration: none;
+}

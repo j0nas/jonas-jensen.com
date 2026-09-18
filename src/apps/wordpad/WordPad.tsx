@@ -18,37 +18,48 @@ export default function WordPad({ controls }: WordPadProps) {
     localStorage.setItem(STORAGE_KEY, value);
   }
 
-  const menu: Menu[] = [
+  const menu = wordPadMenu(controls.onClose);
+
+  return (
+    <AppWindow id="wordpad" controls={controls} menu={menu}>
+      <TextArea value={content} onChange={handleInput} placeholder="Type here..." />
+    </AppWindow>
+  );
+}
+
+/** WordPad's menu bar, shared with the read-only document viewer. */
+export function wordPadMenu(onClose: () => void): Menu[] {
+  return [
     {
       label: "&File",
       items: [
-        { label: "&New" },
-        { label: "&Open..." },
-        { label: "&Save" },
+        { label: "&New", shortcut: "Ctrl+N" },
+        { label: "&Open...", shortcut: "Ctrl+O" },
+        { label: "&Save", shortcut: "Ctrl+S" },
         { label: "Save &As..." },
         "divider",
-        { label: "&Print..." },
+        { label: "&Print...", shortcut: "Ctrl+P" },
         { label: "Print Pre&view" },
         { label: "Page Set&up..." },
         "divider",
-        { label: "E&xit", onClick: controls.onClose },
+        { label: "E&xit", onClick: onClose },
       ],
     },
     {
       label: "&Edit",
       items: [
-        { label: "&Undo" },
+        { label: "&Undo", shortcut: "Ctrl+Z" },
         "divider",
-        { label: "Cu&t" },
-        { label: "&Copy" },
-        { label: "&Paste" },
+        { label: "Cu&t", shortcut: "Ctrl+X" },
+        { label: "&Copy", shortcut: "Ctrl+C" },
+        { label: "&Paste", shortcut: "Ctrl+V" },
         { label: "Paste &Special..." },
-        { label: "Cle&ar" },
-        { label: "Se&lect All" },
+        { label: "Cle&ar", shortcut: "Del" },
+        { label: "Se&lect All", shortcut: "Ctrl+A" },
         "divider",
-        { label: "&Find..." },
-        { label: "Find &Next" },
-        { label: "R&eplace..." },
+        { label: "&Find...", shortcut: "Ctrl+F" },
+        { label: "Find &Next", shortcut: "F3" },
+        { label: "R&eplace...", shortcut: "Ctrl+H" },
       ],
     },
     {
@@ -65,14 +76,17 @@ export default function WordPad({ controls }: WordPadProps) {
       items: [{ label: "&Date and Time..." }, { label: "&Object..." }],
     },
     {
+      label: "F&ormat",
+      items: [
+        { label: "&Font..." },
+        { label: "&Bullet Style" },
+        { label: "&Paragraph..." },
+        { label: "&Tabs..." },
+      ],
+    },
+    {
       label: "&Help",
       items: [{ label: "&Help Topics" }, "divider", { label: "&About WordPad" }],
     },
   ];
-
-  return (
-    <AppWindow id="wordpad" controls={controls} menu={menu}>
-      <TextArea value={content} onChange={handleInput} placeholder="Type here..." />
-    </AppWindow>
-  );
 }

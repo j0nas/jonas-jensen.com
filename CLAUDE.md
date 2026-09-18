@@ -10,6 +10,9 @@ component library in `src/win95/`. There are two kinds of "apps" on the desktop:
 
 - **Built-in apps** — written against `src/win95/` (Notepad, WordPad, My Computer, …). Each
   renders its body inside an `AppWindow` and is wired in `src/components/desktop/Desktop.tsx`.
+- **Documents** — markdown files in `content/docs/`, shown read-only in a WordPad window
+  and listed in the desktop's Documents folder and Start › Documents. See "Adding a
+  document".
 - **Embedded apps** — separate, standalone web apps (their own repo, toolchain, deps and
   styles) that **deploy themselves**. The desktop embeds each one's _live_ deploy inside a
   Win95 window via an `<iframe>`, served under a same-origin proxy. The Floor Planner
@@ -54,15 +57,33 @@ data-driven — no new component, no `Desktop.tsx` edit:
 - The app **must** use a relative base (`base: "./"`); an absolute base would break under the
   proxied subpath.
 
+## Adding a document
+
+Documents are data, not code. Drop `content/docs/<slug>.md` — the first `# ` heading is the
+title, the file name is the slug — and it appears in the Documents folder, in Start ›
+Documents, and at `/docs/<slug>`. The markdown is compiled at build time by `src/docs/index.ts`
+(a Vite raw glob + `marked` with `marked-footnote`, so GFM tables and `[^name]` footnotes work;
+footnotes render as a "Notes" section at the end), so the site stays a static SPA and Netlify needs no
+change. Rendering is `src/apps/documents/DocViewer.tsx`; its stylesheet is where the "10pt
+Times New Roman in WordPad" look lives. Author with plain headings, lists and tables; the
+content is ours, so the HTML is trusted and rendered as-is. Images go in
+`public/img/docs/<slug>/` and are referenced by absolute path (`/img/docs/<slug>/x.png`).
+
 ## Sharable links (desktop routing)
 
-`src/components/desktop/route.ts` routes the desktop by the focused app: every app — built-in
-or embedded — is shareable at `/<id>` (e.g. `/floor-planner`), which opens the desktop with
-that window open. `Desktop` derives its initial window from the path and `replaceState`s the
-active app's id into the URL as windows open/focus/close. App routes are single-segment, so
-they don't collide with the bare embedded builds at `/apps/<id>/`. There's no router library
-and no per-app wiring — a new registry entry is automatically deep-linkable.
+`src/components/desktop/route.ts` routes the desktop by the focused window: every app —
+built-in or embedded — is shareable at `/<id>` (e.g. `/floor-planner`) and every document at
+`/docs/<slug>`, which opens the desktop with that window open. `Desktop` derives its initial
+window from the path and `replaceState`s the active window's id into the URL as windows
+open/focus/close. A window id _is_ its path (`WindowId` in `src/apps/registry.tsx`: an `AppId`
+or `docs/<slug>`), so there's no collision with the bare embedded builds at `/apps/<id>/`.
+There's no router library and no per-app wiring — a new registry entry or markdown file is
+automatically deep-linkable.
 
 ## Validate
 
 Run `vp check` (format, lint, type-check) and `vp build` before committing. See `AGENTS.md`.
+
+A pre-commit hook (`.vite-hooks/pre-commit` → `vp staged`, rules in the `staged` block of
+`vite.config.ts`) formats and lints staged files. The dispatcher installs itself on
+`vp install` via the `prepare` script; `vp hooks status` shows whether it's active.

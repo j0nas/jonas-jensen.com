@@ -1,8 +1,9 @@
 # jonas-jensen.com
 
 A personal site styled as a Windows 95 desktop — draggable windows, a Start menu, a
-taskbar, and a handful of "apps" (Notepad, WordPad, My Computer, Recycle Bin, Personal), plus
-standalone web apps (e.g. the Floor Planner) embedded in their own windows.
+taskbar, and a handful of "apps" (Notepad, WordPad, My Computer, Recycle Bin, Personal), a
+Documents folder of markdown write-ups, plus standalone web apps (e.g. the Floor Planner)
+embedded in their own windows.
 
 Live at **[jona.no](https://jona.no)** (the older `jonas-jensen.com` redirects there — see
 [Domains](#domains)).
@@ -72,12 +73,20 @@ How it fits together:
    at both `icon`/`iconSmall`, and `embed: "/apps/<id>/"`.
 6. `vp check && vp build`, then commit.
 
+## Documents
+
+Longer-form text lives as markdown in `content/docs/` and is shown in a read-only WordPad
+window, listed in the desktop's **Documents** folder and under Start › Documents. Adding one is
+adding a file: the first `# ` heading is its title, the file name its slug, and it becomes
+shareable at `/docs/<slug>` (e.g. [`/docs/mtg-proxying`](https://jona.no/docs/mtg-proxying)).
+The markdown is compiled at build time with `marked`, so the site stays a static SPA.
+
 ## Sharable app links
 
 The desktop is routed by the focused app: every app — built-in or embedded — is shareable at
 `/<id>` (e.g. `/floor-planner`, `/wordpad`), which opens the desktop with that window already
-open and focused. Opening, focusing or closing a window keeps the address bar in sync, so the
-URL you copy always reflects what's on screen. The whole thing is client-side
+open and focused; documents likewise at `/docs/<slug>`. Opening, focusing or closing a window
+keeps the address bar in sync, so the URL you copy always reflects what's on screen. The whole thing is client-side
 (`src/components/desktop/route.ts`) layered on the Netlify SPA rewrite — an unknown path falls
 through to the shell, which opens the matching app. (The bare embedded builds stay at
 `/apps/<id>/` for sharing an app on its own, with no desktop chrome.)

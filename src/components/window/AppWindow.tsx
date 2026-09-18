@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Window, type Menu } from "../../win95";
-import { apps, type AppId } from "../../apps/registry";
+import { windowMeta, type WindowId } from "../../apps/registry";
 
 /** The per-window state Desktop owns and threads into each app's window. */
 export interface WindowControls {
@@ -16,16 +16,17 @@ export interface WindowControls {
 }
 
 interface AppWindowProps {
-  id: AppId;
+  id: WindowId;
   controls: WindowControls;
   menu?: Menu[];
   children: ReactNode;
 }
 
-// Pairs an app's registry metadata (icon, title, default size) with the live
-// window controls Desktop supplies, then renders our owned <Window>.
+// Pairs a window's metadata (icon, title, default size — an app's registry entry
+// or a document's synthesised one) with the live window controls Desktop
+// supplies, then renders our owned <Window>.
 export default function AppWindow({ id, controls, menu, children }: AppWindowProps) {
-  const { iconSmall, title, defaultSize } = apps[id];
+  const { iconSmall, title, defaultSize } = windowMeta(id);
   return (
     <Window
       title={title}

@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 import react from "@vitejs/plugin-react";
 
 // Embedded apps are separate deploys, proxied under /apps/<id>/ in production
@@ -32,4 +32,6 @@ export default defineConfig({
   plugins: [react()],
   server: { proxy: embeddedProxy },
   preview: { proxy: embeddedProxy },
+  // Pre-commit: format + lint whatever is staged (.vite-hooks/pre-commit runs `vp staged`).
+  staged: { "*.{ts,tsx,css,md,json,html}": "vp check --fix" },
 });

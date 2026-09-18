@@ -1,5 +1,6 @@
 import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
 import { StatusBar } from "../../win95";
+import { folderMenu } from "../folderMenu";
 import styles from "./Personal.module.css";
 
 const shortcuts = [
@@ -26,7 +27,7 @@ interface PersonalProps {
 
 export default function Personal({ controls }: PersonalProps) {
   return (
-    <AppWindow id="personal" controls={controls}>
+    <AppWindow id="personal" controls={controls} menu={folderMenu(controls.onClose)}>
       <div className={styles.folder}>
         <div className={styles.grid}>
           {shortcuts.map((shortcut) => (

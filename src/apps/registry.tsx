@@ -1,3 +1,5 @@
+import { docBySlug } from "../docs";
+
 // App metadata. Icons are the authentic Win95 icon bitmaps (16-colour shell
 // icons) in public/img/win95 — `icon` is the 32px size for the desktop and
 // Start menu, `iconSmall` the 16px size for title bars and taskbar buttons.
@@ -45,6 +47,12 @@ export const apps = {
     title: "Personal",
     defaultSize: { width: 400, height: 300 },
   },
+  documents: {
+    icon: "/img/win95/folder-32.png",
+    iconSmall: "/img/win95/folder-16.png",
+    title: "Documents",
+    defaultSize: { width: 400, height: 300 },
+  },
   "floor-planner": {
     icon: "/img/apps/floor-planner.svg",
     iconSmall: "/img/apps/floor-planner.svg",
@@ -86,3 +94,38 @@ export function appMeta(id: AppId): AppMeta {
 
 /** Ids of embedded apps (separate self-deploying apps shown via a proxied iframe). */
 export const embeddedAppIds = (Object.keys(apps) as AppId[]).filter((id) => appMeta(id).embed);
+
+// A *document* window shows one markdown file from content/docs/ (see
+// src/docs). Its id doubles as its route: /docs/<slug>. Documents aren't apps —
+// they're data, so they don't get registry entries; windowMeta() synthesises
+// their metadata (a read-only WordPad) from the docs index instead.
+export type DocWindowId = `docs/${string}`;
+export type WindowId = AppId | DocWindowId;
+
+export function isDocWindow(id: string): id is DocWindowId {
+  return id.startsWith("docs/");
+}
+
+export function docSlug(id: DocWindowId): string {
+  return id.slice("docs/".length);
+}
+
+export function isWindowId(id: string): id is WindowId {
+  return isDocWindow(id) ? docBySlug.has(docSlug(id)) : id in apps;
+}
+
+const DOC_WINDOW_SIZE = { width: 780, height: 580 };
+
+/** Metadata for any window — a registered app or a document. */
+export function windowMeta(id: WindowId): AppMeta {
+  if (isDocWindow(id)) {
+    const doc = docBySlug.get(docSlug(id));
+    return {
+      icon: apps.wordpad.icon,
+      iconSmall: apps.wordpad.iconSmall,
+      title: `${doc?.fileName ?? id} - WordPad`,
+      defaultSize: DOC_WINDOW_SIZE,
+    };
+  }
+  return appMeta(id);
+}
