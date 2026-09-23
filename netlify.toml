@@ -56,10 +56,13 @@ status = 200
 
 # A Cloudflare Worker rather than GitHub Pages: it serves the app and the API
 # relays it calls (relative ./proxy/…, ./api/…), so this one rule covers both.
+# X-Public-Base tells the Worker the app's address here, which its sign-in
+# (cookies, passkeys, OAuth callbacks) is bound to.
 [[redirects]]
 from = "/apps/deck-brancher/*"
 to = "https://deck-brancher.jonas-jensen.workers.dev/:splat"
 status = 200
+headers = {X-Public-Base = "https://jona.no/apps/deck-brancher"}
 
 # SPA fallback for the desktop shell. A deep link like /floor-planner is an
 # unknown path that falls through to the shell, which opens the matching window.
