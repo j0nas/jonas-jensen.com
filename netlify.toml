@@ -54,6 +54,13 @@ from = "/apps/lamp-shade/*"
 to = "https://j0nas.github.io/lamp-shade-designer/:splat"
 status = 200
 
+# A Cloudflare Worker rather than GitHub Pages: it serves the app and the API
+# relays it calls (relative ./proxy/…, ./api/…), so this one rule covers both.
+[[redirects]]
+from = "/apps/deck-brancher/*"
+to = "https://deck-brancher.jonas-jensen.workers.dev/:splat"
+status = 200
+
 # SPA fallback for the desktop shell. A deep link like /floor-planner is an
 # unknown path that falls through to the shell, which opens the matching window.
 # Keep this last.
