@@ -31,16 +31,27 @@ describe("addresses", () => {
 });
 
 describe("embedded apps", () => {
-  test("are fetched from their deploy, and only a listed app's own sign-in hears its address", async () => {
+  test("are fetched from their deploy", async () => {
     const upstream = vi.fn(async (_url: string, _init: RequestInit) => new Response("app"));
     vi.stubGlobal("fetch", upstream);
     await get("https://jona.no/apps/floor-planner/assets/a.js?v=2");
-    await get("https://jona.no/apps/edh-land/api/providers");
-    const [[pages, pagesInit], [edh, edhInit]] = upstream.mock.calls;
-    expect(pages).toBe("https://j0nas.github.io/floor-boards-planner/assets/a.js?v=2");
-    expect(new Headers(pagesInit.headers).has("x-public-base")).toBe(false);
-    expect(edh).toBe("https://edh.land/api/providers");
-    expect(new Headers(edhInit.headers).get("x-public-base")).toBe("https://jona.no/apps/edh-land");
+    expect(upstream.mock.calls[0][0]).toBe(
+      "https://j0nas.github.io/floor-boards-planner/assets/a.js?v=2",
+    );
+  });
+
+  test("an app that moved to its own address is redirected there, path kept", async () => {
+    const upstream = vi.fn();
+    vi.stubGlobal("fetch", upstream);
+    for (const [from, to] of [
+      ["https://jona.no/apps/edh-land/", "https://edh.land/"],
+      ["https://jona.no/apps/edh-land", "https://edh.land/"],
+      ["https://jona.no/apps/edh-land/privacy/?x=1", "https://edh.land/privacy/?x=1"],
+    ]) {
+      const res = await get(from);
+      expect([res.status, res.headers.get("location")]).toEqual([301, to]);
+    }
+    expect(upstream).not.toHaveBeenCalled();
   });
 
   test("a redirect within the deploy stays under /apps/<id>/", async () => {

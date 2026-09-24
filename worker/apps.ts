@@ -6,11 +6,6 @@
 export interface EmbeddedApp {
   /** The live deploy, without a trailing slash. */
   deploy: string;
-  /**
-   * Tell the app its address here in X-Public-Base: for an app whose sign-in (cookies,
-   * passkeys, OAuth callbacks) is bound to the address it's served at.
-   */
-  publicBase?: boolean;
 }
 
 export const APPS: Record<string, EmbeddedApp> = {
@@ -18,6 +13,9 @@ export const APPS: Record<string, EmbeddedApp> = {
   "deck-box": { deploy: "https://j0nas.github.io/parametric-mtg-deck-box" },
   "laser-deck-box": { deploy: "https://j0nas.github.io/laser-mtg-deck-box" },
   "lamp-shade": { deploy: "https://j0nas.github.io/lamp-shade-designer" },
-  // A Cloudflare Worker: the app and its API on one origin.
-  "edh-land": { deploy: "https://edh.land", publicBase: true },
+};
+
+/** Apps that were embedded here and now live at their own address: old links go there. */
+export const MOVED: Record<string, string> = {
+  "edh-land": "https://edh.land",
 };

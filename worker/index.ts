@@ -1,10 +1,11 @@
-import { APPS, type EmbeddedApp } from "./apps";
+import { APPS, type EmbeddedApp, MOVED } from "./apps";
 
 // The site's Worker. Cloudflare serves the built desktop (dist/) as static assets, unknown
 // paths getting index.html so the desktop's own routes work; every request comes here first
 // (run_worker_first) so that:
 // - the other addresses (www, and the old jonas-jensen.com) 301 to jona.no, path kept;
-// - /apps/<id>/* is the embedded app's live deploy, fetched and passed back same-origin.
+// - /apps/<id>/* is the embedded app's live deploy, fetched and passed back same-origin;
+//   an app that moved to its own address (MOVED) redirects there, path kept.
 
 const CANONICAL = "jona.no";
 const ALIASES = new Set(["www.jona.no", "jonas-jensen.com", "www.jonas-jensen.com"]);
@@ -17,6 +18,9 @@ export default {
       return Response.redirect(`https://${CANONICAL}${url.pathname}${url.search}`, 301);
     }
     const m = /^\/apps\/([^/]+)(\/.*)?$/.exec(url.pathname);
+    if (m && Object.hasOwn(MOVED, m[1])) {
+      return Response.redirect(`${MOVED[m[1]]}${m[2] ?? "/"}${url.search}`, 301);
+    }
     const app = m && Object.hasOwn(APPS, m[1]) ? APPS[m[1]] : undefined;
     if (m && app) {
       // The app's relative URLs need the trailing slash.
@@ -28,11 +32,9 @@ export default {
 } satisfies ExportedHandler<Env>;
 
 async function proxy(req: Request, id: string, app: EmbeddedApp, rest: string) {
-  const headers = new Headers(req.headers);
-  if (app.publicBase) headers.set("x-public-base", `https://${CANONICAL}/apps/${id}`);
   const res = await fetch(app.deploy + rest, {
     method: req.method,
-    headers,
+    headers: req.headers,
     body: req.body,
     redirect: "manual",
   });
