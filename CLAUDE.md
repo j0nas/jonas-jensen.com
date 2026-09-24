@@ -28,32 +28,24 @@ data-driven — no new component, no `Desktop.tsx` edit:
 1. **In the app's own repo:** set a relative base (`base: "./"` in its `vite.config.ts`) so
    assets resolve under both its own deploy path and the proxied subpath, and give it a deploy
    that publishes on push (e.g. a GitHub Pages Actions workflow). Note its deploy URL.
-2. **Proxy it (prod):** add a rule to `netlify.toml`, _above_ the SPA catch-all:
-   ```toml
-   [[redirects]]
-   from = "/apps/<id>/*"
-   to = "<app deploy URL>/:splat"
-   status = 200
-   ```
-3. **Proxy it (dev/preview):** mirror that in `vite.config.ts`'s `embeddedProxy` so `vp dev` /
-   `vp preview` load the same live build locally.
-4. **Icon:** add `public/img/apps/<id>.svg` (one SVG scales to both the 32px desktop icon and
+2. **Proxy it:** add it to `worker/apps.ts` (`"<id>": { deploy: "<app deploy URL>" }`). The
+   Worker serves it at `/apps/<id>/*` in production; `vite.config.ts` proxies the same list
+   for `vp dev` / `vp preview`.
+3. **Icon:** add `public/img/apps/<id>.svg` (one SVG scales to both the 32px desktop icon and
    the 16px title-bar/taskbar icon).
-5. **Register:** add an entry to `src/apps/registry.tsx` with `title`, `defaultSize`,
+4. **Register:** add an entry to `src/apps/registry.tsx` with `title`, `defaultSize`,
    `icon`/`iconSmall` (the SVG at both), and `embed: "/apps/<id>/"`. The desktop icon, the
    Start › Programs entry, and the window rendering all derive from this automatically.
-6. **Validate & commit:** `vp check && vp build`, then commit.
+5. **Validate & commit:** `vp check && vp build`, then commit.
 
 ### Invariants — do not break these
 
 - The embedded app is the **source of truth** and deploys itself. This repo never vendors,
   builds, or commits the app's bundle — it only proxies to the live deploy. An app update
   needs no commit here.
-- The proxy rule must **precede** the SPA catch-all in `netlify.toml` (Netlify applies the
-  first matching rule). A `200`-rewrite to an external URL proxies it **same-origin**, so the
-  `<iframe>` and the shareable `/apps/<id>/` link need no CORS or framing exceptions.
-- Keep the two proxy definitions in sync: `netlify.toml` (production) and the `embeddedProxy`
-  in `vite.config.ts` (dev + preview) must point at the same deploy.
+- The Worker proxies an app **same-origin** (`worker/index.ts`), so the `<iframe>` and the
+  shareable `/apps/<id>/` link need no CORS or framing exceptions. Production and dev read the
+  one list in `worker/apps.ts`.
 - The app **must** use a relative base (`base: "./"`); an absolute base would break under the
   proxied subpath.
 
@@ -63,7 +55,7 @@ Documents are data, not code. Drop `content/docs/<slug>.md` — the first `# ` h
 title, the file name is the slug — and it appears in the Documents folder, in Start ›
 Documents, and at `/docs/<slug>`. The markdown is compiled at build time by `src/docs/index.ts`
 (a Vite raw glob + `marked` with `marked-footnote`, so GFM tables and `[^name]` footnotes work;
-footnotes render as a "Notes" section at the end), so the site stays a static SPA and Netlify needs no
+footnotes render as a "Notes" section at the end), so the site stays a static SPA and the Worker needs no
 change. Rendering is `src/apps/documents/DocViewer.tsx`; its stylesheet is where the "10pt
 Times New Roman in WordPad" look lives. Author with plain headings, lists and tables; the
 content is ours, so the HTML is trusted and rendered as-is. Images go in

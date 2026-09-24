@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jona-no",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-20",
+  // jona.no is the site; the others redirect to it (worker/index.ts). Cloudflare makes each
+  // one's DNS record and certificate: their zones are on Cloudflare (README.md › Domains).
+  "routes": [
+    { "pattern": "jona.no", "custom_domain": true },
+    { "pattern": "www.jona.no", "custom_domain": true },
+    { "pattern": "jonas-jensen.com", "custom_domain": true },
+    { "pattern": "www.jonas-jensen.com", "custom_domain": true },
+  ],
+  "workers_dev": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Unknown paths are the desktop's own routes (/floor-planner, /docs/<slug>).
+    "not_found_handling": "single-page-application",
+    // Every request meets the Worker first: redirects and the /apps/* proxies.
+    "run_worker_first": true,
+  },
+  "observability": { "enabled": true },
+}

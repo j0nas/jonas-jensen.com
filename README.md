@@ -51,10 +51,10 @@ so updating an app is just pushing that app's repo — nothing here changes.
 
 How it fits together:
 
-- **`netlify.toml`** proxies `/apps/<id>/*` to the app's live deploy with a `200` rewrite,
+- **`worker/apps.ts`** lists each app's live deploy; the Worker serves it at `/apps/<id>/*`,
   which keeps it **same-origin** — so the `<iframe>` and the shareable `/apps/<id>/` link need
-  no CORS or framing exceptions. The proxy rule sits above the SPA catch-all (first match
-  wins). `vite.config.ts` mirrors the same proxy for `vp dev` / `vp preview`.
+  no CORS or framing exceptions. `vite.config.ts` proxies the same list for `vp dev` /
+  `vp preview`.
 - **`src/apps/registry.tsx`** — an app with an `embed` path is rendered generically by
   **`src/apps/embedded/EmbeddedApp.tsx`** and is automatically given a desktop icon and a
   Start › Programs entry. No per-app component or `Desktop` wiring is needed.
@@ -64,14 +64,13 @@ How it fits together:
 1. In the app's own repo, set a **relative base** (`base: "./"`) so its bundle works under a
    subpath, and give it a deploy that publishes on push (e.g. a GitHub Pages workflow). Note
    its deploy URL.
-2. Add a **proxy rule** to `netlify.toml`, above the SPA catch-all:
-   `from = "/apps/<id>/*"`, `to = "<app deploy URL>/:splat"`, `status = 200`.
-3. Mirror that proxy in **`vite.config.ts`**'s `embeddedProxy` (so dev/preview match prod).
-4. Drop a **`public/img/apps/<id>.svg`** icon (an SVG scales to both the 32px desktop icon
+2. Add it to **`worker/apps.ts`**: `"<id>": { deploy: "<app deploy URL>" }` (production and
+   dev/preview both read it).
+3. Drop a **`public/img/apps/<id>.svg`** icon (an SVG scales to both the 32px desktop icon
    and 16px title-bar/taskbar icon).
-5. Add a registry entry to **`src/apps/registry.tsx`** with `title`, `defaultSize`, the icon
+4. Add a registry entry to **`src/apps/registry.tsx`** with `title`, `defaultSize`, the icon
    at both `icon`/`iconSmall`, and `embed: "/apps/<id>/"`.
-6. `vp check && vp build`, then commit.
+5. `vp check && vp build`, then commit.
 
 ## Documents
 
@@ -87,7 +86,7 @@ The desktop is routed by the focused app: every app — built-in or embedded —
 `/<id>` (e.g. `/floor-planner`, `/wordpad`), which opens the desktop with that window already
 open and focused; documents likewise at `/docs/<slug>`. Opening, focusing or closing a window
 keeps the address bar in sync, so the URL you copy always reflects what's on screen. The whole thing is client-side
-(`src/components/desktop/route.ts`) layered on the Netlify SPA rewrite — an unknown path falls
+(`src/components/desktop/route.ts`) layered on the SPA fallback — an unknown path falls
 through to the shell, which opens the matching app. (The bare embedded builds stay at
 `/apps/<id>/` for sharing an app on its own, with no desktop chrome.)
 
@@ -103,55 +102,31 @@ vp preview   # serve the production build
 
 ## Deploy
 
-Deployed to Netlify. `pnpm run build` outputs a static SPA to `dist/`; `netlify.toml`
-rewrites all routes to `/index.html`.
+A **Cloudflare Worker** (`worker/index.ts`, config in `wrangler.jsonc`). Cloudflare serves the
+built desktop from `dist/` as static assets, unknown paths getting `index.html`; every request
+meets the Worker first, which sends the other addresses to `jona.no` and serves the embedded
+apps under `/apps/<id>/`. Every push to `main` builds and deploys it
+(`.github/workflows/deploy.yml`; repository secrets `CLOUDFLARE_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID`). By hand: `pnpm run deploy` after `pnpm exec wrangler login`.
 
 ## Domains
 
-**`jona.no` is the canonical domain.** `jonas-jensen.com` stays attached to the site so older
-links keep resolving, but every request to it `301`s to `jona.no` with the path and query
-preserved. Both are registered at Domeneshop.
+**`jona.no` is the canonical domain.** `www.jona.no`, `jonas-jensen.com` and
+`www.jonas-jensen.com` are the Worker's too, and `301` to `jona.no` with the path and query
+kept (`ALIASES` in `worker/index.ts`). Both domains are registered at Domeneshop; their
+nameservers point at Cloudflare, which serves the zones. Each hostname is a **custom domain**
+in `wrangler.jsonc`: Cloudflare makes its DNS record and certificate on deploy. Both zones
+have **Always Use HTTPS** on, so `http://` never reaches the Worker.
 
-DNS for `jona.no` is served by **Domeneshop's own nameservers** (`hyp.net`), not Netlify DNS.
-That's deliberate: the domain has **DNSSEC** enabled and Netlify DNS cannot sign zones, so
-delegating would mean giving it up. Netlify issues Let's Encrypt certificates for
-externally-hosted DNS either way, so managed DNS would only have bought convenience.
+**DNSSEC** stays on: Cloudflare signs `jona.no`, and the `DS` record at the registry (Norid) is
+set through Domeneshop, which also picks up a change of Cloudflare's keys by itself (it reads
+the zone's `CDS` records daily). Email's records (MX, SPF, DKIM, DMARC) live in the same zone.
 
-The zone is two records, both pointing at the Netlify site:
-
-| Host          | TTL   | Type  | Value                          |
-| ------------- | ----- | ----- | ------------------------------ |
-| `jona.no`     | 5 min | ANAME | `jonas-jensen-com.netlify.app` |
-| `www.jona.no` | 5 min | CNAME | `jonas-jensen-com.netlify.app` |
-
-The apex is an **ANAME** (Domeneshop's flattened alias), not a hardcoded `A` record — Netlify
-serves the apex from load-balancer IPs that change, so an ANAME follows them automatically.
-For the same reason the TTL is deliberately **short**: Netlify's own DNS serves these records
-at 120s. Don't raise it to "reduce query volume" — the only effect is a longer window pointing
-at a dead IP if Netlify moves one.
-
-`www.jona.no` and `http://` are redirected to the canonical apex by Netlify itself; the
-`jonas-jensen.com` redirect is not, and lives in `netlify.toml` (see below).
-
-### Adding or changing a domain
-
-Four things have to line up, and three of them fail quietly:
-
-1. **DNS records** at Domeneshop — apex `ANAME`, `www` `CNAME`, both to
-   `<site>.netlify.app`.
-2. **A domain alias on the Netlify site.** DNS alone is not enough: until the hostname is
-   attached to the site, Netlify answers `404` and won't request a certificate for it.
-3. **A certificate covering the new hostname.** Netlify does _not_ auto-provision one when an
-   alias is added — force it with `POST /api/v1/sites/<site_id>/ssl/renew`. (The documented
-   `POST …/ssl` refuses with "certificate parameter is required" whenever a cert already
-   exists, and issuance is async — the CDN edge trails the API by a few minutes.)
-4. **An explicit redirect**, if the domain should be non-canonical. Netlify's "primary domain"
-   setting only governs the `www`/apex pairing _of the primary itself_ — it does **not**
-   redirect other aliases, which otherwise keep serving identical content at `200`. The
-   host-scoped `301`s in `netlify.toml` do that, and must precede the `/apps/*` proxies and the
-   SPA catch-all so legacy-host traffic is redirected before any other rule can match.
+To add a hostname: its zone on Cloudflare, a custom-domain route in `wrangler.jsonc`, and, if
+it isn't canonical, an entry in `ALIASES`.
 
 **Never change nameservers while DNSSEC is enabled.** The registry's `DS` records pin the old
 signing keys, so delegating elsewhere without removing them first makes every validating
 resolver return `SERVFAIL` — a hard outage, not a degraded one. Order is: records at the new
-provider → switch nameservers → verify resolution → _then_ re-enable DNSSEC.
+provider → remove the `DS` records → switch nameservers → verify resolution → _then_ enable
+DNSSEC at the new provider and add its `DS`.

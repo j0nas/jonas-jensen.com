@@ -1,36 +1,18 @@
 import { defineConfig } from "vite-plus";
 import react from "@vitejs/plugin-react";
+import { APPS } from "./worker/apps";
 
-// Embedded apps are separate deploys, proxied under /apps/<id>/ in production
-// (see netlify.toml). Mirror that proxy on the dev and preview servers so the
-// embedded iframes load the same live build locally as in production.
-const embeddedProxy = {
-  "/apps/floor-planner": {
-    target: "https://j0nas.github.io",
-    changeOrigin: true,
-    rewrite: (p: string) => p.replace(/^\/apps\/floor-planner/, "/floor-boards-planner"),
-  },
-  "/apps/deck-box": {
-    target: "https://j0nas.github.io",
-    changeOrigin: true,
-    rewrite: (p: string) => p.replace(/^\/apps\/deck-box/, "/parametric-mtg-deck-box"),
-  },
-  "/apps/laser-deck-box": {
-    target: "https://j0nas.github.io",
-    changeOrigin: true,
-    rewrite: (p: string) => p.replace(/^\/apps\/laser-deck-box/, "/laser-mtg-deck-box"),
-  },
-  "/apps/lamp-shade": {
-    target: "https://j0nas.github.io",
-    changeOrigin: true,
-    rewrite: (p: string) => p.replace(/^\/apps\/lamp-shade/, "/lamp-shade-designer"),
-  },
-  "/apps/edh-land": {
-    target: "https://edh.land",
-    changeOrigin: true,
-    rewrite: (p: string) => p.replace(/^\/apps\/edh-land/, ""),
-  },
-};
+// Embedded apps are separate deploys, served under /apps/<id>/ by the Worker in production
+// (worker/index.ts). The dev and preview servers proxy the same list (worker/apps.ts), so the
+// embedded iframes load the same live build locally.
+const embeddedProxy = Object.fromEntries(
+  Object.entries(APPS).map(([id, { deploy }]) => {
+    const { origin, pathname } = new URL(deploy);
+    const prefix = `/apps/${id}`;
+    const rewrite = (p: string) => pathname.replace(/\/$/, "") + p.slice(prefix.length);
+    return [prefix, { target: origin, changeOrigin: true, rewrite }];
+  }),
+);
 
 // https://vite.dev/config/
 export default defineConfig({

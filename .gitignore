@@ -24,8 +24,9 @@ pnpm-debug.log*
 *.local
 .npmrc
 
-# Local Netlify folder
-.netlify
+# Cloudflare: local state, and runtime types generated on install (wrangler types)
+.wrangler
+worker-configuration.d.ts
 
 # Vite+ cache
 .vite
