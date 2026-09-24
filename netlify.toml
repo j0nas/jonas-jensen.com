@@ -56,13 +56,11 @@ status = 200
 
 # EDH Land (edh.land) is a Cloudflare Worker rather than GitHub Pages: it serves
 # the app and the API relays it calls (relative ./proxy/…, ./api/…), so this one
-# rule covers both. It proxies to the Worker's workers.dev address (its id is the
-# app's old working name) rather than edh.land, so edh.land's zone settings never
-# sit between Netlify and the Worker. X-Public-Base tells the Worker the app's
-# address here, which its sign-in (cookies, passkeys, OAuth callbacks) is bound to.
+# rule covers both. X-Public-Base tells the Worker the app's address here, which
+# its sign-in (cookies, passkeys, OAuth callbacks) is bound to.
 [[redirects]]
 from = "/apps/edh-land/*"
-to = "https://deck-brancher.jonas-jensen.workers.dev/:splat"
+to = "https://edh.land/:splat"
 status = 200
 headers = { X-Public-Base = "https://jona.no/apps/edh-land" }
 

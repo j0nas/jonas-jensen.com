@@ -1,4 +1,4 @@
-# jonas-jensen.com
+# jona.no
 
 A personal site styled as a Windows 95 desktop — draggable windows, a Start menu, a
 taskbar, and a handful of "apps" (Notepad, WordPad, My Computer, Recycle Bin, Personal), a

@@ -26,7 +26,7 @@ const embeddedProxy = {
     rewrite: (p: string) => p.replace(/^\/apps\/lamp-shade/, "/lamp-shade-designer"),
   },
   "/apps/edh-land": {
-    target: "https://deck-brancher.jonas-jensen.workers.dev",
+    target: "https://edh.land",
     changeOrigin: true,
     rewrite: (p: string) => p.replace(/^\/apps\/edh-land/, ""),
   },
