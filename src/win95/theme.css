@@ -60,9 +60,9 @@
   --w95-edge: 2px; /* SM_CXEDGE / SM_CYEDGE — the 3D border width */
   --w95-border: 1px; /* SM_CXBORDER / SM_CYBORDER */
   --w95-frame: 4px; /* SM_CXFRAME / SM_CYFRAME — sizing border */
-  --w95-caption-height: 18px; /* SM_CYCAPTION — title bar height */
+  --w95-caption-height: 18px; /* the caption band; SM_CYCAPTION = 19 = band + 1px face line */
   --w95-scrollbar: 16px; /* SM_CXVSCROLL / SM_CYHSCROLL */
-  --w95-menu-height: 18px; /* SM_CYMENU */
+  --w95-menu-height: 19px; /* SM_CYMENU */
   --w95-taskbar-height: 28px; /* taskbar strip height */
 
   /* ===== Typography — 8pt MS Sans Serif renders as an 11px bitmap @96 DPI ===== */
@@ -80,19 +80,19 @@
    * BDR_SUNKENOUTER:      TL SHADOW (1px);                       BR HIGHLIGHT (1px)
    */
 
-  /* Raised, "hard" — window bodies, group boxes, status bars, taskbar. */
+  /* Raised, "hard" (EDGE_RAISED) — window and dialog frames, menus, scrollbar thumbs and arrows. */
   --w95-bevel-raised:
     inset -1px -1px 0 0 var(--w95-3d-dark-shadow), inset 1px 1px 0 0 var(--w95-3d-light),
     inset -2px -2px 0 0 var(--w95-3d-shadow), inset 2px 2px 0 0 var(--w95-3d-highlight);
 
-  /* Raised, "soft" — push buttons, caption buttons, scrollbar parts. Verified by
-     sampling the authentic Win95 button bitmap (SOURCES.md §Bevels): a SINGLE
-     white highlight top-left, a two-line shadow bottom-right (shadow inner,
-     dark-shadow outer). The top-left inner line is the face colour (invisible) —
-     there is NO 3DLIGHT inner-light line (that's a 98.css-style embellishment). */
+  /* Raised, "soft" (DFCS_BUTTONPUSH) — push buttons, caption buttons, the Start
+     and taskbar buttons. Sampled on RTM 4.00.950 buttons (SOURCES.md §Bevels):
+     HIGHLIGHT outside and 3DLIGHT inside top-left, DKSHADOW outside and SHADOW
+     inside bottom-right. The bottom-right lines win the corners, so they're
+     listed first within each ring. */
   --w95-bevel-raised-soft:
-    inset 1px 1px 0 0 var(--w95-3d-highlight), inset -1px -1px 0 0 var(--w95-3d-dark-shadow),
-    inset -2px -2px 0 0 var(--w95-3d-shadow);
+    inset -1px -1px 0 0 var(--w95-3d-dark-shadow), inset 1px 1px 0 0 var(--w95-3d-highlight),
+    inset -2px -2px 0 0 var(--w95-3d-shadow), inset 2px 2px 0 0 var(--w95-3d-light);
 
   /* Sunken — text fields, list/tree panes, the WS_EX_CLIENTEDGE look. */
   --w95-bevel-sunken:
@@ -111,6 +111,23 @@
   /* Dotted "focus rectangle" — the 1px on/off marching dots GDI's DrawFocusRect
      paints inside focused buttons / selected list rows. */
   --w95-focus-dots: #000000;
+
+  /* Tooltips — COLOR_INFOBK / COLOR_INFOTEXT. */
+  --w95-info-bk: #ffffe1;
+  --w95-info-text: #000000;
+
+  /* The Win95 arrow pointer (11×19, no shadow), cut from an RTM capture. */
+  --w95-cursor: url("/img/win95/cursor-arrow.png") 0 0, default;
+}
+
+@supports (cursor:
+  image-set(url("/img/win95/cursor-arrow.png") 1x) 0 0,
+  default) {
+  :root {
+    --w95-cursor:
+      image-set(url("/img/win95/cursor-arrow.png") 1x, url("/img/win95/cursor-arrow@2x.png") 2x) 0 0,
+      default;
+  }
 }
 
 /* ===== Base — everything inside the desktop renders in the system font ===== */
@@ -122,6 +139,8 @@
 }
 
 .w95 {
+  /* The palette is fixed: keep the browser from dark-moding the form controls. */
+  color-scheme: light;
   font-family: var(--w95-font);
   font-size: var(--w95-font-size);
   color: var(--w95-window-text);
@@ -130,12 +149,40 @@
   font-smooth: never;
 }
 
+/* Form controls don't inherit the font by default; in Win95 they're all 8pt
+   MS Sans Serif like everything else. Zero specificity, so components still
+   set their own weight and line height. */
+:where(.w95) :where(button, input, textarea, select) {
+  font: inherit;
+}
+
+/* The arrow everywhere (no hand over links: Win95 had none); text fields keep
+   the I-beam. Components set other cursors (sizing borders) by class. */
+.w95,
+.w95 * {
+  cursor: var(--w95-cursor);
+}
+
+.w95 textarea,
+.w95 input[type="text"] {
+  cursor: text;
+}
+
+/* No browser focus ring: controls draw the Win95 dotted focus rectangle
+   themselves (buttons, icon labels), and menus show focus as the selection. */
+.w95 :focus-visible {
+  outline: none;
+}
+
 /*
  * ===== Scrollbars — SM_CXVSCROLL/SM_CYHSCROLL = 16px =====
  * GDI draws the track as a 50% dither of COLOR_3DFACE over COLOR_3DHIGHLIGHT
- * (a light checker), raised-soft thumb and end buttons, black arrow glyphs.
- * Rendered with the WebKit/Blink scrollbar pseudo-elements (what 98.css also
- * does); Firefox falls back to the flat themed colors below.
+ * (a light checker); the thumb and the arrow buttons are EDGE_RAISED (the
+ * window-frame bevel, not the push-button one), with pixel arrow glyphs: 7×4 at
+ * (4,6) up/down, 4×7 at (5,4) left and (6,4) right. A held arrow button goes
+ * flat (1px shadow ring) and its glyph moves 1px down-right. Rendered with the
+ * WebKit/Blink scrollbar pseudo-elements; Firefox falls back to the flat
+ * themed colours below.
  */
 .w95 {
   scrollbar-color: var(--w95-3d-face) var(--w95-window);
@@ -157,40 +204,62 @@
 .w95 ::-webkit-scrollbar-thumb,
 .w95::-webkit-scrollbar-thumb {
   background-color: var(--w95-3d-face);
-  box-shadow: var(--w95-bevel-raised-soft);
+  box-shadow: var(--w95-bevel-raised);
 }
 
-/* End buttons carry a centered black triangle glyph for each direction. */
 .w95 ::-webkit-scrollbar-button,
 .w95::-webkit-scrollbar-button {
   background-color: var(--w95-3d-face);
-  box-shadow: var(--w95-bevel-raised-soft);
+  box-shadow: var(--w95-bevel-raised);
   background-repeat: no-repeat;
-  background-position: center;
+}
+
+.w95 ::-webkit-scrollbar-button:active,
+.w95::-webkit-scrollbar-button:active {
+  box-shadow: inset 0 0 0 1px var(--w95-3d-shadow);
 }
 
 .w95 ::-webkit-scrollbar-button:vertical:decrement,
 .w95::-webkit-scrollbar-button:vertical:decrement {
   height: var(--w95-scrollbar);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4'%3E%3Cpath d='M3 0 0 4h7z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M3 0h1v1H3zM2 1h3v1H2zM1 2h5v1H1zM0 3h7v1H0z'/%3E%3C/svg%3E");
+  background-position: 4px 6px;
 }
 
 .w95 ::-webkit-scrollbar-button:vertical:increment,
 .w95::-webkit-scrollbar-button:vertical:increment {
   height: var(--w95-scrollbar);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4'%3E%3Cpath d='M0 0h7L3 4z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h7v1H0zM1 1h5v1H1zM2 2h3v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E");
+  background-position: 4px 6px;
 }
 
 .w95 ::-webkit-scrollbar-button:horizontal:decrement,
 .w95::-webkit-scrollbar-button:horizontal:decrement {
   width: var(--w95-scrollbar);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='7'%3E%3Cpath d='M0 3 4 0v7z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='7' shape-rendering='crispEdges'%3E%3Cpath d='M3 0h1v1H3zM2 1h2v1H2zM1 2h3v1H1zM0 3h4v1H0zM1 4h3v1H1zM2 5h2v1H2zM3 6h1v1H3z'/%3E%3C/svg%3E");
+  background-position: 5px 4px;
 }
 
 .w95 ::-webkit-scrollbar-button:horizontal:increment,
 .w95::-webkit-scrollbar-button:horizontal:increment {
   width: var(--w95-scrollbar);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='7'%3E%3Cpath d='M0 0 4 3 0 7z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='7' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM0 1h2v1H0zM0 2h3v1H0zM0 3h4v1H0zM0 4h3v1H0zM0 5h2v1H0zM0 6h1v1H0z'/%3E%3C/svg%3E");
+  background-position: 6px 4px;
+}
+
+.w95 ::-webkit-scrollbar-button:vertical:active,
+.w95::-webkit-scrollbar-button:vertical:active {
+  background-position: 5px 7px;
+}
+
+.w95 ::-webkit-scrollbar-button:horizontal:decrement:active,
+.w95::-webkit-scrollbar-button:horizontal:decrement:active {
+  background-position: 6px 5px;
+}
+
+.w95 ::-webkit-scrollbar-button:horizontal:increment:active,
+.w95::-webkit-scrollbar-button:horizontal:increment:active {
+  background-position: 7px 5px;
 }
 
 /* Suppress the doubled buttons and the dead corner square WebKit adds. */

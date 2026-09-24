@@ -11,6 +11,9 @@ import Personal from "../../apps/personal/Personal";
 import Documents from "../../apps/documents/Documents";
 import DocViewer from "../../apps/documents/DocViewer";
 import EmbeddedApp from "../../apps/embedded/EmbeddedApp";
+import ShutDown from "../../apps/system/ShutDown";
+import Run from "../../apps/system/Run";
+import { resolveRun } from "../../apps/system/runCommand";
 import {
   apps,
   embeddedAppIds,
@@ -64,13 +67,19 @@ const renderers: Partial<Record<AppId, Renderer>> = {
   documents: (controls, open) => <Documents controls={controls} onOpen={open} />,
 };
 
-// Desktop icons occupy a ~96px column on the left; spawn windows clear of it
-// when the viewport has room, otherwise fall back to a top-left cascade.
-const ICON_COLUMN = 96;
+// Desktop icons fill 75px cells down the left, wrapping into more columns above
+// the taskbar; spawn windows clear of them when the viewport has room, otherwise
+// fall back to a top-left cascade.
+const ICON_CELL = 75;
+function iconColumnsWidth(): number {
+  const vh = typeof window !== "undefined" ? window.innerHeight : 768;
+  const perColumn = Math.max(1, Math.floor((vh - 28) / ICON_CELL));
+  return Math.ceil(DESKTOP_ICONS.length / perColumn) * ICON_CELL;
+}
 function spawnPosition(index: number, width: number): { x: number; y: number } {
   const offset = (index % 8) * 30;
   const vw = typeof window !== "undefined" ? window.innerWidth : 1024;
-  const clearX = ICON_COLUMN + offset;
+  const clearX = iconColumnsWidth() + 8 + offset;
   const x = clearX + width + 16 <= vw ? clearX : 50 + offset;
   return { x, y: offset };
 }
@@ -102,6 +111,21 @@ export default function Desktop() {
   });
   const [selected, setSelected] = useState<string | null>(null);
   const [startOpen, setStartOpen] = useState(false);
+  const [dialog, setDialog] = useState<"run" | "shutdown" | null>(null);
+  // Opened with Ctrl+Esc: the Start menu highlights its first entry for the arrow keys.
+  const [startKeyboard, setStartKeyboard] = useState(false);
+
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.ctrlKey && event.key === "Escape") {
+        event.preventDefault();
+        setStartKeyboard(true);
+        setStartOpen((v) => !v);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const openApp = useCallback((id: WindowId) => {
     setWins((prev) => {
@@ -229,9 +253,13 @@ export default function Desktop() {
         submenu: [{ label: "&Files or Folders..." }],
       },
       { label: "&Help", icon: "/img/win95/help-32.png" },
-      { label: "&Run...", icon: "/img/win95/run-32.png" },
+      { label: "&Run...", icon: "/img/win95/run-32.png", onClick: () => setDialog("run") },
       "divider",
-      { label: "Sh&ut Down...", icon: "/img/win/shutdown.png" },
+      {
+        label: "Sh&ut Down...",
+        icon: "/img/win95/shutdown-32.png",
+        onClick: () => setDialog("shutdown"),
+      },
     ],
     [openApp],
   );
@@ -288,13 +316,44 @@ export default function Desktop() {
         );
       })}
 
+      {dialog === "run" && (
+        <Run
+          onCancel={() => setDialog(null)}
+          onRun={(command) => {
+            const target = resolveRun(command);
+            if (!target) return false;
+            if ("url" in target) window.open(target.url, "_blank", "noopener,noreferrer");
+            else openApp(target.window);
+            return true;
+          }}
+        />
+      )}
+      {dialog === "shutdown" && (
+        <ShutDown
+          onCancel={() => setDialog(null)}
+          onLogOff={() => {
+            setWins([]);
+            setDialog(null);
+          }}
+        />
+      )}
+
       <TaskBar
         windows={taskButtons}
         onTaskClick={onTaskClick}
         startOpen={startOpen}
-        onStartToggle={() => setStartOpen((v) => !v)}
+        onStartToggle={() => {
+          setStartKeyboard(false);
+          setStartOpen((v) => !v);
+        }}
         onStartClose={() => setStartOpen(false)}
-        startMenu={<StartMenu entries={startEntries} onClose={() => setStartOpen(false)} />}
+        startMenu={
+          <StartMenu
+            entries={startEntries}
+            keyboard={startKeyboard}
+            onClose={() => setStartOpen(false)}
+          />
+        }
       />
     </div>
   );

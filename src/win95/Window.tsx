@@ -72,6 +72,15 @@ export default function Window({
   const [maximized, setMaximized] = useState(initialMaximized);
   const restoreBounds = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const dragCleanup = useRef<(() => void) | undefined>(undefined);
+  // Win95 (without Plus!) moves and sizes a window as an outline: the frame is
+  // dragged as a dotted XOR rectangle and the window follows on release.
+  const [ghost, setGhost] = useState<{
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    cursor: string;
+  } | null>(null);
 
   // Tear down any in-flight drag listeners if we unmount mid-drag.
   useEffect(() => () => dragCleanup.current?.(), []);
@@ -81,12 +90,19 @@ export default function Window({
     if (maximized) return;
     onFocus();
     const origin = { ...pos };
-    let moved = false;
-    dragCleanup.current = beginDrag(event, (dx, dy) => {
-      if (!moved && Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
-      moved = true;
-      setPos({ x: origin.x + dx, y: Math.max(0, origin.y + dy) });
-    });
+    let last: { x: number; y: number } | null = null;
+    dragCleanup.current = beginDrag(
+      event,
+      (dx, dy) => {
+        if (!last && Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
+        last = { x: origin.x + dx, y: Math.max(0, origin.y + dy) };
+        setGhost({ ...last, w: size.w, h: size.h, cursor: "inherit" });
+      },
+      () => {
+        if (last) setPos(last);
+        setGhost(null);
+      },
+    );
   }
 
   function startResize(dir: string) {
@@ -95,29 +111,41 @@ export default function Window({
       event.stopPropagation();
       onFocus();
       const o = { x: pos.x, y: pos.y, w: size.w, h: size.h };
-      dragCleanup.current = beginDrag(event, (dx, dy) => {
-        let { x, y, w, h } = o;
-        if (dir.includes("e")) w = o.w + dx;
-        if (dir.includes("s")) h = o.h + dy;
-        if (dir.includes("w")) {
-          w = o.w - dx;
-          x = o.x + dx;
-        }
-        if (dir.includes("n")) {
-          h = o.h - dy;
-          y = o.y + dy;
-        }
-        if (w < MIN_W) {
-          if (dir.includes("w")) x = o.x + o.w - MIN_W;
-          w = MIN_W;
-        }
-        if (h < MIN_H) {
-          if (dir.includes("n")) y = o.y + o.h - MIN_H;
-          h = MIN_H;
-        }
-        setPos({ x, y: Math.max(0, y) });
-        setSize({ w, h });
-      });
+      const cursor = getComputedStyle(event.currentTarget).cursor;
+      let last: typeof o | null = null;
+      dragCleanup.current = beginDrag(
+        event,
+        (dx, dy) => {
+          let { x, y, w, h } = o;
+          if (dir.includes("e")) w = o.w + dx;
+          if (dir.includes("s")) h = o.h + dy;
+          if (dir.includes("w")) {
+            w = o.w - dx;
+            x = o.x + dx;
+          }
+          if (dir.includes("n")) {
+            h = o.h - dy;
+            y = o.y + dy;
+          }
+          if (w < MIN_W) {
+            if (dir.includes("w")) x = o.x + o.w - MIN_W;
+            w = MIN_W;
+          }
+          if (h < MIN_H) {
+            if (dir.includes("n")) y = o.y + o.h - MIN_H;
+            h = MIN_H;
+          }
+          last = { x, y: Math.max(0, y), w, h };
+          setGhost({ ...last, cursor });
+        },
+        () => {
+          if (last) {
+            setPos({ x: last.x, y: last.y });
+            setSize({ w: last.w, h: last.h });
+          }
+          setGhost(null);
+        },
+      );
     };
   }
 
@@ -165,6 +193,16 @@ export default function Window({
 
         <div className={styles.client}>{children}</div>
       </div>
+
+      {ghost && (
+        // Covers the page (iframes included) so the drag keeps its pointer events.
+        <div className={styles.dragLayer} style={{ cursor: ghost.cursor }}>
+          <div
+            className={styles.ghost}
+            style={{ left: ghost.x, top: ghost.y, width: ghost.w, height: ghost.h }}
+          />
+        </div>
+      )}
     </div>
   );
 }

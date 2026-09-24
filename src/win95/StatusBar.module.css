@@ -1,14 +1,17 @@
 .bar {
+  position: relative;
   display: flex;
-  gap: 2px;
-  padding: 2px;
-  background: var(--w95-3d-face);
   flex: 0 0 auto;
+  gap: 2px;
+  padding-top: 2px;
+  background: var(--w95-3d-face);
 }
 
 .field {
-  padding: 1px 4px;
-  font-size: var(--w95-font-size);
+  height: 17px;
+  min-width: 0;
+  padding: 2px 4px 0;
+  line-height: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -17,4 +20,10 @@
 
 .grow {
   flex: 1;
+}
+
+.grip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }

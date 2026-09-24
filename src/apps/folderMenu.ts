@@ -3,9 +3,15 @@ import type { Menu } from "../win95";
 /**
  * The Explorer folder-window menu bar (File / Edit / View / Help), as every
  * Win95 shell folder — Personal, Documents, My Computer, Recycle Bin — shows it.
- * `extraFile` prepends folder-specific File items (e.g. "Empty Recycle Bin").
+ * `extraFile` prepends folder-specific File items (e.g. "Empty Recycle Bin");
+ * `view` is the view the folder opens in, marked with the option bullet (the
+ * status bar is on, the toolbar off, as a new Win95 folder window has them).
  */
-export function folderMenu(onClose: () => void, extraFile: Menu["items"] = []): Menu[] {
+export function folderMenu(
+  onClose: () => void,
+  extraFile: Menu["items"] = [],
+  view: "large" | "details" = "large",
+): Menu[] {
   return [
     {
       label: "&File",
@@ -37,14 +43,24 @@ export function folderMenu(onClose: () => void, extraFile: Menu["items"] = []): 
       label: "&View",
       items: [
         { label: "&Toolbar" },
-        { label: "Status &Bar" },
+        { label: "Status &Bar", checked: true },
         "divider",
-        { label: "Lar&ge Icons" },
+        { label: "Lar&ge Icons", checked: view === "large", radio: true },
         { label: "S&mall Icons" },
         { label: "&List" },
-        { label: "&Details" },
+        { label: "&Details", checked: view === "details", radio: true },
         "divider",
-        { label: "Arrange &Icons" },
+        {
+          label: "Arrange &Icons",
+          submenu: [
+            { label: "by &Name" },
+            { label: "by &Type" },
+            { label: "by Si&ze" },
+            { label: "by &Date" },
+            "divider",
+            { label: "&Auto Arrange" },
+          ],
+        },
         { label: "Line &up Icons" },
         "divider",
         { label: "&Refresh", shortcut: "F5" },

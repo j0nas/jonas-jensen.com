@@ -1,0 +1,14 @@
+/* The list pane: COLOR_WINDOW behind the sunken client edge; 75px cells from the
+   top-left, left to right, wrapping (as in an RTM Control Panel capture). */
+.pane {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 75px);
+  grid-auto-rows: 75px;
+  align-content: start;
+  padding: 2px;
+  overflow: auto;
+  background: var(--w95-window);
+  box-shadow: var(--w95-bevel-sunken);
+}

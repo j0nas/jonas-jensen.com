@@ -1,0 +1,91 @@
+/* A popup menu (SOURCES.md §Menus): EDGE_RAISED plus 1px of face = a 3px border;
+   17px items; the label's ink starts 22px in (the check column), shortcuts sit in
+   their own left-aligned column, and 17px on the right leave room for the arrow. */
+.popup {
+  position: absolute;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 3px;
+  background: var(--w95-menu);
+  box-shadow: var(--w95-bevel-raised);
+  outline: none;
+  white-space: nowrap;
+}
+
+.item {
+  position: relative;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  height: 17px;
+  padding: 0 17px 0 22px;
+  color: var(--w95-menu-text);
+  line-height: 13px;
+  user-select: none;
+}
+
+.hot {
+  background: var(--w95-highlight);
+  color: var(--w95-highlight-text);
+}
+
+.default .label {
+  font-weight: 700;
+}
+
+/* Disabled: embossed grey (GRAYTEXT over a HIGHLIGHT copy 1px down-right), and
+   plain grey on the selection bar. */
+.disabled {
+  color: var(--w95-gray-text);
+}
+
+.disabled:not(.hot) .label,
+.disabled:not(.hot) .shortcut {
+  text-shadow: 1px 1px 0 var(--w95-3d-highlight);
+}
+
+.disabled.hot {
+  color: var(--w95-gray-text);
+}
+
+.shortcut:not(:empty) {
+  padding-left: 9px;
+}
+
+.check {
+  position: absolute;
+  left: 6px;
+  top: 5px;
+}
+
+.radio {
+  position: absolute;
+  left: 7px;
+  top: 6px;
+}
+
+/* The 4×7 submenu arrow, its right edge 7px in from the item's right. */
+.arrow {
+  position: absolute;
+  right: 7px;
+  top: 5px;
+}
+
+/* A submenu's first item lines up with its parent item, and its left border
+   overlaps the parent by 3px. */
+.submenu {
+  left: calc(100% - 3px);
+  top: -3px;
+}
+
+/* Etched separator: 9px, a SHADOW line at +3 and a HIGHLIGHT line at +4, across
+   the full inner width. */
+.divider {
+  grid-column: 1 / -1;
+  height: 9px;
+  background:
+    linear-gradient(var(--w95-3d-shadow), var(--w95-3d-shadow)) 0 3px / 100% 1px no-repeat,
+    linear-gradient(var(--w95-3d-highlight), var(--w95-3d-highlight)) 0 4px / 100% 1px no-repeat;
+}

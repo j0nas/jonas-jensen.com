@@ -1,60 +1,73 @@
+/* A 75×75 large-icon cell (SM_CXICONSPACING / SM_CYICONSPACING = 75): the icon at
+   (21,2), the label box from +38, 13px lines, at most 75px wide, wrapping. */
 .icon {
   all: unset;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
   width: 75px;
-  padding: 4px;
-  cursor: default;
+  height: 75px;
+  padding-top: 2px;
 }
 
-.icon:focus-visible {
-  outline: 1px dotted var(--w95-3d-highlight);
-  outline-offset: -2px;
-}
-
-.iconImage {
+.image {
   position: relative;
   width: 32px;
   height: 32px;
+  margin-bottom: 4px;
 }
 
-.iconImage img {
+.image img {
   display: block;
   width: 32px;
   height: 32px;
 }
 
-/* Selected: a 50% navy dither over the glyph + a navy label fill. */
-.iconImage::after {
+.overlay {
+  position: absolute;
+  inset: 0;
+}
+
+/* Selected: a 50% navy dither over the icon's own (opaque) pixels. */
+.selected .image::after {
   content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000080'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000080'/%3E%3C/svg%3E");
-  background-size: 2px 2px;
-  image-rendering: pixelated;
-  opacity: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1' fill='%23000080'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000080'/%3E%3C/svg%3E");
+  mask: var(--icon) center / 32px 32px no-repeat;
 }
 
-.selected .iconImage::after {
-  opacity: 1;
-}
-
+/* On the desktop the label is white on a box of the desktop colour, which shows
+   over a wallpaper (Win95 has no transparent icon text, and no text shadow). */
 .label {
-  color: var(--w95-active-title-text);
-  text-shadow: 1px 1px 1px #000000;
-  font-size: var(--w95-font-size);
-  line-height: 1.3;
+  position: relative;
+  max-width: 75px;
+  padding: 0 3px;
+  background: var(--w95-desktop);
+  color: #ffffff;
+  line-height: 13px;
   text-align: center;
-  padding: 1px 3px;
-  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.inFolder .label {
+  background: none;
+  color: var(--w95-window-text);
 }
 
 .selected .label {
-  background-color: var(--w95-highlight);
+  background: var(--w95-highlight);
   color: var(--w95-highlight-text);
-  text-shadow: none;
+}
+
+/* The focus rectangle: DrawFocusRect XORs its dots, so they invert what's under
+   them (pink on teal, yellow on the navy selection). */
+.icon:focus .label::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  outline: 1px dotted #ffffff;
+  outline-offset: -1px;
+  mix-blend-mode: difference;
 }

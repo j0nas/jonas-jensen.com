@@ -23,7 +23,6 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  margin-top: 1px;
 }
 
 /* The eight sizing-border grips occupy the SM_CXFRAME (4px) ring. */
@@ -101,4 +100,26 @@
   width: 8px;
   height: 8px;
   cursor: nesw-resize;
+}
+
+/* The drag outline: a SM_CXFRAME-wide ring of a 50% dither XORed onto the screen
+   (DrawDragRect's halftone PATINVERT), on a layer that holds the pointer. */
+.dragLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  mix-blend-mode: difference;
+}
+
+.ghost {
+  position: absolute;
+  padding: var(--w95-frame);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1' fill='%23fff'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23fff'/%3E%3C/svg%3E");
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
 }

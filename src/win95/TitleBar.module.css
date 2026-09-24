@@ -1,7 +1,14 @@
+/* The caption band (SOURCES.md §Title bar): 18px, then a 1px face line
+   (SM_CYCAPTION = 19). Icon at (+2,+1); the bold title's ink starts at +21 with
+   its caps top at +4; caption buttons 16×14 at +2 from the top, Minimize and
+   Maximize touching, 2px before Close and 2px after it. */
 .titlebar {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex: 0 0 auto;
   height: var(--w95-caption-height);
+  margin-bottom: 1px;
   padding: 0 2px;
   background: var(--w95-inactive-title);
   color: var(--w95-inactive-title-text);
@@ -13,35 +20,50 @@
   color: var(--w95-active-title-text);
 }
 
+.iconSlot {
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
 .icon {
   display: block;
-  margin-right: 3px;
-  flex: 0 0 auto;
+}
+
+/* The system menu drops from the caption's bottom-left corner. */
+.systemMenu {
+  top: 17px;
+  left: -2px;
+  color: var(--w95-menu-text);
+  font-weight: 400;
 }
 
 .caption {
   flex: 1;
   min-width: 0;
+  margin-left: 3px;
+  padding-top: 3px;
   font-weight: 700;
-  font-size: var(--w95-font-size);
-  line-height: 1;
+  line-height: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* No icon (dialogs): the title starts 3px in. */
+.bare {
+  margin-left: 1px;
+}
+
 .controls {
   display: flex;
   flex: 0 0 auto;
-  gap: 2px;
+  margin-top: 2px;
+  margin-left: 2px;
 }
 
-/* Caption buttons: 16×14 raised-soft, black glyph, always on the face colour
-   (never tinted by the active/inactive title). */
 .control {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   width: 16px;
   height: 14px;
   padding: 0;
@@ -49,30 +71,21 @@
   background: var(--w95-3d-face);
   color: #000000;
   box-shadow: var(--w95-bevel-raised-soft);
-  cursor: default;
 }
 
 .control:active {
   box-shadow: var(--w95-bevel-pressed);
 }
 
-/* The Close button is separated from the Minimize/Maximize pair by a 2px gap. */
 .close {
   margin-left: 2px;
 }
 
-/* Minimize: a short bar resting on the button's lower edge. */
-.glyphMinimize {
-  width: 6px;
-  height: 2px;
-  margin-top: 6px;
-  background: #000000;
+/* The glyph sits at its sampled offset (inline); a pressed button nudges it 1px. */
+.glyph {
+  position: absolute;
 }
 
-/* Maximize: a box with a thick (title-bar) top edge. */
-.glyphMaximize {
-  width: 9px;
-  height: 8px;
-  border: 1px solid #000000;
-  border-top-width: 2px;
+.control:active .glyph {
+  translate: 1px 1px;
 }

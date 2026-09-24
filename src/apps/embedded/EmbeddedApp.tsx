@@ -10,11 +10,10 @@ interface EmbeddedAppProps {
 
 /**
  * Hosts a standalone web app — with its own toolchain, dependencies and styles —
- * inside a Win95 window via an <iframe>. The app is built separately and vendored
- * as a static bundle under public/apps/<id>/ (see scripts/sync-apps.mjs); the
- * registry's `embed` field is the path the iframe points at. This keeps the
- * desktop shell free of each app's dependencies and gives every app full style
- * and JS isolation, while the Win95 chrome supplies the window frame.
+ * inside a Win95 window via an <iframe>. The app deploys itself; the Worker serves
+ * its live deploy same-origin at the registry's `embed` path (worker/apps.ts). This
+ * keeps the desktop shell free of each app's dependencies and gives every app full
+ * style and JS isolation, while the Win95 chrome supplies the window frame.
  */
 export default function EmbeddedApp({ id, controls }: EmbeddedAppProps) {
   const { embed, title } = appMeta(id);

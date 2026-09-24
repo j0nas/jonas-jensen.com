@@ -1,0 +1,12 @@
+/* COLOR_INFOBK / COLOR_INFOTEXT in a 1px black (WS_BORDER) box, 2px text margin. */
+.tip {
+  position: fixed;
+  z-index: 2000;
+  padding: 1px 2px;
+  border: 1px solid #000000;
+  background: var(--w95-info-bk);
+  color: var(--w95-info-text);
+  line-height: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+}

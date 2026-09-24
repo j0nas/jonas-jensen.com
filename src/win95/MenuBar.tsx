@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import MenuPopup, { type MenuItem } from "./Menu";
 import Mnemonic from "./mnemonic";
 import styles from "./MenuBar.module.css";
 
-export type MenuItem =
-  | "divider"
-  | { label: string; onClick?: () => void; disabled?: boolean; shortcut?: string };
+export type { MenuItem };
 
 export interface Menu {
   label: string;
@@ -12,70 +11,52 @@ export interface Menu {
 }
 
 /**
- * A window's menu bar (File / Edit / …). Click a title to drop its menu; with a
- * menu already open, hovering another title switches to it (Win95 "menu track"
- * behaviour). Outside click or Escape closes. The open title and hovered items
- * invert to the navy selection colour.
+ * A window's menu bar (File / Edit / …). Pressing a title drops its menu; with a
+ * menu already open, hovering another title switches to it and Left / Right step
+ * between them (Win95 "menu track"). An outside press or Escape closes. The open
+ * title turns to the navy selection, as Win95 draws it (the sunken 3D title is
+ * Win98's).
  */
 export default function MenuBar({ menus }: { menus: Menu[] }) {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<{ index: number; keyboard: boolean } | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (open === null) return;
+    if (!open) return;
     function onDown(event: MouseEvent) {
       if (!ref.current?.contains(event.target as Node)) setOpen(null);
     }
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(null);
-    }
     document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
+    return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
+
+  const step = (by: 1 | -1) =>
+    setOpen((o) => o && { index: (o.index + by + menus.length) % menus.length, keyboard: true });
 
   return (
     <div className={styles.bar} ref={ref}>
       {menus.map((menu, i) => (
         <div className={styles.slot} key={menu.label}>
-          <button
-            type="button"
-            className={`${styles.title}${open === i ? ` ${styles.titleOpen}` : ""}`}
+          <div
+            className={`${styles.title}${open?.index === i ? ` ${styles.titleOpen}` : ""}`}
             onMouseDown={(e) => {
               e.preventDefault();
-              setOpen(open === i ? null : i);
+              setOpen(open?.index === i ? null : { index: i, keyboard: false });
             }}
-            onMouseEnter={() => open !== null && setOpen(i)}
+            onMouseEnter={() => open && open.index !== i && setOpen({ index: i, keyboard: false })}
           >
             <Mnemonic label={menu.label} />
-          </button>
-          {open === i && (
-            <div className={styles.dropdown}>
-              {menu.items.map((item, j) =>
-                item === "divider" ? (
-                  <div key={`d${j}`} className={styles.divider} role="separator" />
-                ) : (
-                  <button
-                    key={item.label}
-                    type="button"
-                    className={styles.item}
-                    disabled={item.disabled}
-                    onClick={() => {
-                      setOpen(null);
-                      item.onClick?.();
-                    }}
-                  >
-                    <span>
-                      <Mnemonic label={item.label} />
-                    </span>
-                    {item.shortcut && <span className={styles.shortcut}>{item.shortcut}</span>}
-                  </button>
-                ),
-              )}
-            </div>
+          </div>
+          {open?.index === i && (
+            <MenuPopup
+              key={i}
+              items={menu.items}
+              keyboard={open.keyboard}
+              onClose={() => setOpen(null)}
+              onLeft={() => step(-1)}
+              onRight={() => step(1)}
+              className={styles.dropdown}
+            />
           )}
         </div>
       ))}

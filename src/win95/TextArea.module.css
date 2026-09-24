@@ -6,6 +6,8 @@
   padding: 2px;
   border: none;
   resize: none;
+  /* Notepad and WordPad always show the vertical scroll bar. */
+  overflow-y: scroll;
   background: var(--w95-window);
   color: var(--w95-window-text);
   font-family: var(--w95-font);

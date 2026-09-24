@@ -1,3 +1,5 @@
+/* The taskbar (SOURCES.md §Taskbar), sampled at 640×480 and 1024×768 RTM: 28px,
+   its top edge a 3DLIGHT row then a HIGHLIGHT row; buttons 22px tall at y+4. */
 .taskbar {
   position: fixed;
   left: 0;
@@ -5,30 +7,32 @@
   bottom: 0;
   z-index: 1000;
   display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 28px;
-  padding: 2px;
+  align-items: flex-start;
+  height: var(--w95-taskbar-height);
+  padding: 4px 3px 2px 2px;
   background: var(--w95-3d-face);
-  /* A single raised highlight line along the top edge. */
-  box-shadow: inset 0 1px 0 0 var(--w95-3d-highlight);
+  box-shadow:
+    inset 0 1px 0 0 var(--w95-3d-light),
+    inset 0 2px 0 0 var(--w95-3d-highlight);
 }
 
 .startRegion {
   position: relative;
   flex: 0 0 auto;
+  margin-right: 4px;
 }
 
+/* The Start button: 54×22, the flag at (+4,+3), bold "Start" inked from +23. */
 .start {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 3px;
+  align-items: flex-start;
+  width: 54px;
   height: 22px;
-  padding: 2px 5px 2px 3px;
+  padding: 3px 0 0 4px;
   border: none;
   background: var(--w95-3d-face);
   box-shadow: var(--w95-bevel-raised-soft);
-  cursor: default;
 }
 
 .start img {
@@ -36,48 +40,60 @@
 }
 
 .startLabel {
-  font-family: var(--w95-font);
-  font-size: var(--w95-font-size);
+  margin: 1px 0 0 3px;
   font-weight: 700;
+  line-height: 13px;
 }
 
+/* Pushed while the menu is open: sunken, content 1px down-right, and the dotted
+   focus rectangle 3px in. */
 .startActive {
   box-shadow: var(--w95-bevel-pressed);
-  padding: 3px 4px 1px 4px;
+  padding: 4px 0 0 5px;
 }
 
+.startActive::after,
+.start:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  outline: 1px dotted var(--w95-focus-dots);
+  outline-offset: -1px;
+}
+
+/* The Start menu rests on the Start button, over the taskbar's top edge. */
 .startMenu {
   position: absolute;
   bottom: 100%;
   left: 0;
-  margin-bottom: 2px;
 }
 
 .tasks {
   display: flex;
-  align-items: center;
   gap: 3px;
   flex: 1;
   min-width: 0;
-  height: 100%;
   overflow: hidden;
 }
 
-.task {
+.taskSlot {
   display: flex;
-  align-items: center;
-  gap: 4px;
   flex: 0 1 160px;
   min-width: 0;
+}
+
+/* Task buttons: up to 160px, icon at (+4,+3), label from +23. */
+.task {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
   height: 22px;
-  padding: 2px 6px;
+  padding: 3px 4px 0;
   border: none;
   background: var(--w95-3d-face);
   box-shadow: var(--w95-bevel-raised-soft);
-  font-family: var(--w95-font);
-  font-size: var(--w95-font-size);
   text-align: left;
-  cursor: default;
 }
 
 .task img {
@@ -87,16 +103,18 @@
 
 .taskTitle {
   min-width: 0;
+  margin: 1px 0 0 3px;
+  line-height: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Active window's button: pressed in, with the 50% highlight dither GDI paints
-   behind the depressed taskbar button, and a bold label. */
+/* The active window's button: pushed in, the checked 50% highlight dither behind
+   it, a bold label, content 1px down-right. */
 .taskActive {
+  padding: 4px 3px 0 5px;
   box-shadow: var(--w95-bevel-pressed);
-  padding: 3px 5px 1px 7px;
   background-color: var(--w95-3d-face);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1' fill='%23ffffff'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ffffff'/%3E%3C/svg%3E");
   background-size: 2px 2px;
@@ -106,10 +124,20 @@
   font-weight: 700;
 }
 
+.task:focus-visible .taskTitle {
+  outline: 1px dotted var(--w95-focus-dots);
+}
+
+/* The tray: a 1px sunken box, 22px tall, 63px wide around the clock alone, its
+   right edge 3px from the screen's. */
 .tray {
   flex: 0 0 auto;
-  padding: 2px 8px;
-  margin-left: auto;
-  font-size: var(--w95-font-size);
+  min-width: 63px;
+  height: 22px;
+  margin-left: 4px;
+  padding: 4px 6px 0;
+  line-height: 13px;
+  text-align: center;
+  white-space: nowrap;
   box-shadow: var(--w95-bevel-sunken-thin);
 }

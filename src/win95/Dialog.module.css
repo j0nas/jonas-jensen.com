@@ -1,0 +1,56 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+}
+
+/* Shut Down greys the screen out with a 50% black dither. */
+.dim {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1'/%3E%3Crect x='1' y='1' width='1' height='1'/%3E%3C/svg%3E");
+}
+
+/* The dialog frame (SM_CXDLGFRAME = 3): EDGE_RAISED plus 1px of face. */
+.dialog {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 3px;
+  background: var(--w95-3d-face);
+  box-shadow: var(--w95-bevel-raised);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 16px;
+}
+
+/* The native input stays for the keyboard (arrow keys move between options). */
+.native {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radioGlyph {
+  flex: 0 0 auto;
+}
+
+.radioLabel {
+  position: relative;
+  margin-left: 5px;
+  padding: 0 1px;
+  line-height: 13px;
+}
+
+.native:focus-visible ~ .radioLabel,
+.native:focus ~ .radioLabel {
+  outline: 1px dotted var(--w95-focus-dots);
+}

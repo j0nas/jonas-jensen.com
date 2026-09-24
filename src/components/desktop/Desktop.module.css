@@ -5,11 +5,15 @@
   overflow: hidden;
 }
 
+/* Desktop icons auto-arranged down the left in 75px cells from the top-left
+   corner, wrapping into further columns above the taskbar. */
 .icons {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(auto-fill, 75px);
+  grid-auto-columns: 75px;
+  height: calc(100% - var(--w95-taskbar-height));
 }

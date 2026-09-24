@@ -1,6 +1,12 @@
 import { Fragment } from "react";
 import type { ReactNode } from "react";
 
+/** The access key of a `&`-mnemonic label, lower-cased ("E&xit" → "x"), if any. */
+export function mnemonicKey(label: string): string | undefined {
+  const m = /&([^&])/.exec(label.replaceAll("&&", ""));
+  return m?.[1].toLowerCase();
+}
+
 /**
  * Renders a Win32 mnemonic label: the character following `&` is underlined as
  * the access key (Win95 shows these underlines permanently, unlike XP+). `&&`

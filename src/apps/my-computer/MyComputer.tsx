@@ -1,22 +1,23 @@
-import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
-import { folderMenu } from "../folderMenu";
+import type { WindowControls } from "../../components/window/AppWindow";
+import FolderWindow from "../folder/FolderWindow";
 
-const panel: React.CSSProperties = {
-  flex: 1,
-  minHeight: 0,
-  padding: 8,
-  overflow: "auto",
-  background: "var(--w95-window)",
-  boxShadow: "var(--w95-bevel-sunken)",
-};
+// A fresh Win95 install's My Computer: the drives, then the system folders.
+const ITEMS = [
+  { key: "a", icon: "/img/win95/floppy-32.png", label: "3½ Floppy (A:)" },
+  { key: "c", icon: "/img/win95/drive-32.png", label: "(C:)" },
+  { key: "d", icon: "/img/win95/cdrom-32.png", label: "(D:)" },
+  { key: "control", icon: "/img/win95/control-panel-32.png", label: "Control Panel" },
+  { key: "printers", icon: "/img/win95/printers-32.png", label: "Printers" },
+  { key: "dialup", icon: "/img/win95/dialup-32.png", label: "Dial-Up Networking" },
+];
 
 export default function MyComputer({ controls }: { controls: WindowControls }) {
   return (
-    <AppWindow id="my-computer" controls={controls} menu={folderMenu(controls.onClose)}>
-      <div style={panel}>
-        <p style={{ margin: 0 }}>My Computer</p>
-        <p style={{ marginTop: 8, color: "var(--w95-gray-text)" }}>This is a placeholder window.</p>
-      </div>
-    </AppWindow>
+    <FolderWindow
+      id="my-computer"
+      controls={controls}
+      items={ITEMS}
+      selectedStatus={(key) => (key === "c" ? "Free Space: 1.93GB, Capacity: 2.00GB" : undefined)}
+    />
   );
 }

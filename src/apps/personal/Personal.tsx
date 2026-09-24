@@ -1,8 +1,7 @@
-import AppWindow, { type WindowControls } from "../../components/window/AppWindow";
-import { StatusBar } from "../../win95";
-import { folderMenu } from "../folderMenu";
-import styles from "./Personal.module.css";
+import type { WindowControls } from "../../components/window/AppWindow";
+import FolderWindow from "../folder/FolderWindow";
 
+// Shortcuts to self-hosted services; each opens in a new browser tab.
 const shortcuts = [
   {
     label: "Jellyfin",
@@ -21,39 +20,18 @@ const shortcuts = [
   },
 ];
 
-interface PersonalProps {
-  controls: WindowControls;
-}
-
-export default function Personal({ controls }: PersonalProps) {
+export default function Personal({ controls }: { controls: WindowControls }) {
   return (
-    <AppWindow id="personal" controls={controls} menu={folderMenu(controls.onClose)}>
-      <div className={styles.folder}>
-        <div className={styles.grid}>
-          {shortcuts.map((shortcut) => (
-            <a
-              className={styles.shortcut}
-              href={shortcut.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={shortcut.label}
-            >
-              <div className={styles.shortcutIconWrapper}>
-                <img src={shortcut.icon} alt="" width={32} height={32} />
-                <img
-                  className={styles.shortcutArrow}
-                  src="/img/personal/shortcut-arrow.png"
-                  alt=""
-                  width={10}
-                  height={10}
-                />
-              </div>
-              <span className={styles.shortcutLabel}>{shortcut.label}</span>
-            </a>
-          ))}
-        </div>
-      </div>
-      <StatusBar>{shortcuts.length} object(s)</StatusBar>
-    </AppWindow>
+    <FolderWindow
+      id="personal"
+      controls={controls}
+      items={shortcuts.map((s) => ({
+        key: s.label,
+        icon: s.icon,
+        label: s.label,
+        shortcut: true,
+        onOpen: () => window.open(s.url, "_blank", "noopener,noreferrer"),
+      }))}
+    />
   );
 }

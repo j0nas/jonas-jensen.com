@@ -1,0 +1,88 @@
+.shutDown {
+  display: flex;
+  gap: 12px;
+  padding: 12px 12px 10px;
+}
+
+.shutDown img,
+.runIntro img {
+  flex: 0 0 auto;
+}
+
+.shutDownBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt {
+  margin: 0 0 10px;
+  line-height: 13px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.run {
+  display: flex;
+  flex-direction: column;
+  width: 347px;
+  padding: 12px 10px 10px;
+}
+
+.runIntro {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.runIntro p {
+  margin: 2px 0 0;
+  line-height: 13px;
+}
+
+.runField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* A single-line edit control: white, inside the sunken client edge. */
+.field {
+  flex: 1;
+  height: 21px;
+  padding: 3px 4px 2px;
+  border: none;
+  background: var(--w95-window);
+  box-shadow: var(--w95-bevel-sunken);
+  line-height: 13px;
+}
+
+/* LOGOS.SYS's message: the Win95 shut-down screen (approximated in text). */
+.safe {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  color: #ff8c00;
+  font:
+    700 32px/1.25 Arial,
+    Helvetica,
+    sans-serif;
+  text-align: center;
+  -webkit-font-smoothing: auto;
+}

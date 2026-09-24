@@ -2,7 +2,7 @@
   position: relative;
   flex: 1;
   min-height: 0;
-  background: var(--w95-3dface, #c0c0c0);
+  background: var(--w95-3d-face);
 }
 
 .iframe {
@@ -18,5 +18,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--w95-graytext, #808080);
+  color: var(--w95-gray-text);
 }

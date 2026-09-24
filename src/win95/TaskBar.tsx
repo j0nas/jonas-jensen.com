@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import Clock from "./Clock";
+import { longDate, shortTime, useNow } from "./Clock";
+import Tooltip from "./Tooltip";
 import styles from "./TaskBar.module.css";
 
 export interface TaskButton {
@@ -20,10 +21,34 @@ interface TaskBarProps {
   startMenu: ReactNode;
 }
 
+/** A task button; its tooltip (the full title) shows only when the label is cut off. */
+function Task({ win, onClick }: { win: TaskButton; onClick: () => void }) {
+  const label = useRef<HTMLSpanElement>(null);
+  const [truncated, setTruncated] = useState(false);
+  return (
+    <Tooltip text={truncated ? win.title : null} className={styles.taskSlot}>
+      <button
+        type="button"
+        className={`${styles.task}${win.active ? ` ${styles.taskActive}` : ""}`}
+        onClick={onClick}
+        onMouseEnter={() => {
+          const el = label.current;
+          setTruncated(!!el && el.scrollWidth > el.clientWidth);
+        }}
+      >
+        <img src={win.icon} alt="" width={16} height={16} aria-hidden="true" />
+        <span ref={label} className={styles.taskTitle}>
+          {win.title}
+        </span>
+      </button>
+    </Tooltip>
+  );
+}
+
 /**
- * The bottom taskbar: a raised strip with the Start button (toggling the Start
- * menu), one button per open window (the active window's button shown pressed),
- * and the tray clock. Pressing outside the Start region closes the menu.
+ * The taskbar (SOURCES.md §Taskbar): a 28px strip with the Start button, one button
+ * per open window (the active one pushed in, dithered and bold) and the tray clock,
+ * whose tooltip is the date. Pressing outside the Start region closes the menu.
  */
 export default function TaskBar({
   windows,
@@ -34,6 +59,7 @@ export default function TaskBar({
   startMenu,
 }: TaskBarProps) {
   const startRegion = useRef<HTMLDivElement>(null);
+  const now = useNow();
 
   useEffect(() => {
     if (!startOpen) return;
@@ -51,30 +77,31 @@ export default function TaskBar({
         <button
           type="button"
           className={`${styles.start}${startOpen ? ` ${styles.startActive}` : ""}`}
-          onClick={onStartToggle}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            onStartToggle();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onStartToggle();
+            }
+          }}
         >
-          <img src="/img/win/windows-logo.png" alt="" width={16} height={16} aria-hidden="true" />
+          <img src="/img/win95/start-flag.png" alt="" width={16} height={16} aria-hidden="true" />
           <span className={styles.startLabel}>Start</span>
         </button>
       </div>
 
       <div className={styles.tasks}>
         {windows.map((win) => (
-          <button
-            key={win.id}
-            type="button"
-            className={`${styles.task}${win.active ? ` ${styles.taskActive}` : ""}`}
-            onClick={() => onTaskClick(win.id)}
-          >
-            <img src={win.icon} alt="" width={16} height={16} aria-hidden="true" />
-            <span className={styles.taskTitle}>{win.title}</span>
-          </button>
+          <Task key={win.id} win={win} onClick={() => onTaskClick(win.id)} />
         ))}
       </div>
 
-      <div className={styles.tray}>
-        <Clock />
-      </div>
+      <Tooltip text={longDate(now)} className={styles.tray}>
+        {shortTime(now)}
+      </Tooltip>
     </div>
   );
 }
