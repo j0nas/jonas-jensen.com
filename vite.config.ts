@@ -25,6 +25,11 @@ const embeddedProxy = {
     changeOrigin: true,
     rewrite: (p: string) => p.replace(/^\/apps\/lamp-shade/, "/lamp-shade-designer"),
   },
+  "/apps/edh-land": {
+    target: "https://deck-brancher.jonas-jensen.workers.dev",
+    changeOrigin: true,
+    rewrite: (p: string) => p.replace(/^\/apps\/edh-land/, ""),
+  },
 };
 
 // https://vite.dev/config/

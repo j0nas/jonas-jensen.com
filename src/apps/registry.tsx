@@ -81,6 +81,13 @@ export const apps = {
     defaultSize: { width: 1040, height: 720 },
     embed: "/apps/lamp-shade/",
   },
+  "edh-land": {
+    icon: "/img/apps/edh-land.svg",
+    iconSmall: "/img/apps/edh-land.svg",
+    title: "EDH Land",
+    defaultSize: { width: 1180, height: 760 },
+    embed: "/apps/edh-land/",
+  },
 } satisfies Record<string, AppMeta>;
 
 export type AppId = keyof typeof apps;
